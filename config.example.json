@@ -1,0 +1,15 @@
+{
+"xmpp": {
+    "domain": "proto.encorelab.org",
+    "port": 5222
+  },
+"rollcall": {
+    "url": "http://rollcall.proto.encorelab.org:80/"
+  },
+"bosh": {
+    "url": "http://proto.encorelab.org:5280/http-bind/"
+  },
+"mongoose": {
+    "url": "http://mongoose.proto.encorelab.org:27080/"
+  }
+}

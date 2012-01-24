@@ -1,0 +1,478 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <title>EvoRoom</title>
+
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,height=device-height" />
+  
+    <link href="js/sail.js/css/sail.css" rel="stylesheet" type="text/css" />
+    <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+
+    <link href="css/evoroom.css" rel="stylesheet" type="text/css" /> 
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+        
+    <script src="js/libs/phonegap-1.2.0.js" type="text/javascript"></script>
+    <script src="js/libs/barcodescanner.js" type="text/javascript"></script>
+    <script src="js/sail.js/deps/" type="text/javascript"></script>
+    <script src="js/sail.js/sail.js"></script>
+    <script>
+        Sail.load()
+            .then('js/sail.js/rollcall.js')
+            .then('js/evoroom.js')
+            .thenRun(function() { 
+                return Sail.init(EvoRoom);
+            });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>EvoRoom</h1>
+    </header>
+
+    <div id="evoroom">
+    
+<!-- ***********************************************SURVEY**************************************************** -->
+        
+        <div id="loading-page" class="full-text-box" style="display:none">
+            <div class="title"><b>Loading, please wait...</b></div>
+        </div>
+        
+        <div id="student-chosen-organisms" style="display:none">
+            <img class="first-organism organism-image" src="/images/ant_icon.png" alt="Ant">
+            <img class="second-organism organism-image" src="/images/civet_icon.png" alt="Civet">
+        </div>
+            
+        <div id="log-in-success" class="full-text-box" style="display:none">
+            <div class="title"><b>Log in successful</b></div>
+            <div>
+                To gain entry into our elite team of rainforest ecologists, you must successfully complete this exercise,
+                demonstrating your knowledge of rainforest ecology, knowledge of your specialist species, problem solving-skills
+                and ability to work in a team-based environment. This exercise consists of 5 steps and will take approximately
+                30 minutes to complete.
+                <br><br>
+                When you are ready to begin, proceed to the simulation lab (in room 204a) and perform a QR scan with this device. 
+            </div>
+            <button class="big-button"><b>QR scan</b></button>
+        </div>
+        
+        <div id="room-scan-failure" class="full-text-box" style="display:none">
+            <div class="title"><b>QR code scanning failed</b></div>
+            <div>
+                QR scan on room entry failed. Either proceed without scanning or try again. 
+            </div>
+            <button class="big-error-resolver-button"><b>Enter room</b></button>
+            <button class="big-button"><b>Scan again</b></button>
+        </div>
+    
+        <div id="survey-welcome" class="full-text-box" style="display:none">
+            <div class="title"><b>Welcome to the simulation lab</b></div>
+            <div>
+                There are four different versions the Borneo rainforest ecosystem here. Why do they look different?
+                What happened to these systems? As part of today's exercise you will work with the others in this room to
+                figure this out.
+                <br><br>
+                But first, to facilitate the problem-solving process, you are asked to look for these species (shown above)
+                within their speciality, across all four rainforests. This is a divide and conquer strategy for everyone to take
+                stock of the species are in the rainforest ecosystems.
+                <br><br>
+                When you are ready, approach one of the rainforest stations and perform a QR scan.
+            </div>
+            <button class="big-button"><b>QR scan</b></button>
+        </div>
+        
+        <div id="rainforest-scan-failure" class="full-text-box" style="display:none">
+            <div class="title"><b>Rainforest QR code scanning failed!</b></div>
+            <div>
+                Scanning the QR code of the rainforest failed. Please try again or proceed by pressing the button for the rainforest you are at. 
+            </div>
+            <button class="small-error-resolver-button" data-rainforest="rainforest_a"><b>Rainforest A</b></button>
+            <button class="small-error-resolver-button" data-rainforest="rainforest_b"><b>Rainforest B</b></button>
+            <button class="small-error-resolver-button" data-rainforest="rainforest_c"><b>Rainforest C</b></button>
+            <button class="small-error-resolver-button" data-rainforest="rainforest_d"><b>Rainforest D</b></button>
+            <button class="big-button"><b>Scan again</b></button>
+        </div>
+    
+        <div id="survey-organisms" class="full-text-box" style="display:none">
+            <div class="title">
+                <span><b>Location: </b></span>
+                <span class="location"><b></b></span>
+            </div>
+            
+            <div class="survey-content-box">
+                <table class="survey-content-table">
+                    <tr>
+                        <th><b>Organism</b></th>
+                        <th><b>Present?</b></th>
+                    </tr>
+                    <tr>
+                        <td class="first-organism">
+                            <span class="first-organism-name"></span>
+                        </td>
+                        <td class="first-organism-radios jquery-radios">
+                            <input type="radio" name="first-organism-yn" id="first-org-yes" class="radio first-radios" value="true" /><label for="first-org-yes">Yes</label>
+                            <input type="radio" name="first-organism-yn" id="first-org-no" class="radio first-radios" value="false" /><label for="first-org-no">No</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="second-organism">
+                            <span class="second-organism-name"></span>
+                        </td>
+                        <td class="second-organism-radios jquery-radios">
+                            <input type="radio" name="second-organism-yn" id="second-org-yes" class="radio second-radios" value="true" /><label for="second-org-yes">Yes</label>
+                            <input type="radio" name="second-organism-yn" id="second-org-no" class="radio second-radios" value="false" /><label for="second-org-no">No</label>
+                        </td>
+                        <!-- when both radio buttons are pressed, show big button -->
+                </table>
+            </div>
+
+            <div class="survey-done-text next-rainforest" style="display:none">
+                Done? Go to the next rainforest and perform a QR scan.
+                <button class="big-button"><b>QR scan</b></button>
+            </div>
+            <div class="survey-done-text finished" style="display:none">
+                Done? Click next to continue
+                <button class="small-button"><b>Next</b></button>
+            </div>
+
+        </div>
+
+        
+<!-- *********************************************ROTATION******************************************************* -->       
+        
+        <div id="rotation-intro" class="full-text-box" style="display:none">
+            <div class="title"><b>Step 1 complete</b></div>
+            <div>
+                One of these rainforests display the results from an environmental variable you and your group
+                members chose to analyze for a report. Your challenge is to eliminate the rainforests that most
+                likely did NOT result from your variable.
+                <br><br>
+                Gather your group members and go to <span class="current-rainforest orange"></span>.
+                When you have all arrived, perform a QR scan. 
+            </div>
+            <button class="big-button"><b>QR scan</b></button>
+        </div>
+        
+        <div id="rotation-scan-failure" class="full-text-box" style="display:none">
+            <div class="title"><b>Rainforest QR code scanning failed!</b></div>
+            <div>
+                Scanning the QR code of the rainforest failed. Please try again or proceed by pressing the button for the rainforest you are at. 
+            </div>
+            <button class="small-error-resolver-button" data-rainforest="rainforest_a"><b>Rainforest A</b></button>
+            <button class="small-error-resolver-button" data-rainforest="rainforest_b"><b>Rainforest B</b></button>
+            <button class="small-error-resolver-button" data-rainforest="rainforest_c"><b>Rainforest C</b></button>
+            <button class="small-error-resolver-button" data-rainforest="rainforest_d"><b>Rainforest D</b></button>
+            <button class="big-button"><b>Scan again</b></button>
+        </div>
+
+        <div id="rotation-note-taker" class="full-text-box" style="display:none">
+            <div class="title"><b>Location: </b><span class="current-rainforest"></span></div>
+            <div>
+                Instructions: Your assignment at this location is to be the note-taker. Discuss the
+                following questions with your group members and record your answers below.
+            </div>
+            <div class="rainforest-choice">
+                Could this be your rainforest?
+                <div class="rainforest-choice-radios jquery-radios">
+                    <input type="radio" name="your-rainforest" id="rainforest-choice-yes" class="radio" value="true" /><label for="rainforest-choice-yes">Yes</label>
+                    <input type="radio" name="your-rainforest" id="rainforest-choice-no" class="radio" value="false" /><label for="rainforest-choice-no">No</label>                         
+                </div>
+            </div>
+            <div class="rainforest-explanation">
+                Give a brief explanation for your answer.
+                <textarea class="rainforest-explanation-text-entry"></textarea>
+            </div>
+            <button class="small-button"><b>Done</b></button>
+        </div>
+        
+        <iframe id="field-guide-frame" class="iframe" src="http://utslearningportfolio.oise.utoronto.ca/?q=node/437" style="display:none"></iframe>
+        <iframe id="group-page-frame" class="iframe" src="http://utslearningportfolio.oise.utoronto.ca/?q=node/536" style="display:none"></iframe>
+        <button id="iframe-close-button" style="display:none">Close</button>
+        
+        <div id="rotation-field-guide" style="display:none">
+            <div class="full-text-box">
+                <div class="title"><b>Location: </b><span class="current-rainforest"></span></div>
+                <div>
+                    <b>Instructions:</b> Your assignment at this location is to look up information in your field guide.
+                    Follow the link below to go to the field guide site.
+                </div>
+                <div class="rotation-link">
+                    <div class="field-guide-link">Go to the <b>Field Guide</b></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="rotation-prediction" style="display:none">
+            <div class="full-text-box">
+                <div class="title"><b>Location: </b><span class="current-rainforest"></span></div>
+                <div>
+                    <b>Instructions:</b> Your assignment at this location is to look up your prediction.
+                    Follow the link below to go to your group's page.
+                </div>
+                <div class="rotation-link">
+                    <div class="group-page-link">Go to your <b>Group's Page</b></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="rotation-field-guide-and-prediction" style="display:none">
+            <div class="full-text-box">
+                <div class="title"><b>Location: </b><span class="current-rainforest"></span></div>
+                <div>
+                    <b>Instructions:</b> Your assignment at this location is to look up your prediction and/or your field guide. Follow the links below to
+                    access the information. If another group member is also assigned to look up information, one person should look up the Field Guide, and
+                    the other should look up your Group's Page. 
+                </div>
+                <div class="rotation-link">
+                    <div class="field-guide-link">Go to the <b>Field Guide</b></div>
+                    <br><br>
+                    <div class="group-page-link">Go to your <b>Group's Page</b></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="rotation-next-rainforest" class="full-text-box" style="display:none">
+            <div class="title"><b>Step 2 in progress</b></div>
+            <div>
+                Go to <span class="next-rainforest orange"><b></b></span>.
+                When you have all arrived, perform a QR scan.
+            </div>
+            <button class="big-button"><b>QR scan</b></button>
+        </div>
+
+
+<!-- *********************************************SPEED DATING**************************************************** -->
+
+        <div id="interview-intro" class="full-text-box" style="display:none">
+            <div class="title"><b>Step 2 complete</b></div>
+            <div>
+                Your next task is to locate these researchers (see below) and find out more information about THEIR rainforests.
+                After all, how will you know which rainforest is yours if you don't know how the other rainforests came to be?
+                Maybe you can offer your expertise to help them find their rainforests as well. When you are ready, click on
+                their names to begin.
+            </div>  
+            <div class="links">
+                <div class="first-interviewee">TEMP 1st interviewee</div>
+                <br><br>
+                <div class="second-interviewee">TEMP 2nd interviewee</div>
+            </div>  
+        </div>
+        
+        <div id="interview" style="display:none">
+            <div class="suggested-questions">
+                <div class="title">
+                    <b>Suggested questions:</b>
+                </div>
+                <div>1. What is your variable?</div>
+                <div>2. What speciality are you?</div>
+                <div>3. Which rainforest do you think is related to your variable? Why?</div>
+                <div>4. How confident are you and your group members?</div>
+                <div>5. ...</div>
+            </div>
+
+            <div class="full-text-box">
+                <div class="title"><b>Interview with <span class="interview-choice"></span></b></div>
+                <div>
+                    What is your group's variable?
+                </div>
+                <div class="dropdown-content-box">
+                    <select class="variable-dropdown dropdown">
+                        <option value="undefined">...</option>
+                        <option value="high-rainfall">High rainfall</option>
+                        <option value="low-rainfall">Low rainfall</option>
+                        <option value="high-sunlight">High sunlight</option>
+                        <option value="low-sunlight">Low sunlight</option>
+                        <option value="high-temperature">High temperature</option>
+                        <option value="low-temperature">Low temperature</option>
+                        <option value="logging">Logging</option>
+                        <option value="conservation">Conservation</option>
+                        <option value="earthquake">Earthquake</option>
+                        <option value="tsunami">Tsunami</option>
+                    </select>
+                </div>
+                <div class="interview-content-title">
+                    <b>Notes</b>
+                </div>
+                <textarea class="interview-content-text-entry"></textarea>
+                
+                <button class="small-button"><b>Done</b></button>
+            </div>
+        </div>
+        
+        <div id="group-notes" style="display:none">
+            <div class="table-wrapper">
+                <table class="notes-table">
+                    <tr>
+                        <th class="table-header-small"><b>Researcher</b></th>
+                        <th class="table-header-small"><b>Variable</b></th>
+                        <th class="table-header-big"><b>Notes</b></th>
+                    </tr>
+                    <tr>
+                        <td class="researcher 1"></td>
+                        <td class="variable 1"></td>
+                        <td class="notes 1"></td>
+                    </tr>
+                    <tr>
+                        <td class="researcher 2"></td>
+                        <td class="variable 2"></td>
+                        <td class="notes 2"></td>
+                    </tr>
+                    <tr>
+                        <td class="researcher 3"></td>
+                        <td class="variable 3"></td>
+                        <td class="notes 3"></td>
+                    </tr>
+                    <tr>
+                        <td class="researcher 4"></td>
+                        <td class="variable 4"></td>
+                        <td class="notes 4"></td>
+                    </tr>
+                    <tr>
+                        <td class="researcher 5"></td>
+                        <td class="variable 5"></td>
+                        <td class="notes 5"></td>
+                    </tr>
+                    <tr>
+                        <td class="researcher 6"></td>
+                        <td class="variable 6"></td>
+                        <td class="notes 6"></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="divider"></div>
+
+            <div class="completion-text">
+                <b>Step 3 complete</b>
+                <button class="sync-button"><b>Sync notes with group</b></button>
+            </div>
+            
+            
+            <div class="group-notes-content-box">
+                Discuss amongst group members and rank the rainforests from no. 1 to 4, with no. 1 as the environment
+                that most likely result from YOUR variable. When you are ready, record your choices.
+            </div> 
+            
+            <button class="small-button"><b>Rank</b></button>       
+        </div>
+        
+        
+<!-- *********************************************FINAL PICKS**************************************************** -->       
+        
+        <div id="final-picks-ranking" class="full-text-box" style="display:none">
+            <div class="title"><b>Step 4: Rank rainforests</b></div>
+
+            <div class="final-picks-content-box">
+                <table class="final-picks-content-table">
+                    <tr>
+                        <th><b>Rainforests</b></th>
+                        <th><b>Rank</b></th>
+                    </tr>
+                    <tr>
+                        <td>Rainforest A</td>
+                        <td>
+                            <select class="A-dropdown dropdown">
+                                <option value="undefined">...</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Rainforest B</td>
+                        <td>
+                            <select class="B-dropdown dropdown">
+                                <option value="undefined">...</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Rainforest C</td>
+                        <td>
+                            <select class="C-dropdown dropdown">
+                                <option value="undefined">...</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Rainforest D</td>
+                        <td>
+                            <select class="D-dropdown dropdown">
+                                <option value="undefined">...</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="final-picks-done-text">
+                Done? Click next to continue.
+            </div>
+            <button class="small-button"><b>Next</b></button>
+        </div>
+        
+        <div id="final-picks-discuss" class="full-text-box" style="display:none">
+            <div class="title"><b>Step 4: In progress</b></div>
+            <div>
+                <b>Instructions: </b>Discuss the following question with your group members and provide your answer below.
+            </div>
+            <div class="discussion-content-box question1" style="display:none">
+                <div value="strategy" class="discussion-content-question">What is your strategy in ranking the rainforests? Describe your process.</div>
+                <textarea class="discussion-content-text-entry"></textarea>
+            </div>
+            <div value="evidence" class="discussion-content-box question2" style="display:none">
+                <div class="discussion-content-question">Identify at least 3 key pieces of evidence in making your choices.</div>
+                <textarea class="discussion-content-text-entry"></textarea>
+            </div>
+            <div value="additional_info" class="discussion-content-box question3" style="display:none">
+                <div class="discussion-content-question">Identify key insights from your discussion with the other groups members that helped you make your final rankings.</div>
+                <textarea class="discussion-content-text-entry"></textarea>
+            </div>
+            <button class="small-button"><b>Done</b></button> 
+        </div>
+        
+        <div id="final-picks-choice" class="full-text-box" style="display:none">
+            <div class="title"><b>Step 4 almost complete</b></div>
+            <div>
+                Go to the rainforest that represents your first choice and perform a QR scan.
+            </div>
+            <button class="big-button"><b>QR scan</b></button>
+        </div>
+        
+        <div id="final-picks-scan-failure" class="full-text-box" style="display:none">
+            <div class="title"><b>Rainforest QR code scanning failed!</b></div>
+            <div>
+                Scanning the QR code of the rainforest failed. Please try again or proceed by pressing the button for the rainforest you are at. 
+            </div>
+            <button class="small-error-resolver-button" data-rainforest="rainforest_a"><b>Rainforest A</b></button>
+            <button class="small-error-resolver-button" data-rainforest="rainforest_b"><b>Rainforest B</b></button>
+            <button class="small-error-resolver-button" data-rainforest="rainforest_c"><b>Rainforest C</b></button>
+            <button class="small-error-resolver-button" data-rainforest="rainforest_d"><b>Rainforest D</b></button>
+            <button class="big-button"><b>Scan again</b></button>
+        </div>
+        
+        <div id="final-picks-debrief" class="full-text-box" style="display:none">
+            <div class="title"><b>Step 4 complete</b></div>
+            <div>
+                Please wait here for your group debrief.
+            </div>
+        </div>
+            
+    </div>
+
+
+</body>
+</html>
