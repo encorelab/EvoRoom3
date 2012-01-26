@@ -6,7 +6,7 @@ require 'location_tracker'
 require 'choreographer'
 
 AGENT_PASSWORD = "9186ebc4790dfba833826e13c42c885f6f847274" # s3agent!
-RUN = "michelle-fall-2011"
+RUN = "michelle-feb-2012"
 DB = "evoroom"
 
 @daemon = Sail::Daemon.spawn(

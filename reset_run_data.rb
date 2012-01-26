@@ -5,7 +5,7 @@ require 'json'
 $: << "agents/sail.rb/lib"
 
 DB = "evoroom"
-RUN = "michelle-fall-2011"
+RUN = "michelle-feb-2012"
 
 require 'sail/rollcall/user'
 require 'sail/rollcall/group'
