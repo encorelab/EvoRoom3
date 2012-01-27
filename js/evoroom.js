@@ -333,7 +333,7 @@ var EvoRoom = {
         $('#survey-organisms .first-organism-name').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
         $('#survey-organisms .second-organism-name').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_2));
         $('.jquery-radios').buttonset();
-        //$('#log-in-success').show();
+        $('#log-in-success').show();
 
         $('#log-in-success .big-button').click(function() {
             // check if barcodeScanner is possible (won't be outside of PhoneGap app)
@@ -354,22 +354,13 @@ var EvoRoom = {
             $('#student-chosen-organisms').show();
             $('#log-in-success').show();
         });
-
+/*
         $('#room-scan-failure .big-error-resolver-button').click(function() {
             // here I would like to trigger Sail.app.barcodeScanRoomLoginSuccess since it does everything, but don't know how to hand in attributes
             //$(Sail.app).trigger('barcodeScanRoomLoginSuccess', 'room');
             
             // don't need to trigger, just call the function
             Sail.app.barcodeScanRoomLoginSuccess('room');
-
-            // send out event check_in
-            /*Sail.app.currentRainforest = "room";
-            Sail.app.submitCheckIn();
-            // hide everything
-            Sail.app.hidePageElements();
-            // show waiting page
-            $('#survey-welcome').show();
-            $('#student-chosen-organisms').show();*/
         });
 
         $('#survey-welcome .big-button').click(function() {
@@ -451,11 +442,12 @@ var EvoRoom = {
 
             // show wait screen and wait for start_step event to show rotation-intro
             $('#loading-page').show();
-        });
 
+        });
+*/
 
         /*************************************STEP 2***********************************************/
-
+/*
         $('#rotation-intro .big-button').click(function() {
             // trigger the QR scan screen/module to scan rainforests
             if (window.plugins.barcodeScanner) {
@@ -551,10 +543,10 @@ var EvoRoom = {
             
             //window.plugins.barcodeScanner.scan(Sail.app.barcodeScanCheckLocationAssignmentSuccess, Sail.app.barcodeScanFailure);
         });
-
+*/
 
         /**************************************STEP 3***********************************************/
-
+/*
         $('#interview-intro .first-interviewee').click(function() {
             $('#interview .interview-choice').text($('#interview-intro .first-interviewee').text());
             $('#interview-intro').hide();
@@ -591,10 +583,10 @@ var EvoRoom = {
                 $('#interview-intro').show();
             }
         });
-
+*/
 
         /**************************************STEP 4***********************************************/
-
+/*
         $('#group-notes .sync-button').click(function() {
             Sail.app.getInterviews();
         });
@@ -645,12 +637,12 @@ var EvoRoom = {
             Sail.app.hidePageElements();
             $('#final-picks-debrief').show();
         });
-
+*/
     },
     
     restoreState: function() {
         //alert('bring user back to state');
-        if (!Sail.app.user_metadata.state || Sail.app.user_metadata.state === 'LOGGED_IN') {
+        /*if (!Sail.app.user_metadata.state || Sail.app.user_metadata.state === 'LOGGED_IN') {
             // show page to do room QR scanning
             $('#log-in-success').show();
         } else if (Sail.app.user_metadata.state === 'IN_ROOM' || Sail.app.user_metadata.state === 'AT_PRESENCE_LOCATION') {
@@ -692,7 +684,7 @@ var EvoRoom = {
         }
         else {
             console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
-        }
+        }*/
     },
 
     /********************************************* OUTGOING EVENTS *******************************************/
