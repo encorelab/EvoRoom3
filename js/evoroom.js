@@ -3,15 +3,20 @@
 
 var EvoRoom = {
     user_metadata: null,
+    rotation: null,
     currentGroupCode: null,
-    currentRainforest: false,
-    organismsRainforestsCompleted: false,
-    firstRainforestAssigned: false,
-    targetRainforest: null,
-    rotationRainforestsCompleted: false,
-    firstInterview: false,
-    secondInterview: false,
-    rationaleAssigned: null,
+    
+/* ====================================== COLIN =================================== */    
+    
+    assignedStation: null
+//    currentRainforest: false,
+//    organismsRainforestsCompleted: false,
+//    firstRainforestAssigned: false,
+//    targetRainforest: null,
+//    rotationRainforestsCompleted: false,
+//    firstInterview: false,
+//    secondInterview: false,
+//    rationaleAssigned: null,
 
     rollcallURL: '/rollcall',
 
@@ -39,6 +44,42 @@ var EvoRoom = {
                 }
                 else {
                     console.log("rotation_started event received, but payload is incomplete or not for this user");
+                }
+            },
+            
+            location_assignment: function(ev) {
+                if (ev.payload.rotation) {
+                    Sail.app.hidePageElements();
+
+                    // show the question assigned to this student
+                    if (ev.payload.rotation === 1 || ev.payload.rotation === "1") {
+                        alert("rotation 1");
+                        //$('#final-picks-discuss .question1').show();
+                    }
+                    else if (ev.payload.rotation === 2 || ev.payload.rotation === "2") {
+                        alert("rotation 2");
+                        //$('#final-picks-discuss .question2').show();
+                    }
+                    else {
+                        alert("Wrong rotation received. Please ask teacher to send again.");
+                    }
+                    Sail.app.rationaleAssigned = ev.payload.question;
+                    $('#final-picks-discuss').show();
+                }
+                else {
+                    console.log("rotation_started event received, but payload is incomplete or not for this user");
+                }
+            },
+            
+/* ====================================== COLIN =================================== */
+            
+            meetup_started: function(ev) {
+                if (ev.payload.rotation) {
+                    Sail.app.hidePageElements();
+                    
+                }
+                else {
+                    console.log("meetup_started event received, but payload is incomplete or not for this user");
                 }
             }
             
@@ -259,7 +300,7 @@ var EvoRoom = {
             Sail.app.user_metadata = null;
             Sail.app.currentGroupCode = null;
             Sail.app.currentRainforest = false;
-            Sail.app.organismsRainforestsCompleted = false;
+//            Sail.app.organismsRainforestsCompleted = false;
             Sail.app.firstRainforestAssigned = false;
             Sail.app.targetRainforest = null;
             Sail.app.rotationRainforestsCompleted = false;
@@ -327,6 +368,8 @@ var EvoRoom = {
         $('#room-scan-failure').hide();
         $('#wait-for-teacher').hide();
         
+/* ====================================== COLIN =================================== */
+        
         //$('#rainforest-scan-failure').hide();
         //$('#rotation-scan-failure').hide();
         
@@ -392,6 +435,9 @@ var EvoRoom = {
             // don't need to trigger, just call the function
             Sail.app.barcodeScanRoomLoginSuccess('room');
         });
+        
+/* ====================================== COLIN =================================== */
+        
 /*
         $('#survey-welcome .big-button').click(function() {
             
@@ -726,6 +772,9 @@ var EvoRoom = {
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
+    
+/* ====================================== COLIN =================================== */
+    
 /*
     submitOrganismsPresent: function() {
         var formattedOrg1 = Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1);
@@ -864,6 +913,9 @@ var EvoRoom = {
         // show waiting page
         $('#final-picks-debrief').show();
     },
+    
+/* ====================================== COLIN =================================== */
+    
 /*
     barcodeScanFinalPicksFailure: function(msg) {
         console.warn("SCAN FAILED: "+msg);
