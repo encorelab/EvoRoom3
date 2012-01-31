@@ -5,10 +5,10 @@ var EvoRoom = {
     user_metadata: null,
     rotation: null,
     currentGroupCode: null,
+    assignedStation: null,
     
 /* ====================================== COLIN =================================== */    
     
-    assignedStation: null
 //    currentRainforest: false,
 //    organismsRainforestsCompleted: false,
 //    firstRainforestAssigned: false,
