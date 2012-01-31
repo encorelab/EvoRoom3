@@ -18,7 +18,31 @@ var EvoRoom = {
     events: {
         sail: {
             /********************************************* INCOMING EVENTS *******************************************/
-            start_step: function(ev) {
+            rotation_started: function(ev) {
+                if (ev.payload.rotation) {
+                    Sail.app.hidePageElements();
+
+                    // show the question assigned to this student
+                    if (ev.payload.rotation === 1 || ev.payload.rotation === "1") {
+                        alert("rotation 1");
+                        //$('#final-picks-discuss .question1').show();
+                    }
+                    else if (ev.payload.rotation === 2 || ev.payload.rotation === "2") {
+                        alert("rotation 2");
+                        //$('#final-picks-discuss .question2').show();
+                    }
+                    else {
+                        alert("Wrong rotation received. Please ask teacher to send again.");
+                    }
+                    Sail.app.rationaleAssigned = ev.payload.question;
+                    $('#final-picks-discuss').show();
+                }
+                else {
+                    console.log("rotation_started event received, but payload is incomplete or not for this user");
+                }
+            }
+            
+/*            start_step: function(ev) {
                 if (ev.payload.username && ev.payload.username === Sail.app.session.account.login) {
                     if (ev.payload.step_id) {
                         if (ev.payload.step_id === "STEP_1") {
@@ -43,7 +67,8 @@ var EvoRoom = {
                     console.log("start_step event received, but not for this user");
                 }
             },
-
+*/
+//old stuff one below
 /*            organisms_assignment: function(ev) {
                 // check that message is for currently logged in user
                 if (ev.payload.username && ev.payload.username === Sail.app.session.account.login) {
@@ -65,7 +90,7 @@ var EvoRoom = {
                 }
             },*/
 
-            rainforests_completed_announcement: function(ev) {
+/*            rainforests_completed_announcement: function(ev) {
                 if (ev.payload.completed_rainforests && ev.payload.username === Sail.app.session.account.login) {
                     // if rainforest is empty we probably missed QR scanning so we just have to go to rainforest scanning first
                     if (Sail.app.currentRainforest) {
@@ -100,9 +125,9 @@ var EvoRoom = {
                     console.warn("rainforests_completed_announcement event received, but payload is either missing go_to_location, username, or both");
                 }
             },
-
+*/
             /*****************************************EVENTS ADDED FOR STEP 2***********************************************/            
-
+/*
             location_assignment: function(ev) {
                 if (ev.payload.go_to_location && ev.payload.username === Sail.app.session.account.login) {
                     Sail.app.hidePageElements();
@@ -159,9 +184,9 @@ var EvoRoom = {
                     $('#loading-page').show();
                 }
             },
-
+*/
             /*****************************************EVENTS ADDED FOR STEP 3***********************************************/
-
+/*
             interviewees_assigned: function(ev) {
                 if (ev.payload.username && ev.payload.username === Sail.app.session.account.login) {       // this is a little strange. Is this intentional?
                     if (ev.payload.first_interviewee && ev.payload.second_interviewee) {
@@ -181,9 +206,9 @@ var EvoRoom = {
                     console.log("interviewees_assigned event received, but not for this user");
                 }
             },
-
+*/
             /*****************************************EVENTS ADDED FOR STEP 4***********************************************/            
-
+/*
             rationale_assigned: function(ev) {
                 if (ev.payload.question && ev.payload.username === Sail.app.session.account.login) {
                     Sail.app.hidePageElements();
@@ -208,7 +233,7 @@ var EvoRoom = {
                     console.log("rationale_assigned event received, but payload is incomplete or not for this user");
                 }
             }
-
+*/
         },
 
         initialized: function(ev) {
@@ -297,12 +322,16 @@ var EvoRoom = {
 
     hidePageElements: function() {
         $('#loading-page').hide();
+        $('#student-chosen-organisms').hide();
         $('#log-in-success').hide();
         $('#room-scan-failure').hide();
-        $('#survey-welcome').hide();
-        $('#rainforest-scan-failure').hide();
-        $('#rotation-scan-failure').hide();
+        $('#wait-for-teacher').hide();
+        
+        //$('#rainforest-scan-failure').hide();
+        //$('#rotation-scan-failure').hide();
+        
         // $('#student-chosen-organisms').hide();     // hidePageElements is called repeatedly during step 1, so we can't include this one
+/*        $('#survey-welcome').hide();
         $('#survey-organisms').hide();
         $('#survey-organisms .next-rainforest').hide();
         $('#survey-organisms .finished').hide();
@@ -325,6 +354,7 @@ var EvoRoom = {
         $('#final-picks-discuss .question3').hide();
         $('#final-picks-choice').hide();
         $('#final-picks-debrief').hide();
+*/
     },
 
     setupPageLayout: function() {
@@ -354,7 +384,7 @@ var EvoRoom = {
             $('#student-chosen-organisms').show();
             $('#log-in-success').show();
         });
-/*
+
         $('#room-scan-failure .big-error-resolver-button').click(function() {
             // here I would like to trigger Sail.app.barcodeScanRoomLoginSuccess since it does everything, but don't know how to hand in attributes
             //$(Sail.app).trigger('barcodeScanRoomLoginSuccess', 'room');
@@ -362,7 +392,7 @@ var EvoRoom = {
             // don't need to trigger, just call the function
             Sail.app.barcodeScanRoomLoginSuccess('room');
         });
-
+/*
         $('#survey-welcome .big-button').click(function() {
             
             // trigger the QR scan screen/module to scan rainforests
@@ -696,7 +726,7 @@ var EvoRoom = {
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
-
+/*
     submitOrganismsPresent: function() {
         var formattedOrg1 = Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1);
         var formattedOrg2 = Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_2);
@@ -783,7 +813,7 @@ var EvoRoom = {
         });
         EvoRoom.groupchat.sendEvent(sev);
     },  
-
+*/
 
     /****************************************** HELPER FUNCTIONS *************************************/
 
@@ -795,8 +825,8 @@ var EvoRoom = {
         // hide everything
         Sail.app.hidePageElements();
         // show waiting page
-        $('#survey-welcome').show();
-        $('#student-chosen-organisms').show();
+        $('#wait-for-teacher').show();
+//        $('#student-chosen-organisms').show();
     },
 
     barcodeScanRoomLoginFailure: function(msg) {
@@ -834,7 +864,7 @@ var EvoRoom = {
         // show waiting page
         $('#final-picks-debrief').show();
     },
-
+/*
     barcodeScanFinalPicksFailure: function(msg) {
         console.warn("SCAN FAILED: "+msg);
         // hide everything
@@ -870,7 +900,8 @@ var EvoRoom = {
     barcodeScanFailure: function(msg) {
         alert("SCAN FAILED: "+msg);
     },
-
+*/
+/*
     getInterviews: function() {
         $.ajax({
             type: "GET",
@@ -902,7 +933,7 @@ var EvoRoom = {
             }
         });
     },
-
+*/
     formatRainforestString: function(rainforestString) {
         if (rainforestString === "rainforest_a") {
             return "Rainforest A";
