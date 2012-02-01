@@ -284,27 +284,26 @@ var EvoRoom = {
 
         connected: function(ev) {
             Sail.app.rollcall.request(Sail.app.rollcall.url + "/users/"+Sail.app.session.account.login+".json", "GET", {}, function(data) {
-                Sail.app.currentGroupCode = data.user.groups[0].name;
-                Sail.app.user_metadata = data.user.metadata;
+                EvoRoom.currentGroupCode = data.user.groups[0].name;
+                EvoRoom.user_metadata = data.user.metadata;
+                
+                // try to fill rotation from metadata
+                EvoRoom.rotation = data.user.metadata.rotation;
+                
                 console.log('metadata assigned');
-                Sail.app.setupPageLayout();
-                Sail.app.restoreState(); 
+                EvoRoom.setupPageLayout();
+                EvoRoom.restoreState(); 
             });
         },
 
         unauthenticated: function(ev) {
-            Sail.app.user_metadata = null;
-            Sail.app.currentGroupCode = null;
-            Sail.app.currentLocation = false;
-//            Sail.app.organismsRainforestsCompleted = false;
-            Sail.app.firstRainforestAssigned = false;
-            Sail.app.targetRainforest = null;
-            Sail.app.rotationRainforestsCompleted = false;
-            Sail.app.firstInterview = false;
-            Sail.app.secondInterview = false;
-            Sail.app.rationaleAssigned = null;
+            EvoRoom.user_metadata = null;
+            EvoRoom.rotation = null;
+            EvoRoom.currentGroupCode = null;
+            EvoRoom.assignedStation = null;
+            EvoRoom.currentLocation = null;
             
-            Sail.app.hidePageElements();
+            EvoRoom.hidePageElements();
             
             Rollcall.Authenticator.requestRun();
         }
@@ -365,6 +364,7 @@ var EvoRoom = {
         $('#wait-for-teacher').hide();
         $('#go-to-location').hide();
         $('#location-scan-failure').hide();
+        $('#observe-organism').hide();
         
 /* ====================================== COLIN =================================== */
         
@@ -427,9 +427,6 @@ var EvoRoom = {
         });
 
         $('#room-scan-failure .big-error-resolver-button').click(function() {
-            // here I would like to trigger Sail.app.barcodeScanRoomLoginSuccess since it does everything, but don't know how to hand in attributes
-            //$(Sail.app).trigger('barcodeScanRoomLoginSuccess', 'room');
-            
             // don't need to trigger, just call the function
             Sail.app.barcodeScanRoomLoginSuccess('room');
         });
@@ -456,6 +453,18 @@ var EvoRoom = {
         $('#location-scan-failure .small-error-resolver-button').click(function() {
             // call success function and hand in location from clicked button
             Sail.app.barcodeScanLocationSuccess($(this).data('location'));
+        });
+        
+        // on-click listeners for rainforest QR scanning error resolution
+        $('#observe-organism .big-button').click(function() {
+            // hide everything
+            EvoRoom.hidePageElements();
+            
+            // send out organsim_observed event
+            EvoRoom.submitOrgansimObserved('fig_tree');
+            
+            // show waiting page
+            $('#loading-page').show();
         });
         
 /* ====================================== COLIN =================================== */
@@ -740,57 +749,32 @@ var EvoRoom = {
     
     restoreState: function() {
         //alert('bring user back to state');
-        /*if (!Sail.app.user_metadata.state || Sail.app.user_metadata.state === 'LOGGED_IN') {
-            // show page to do room QR scanning
+        if (!Sail.app.user_metadata.state || Sail.app.user_metadata.state === 'LOGGED_IN') {
+            // show login success page
             $('#log-in-success').show();
-        } else if (Sail.app.user_metadata.state === 'IN_ROOM' || Sail.app.user_metadata.state === 'AT_PRESENCE_LOCATION') {
-            // show page to do rainforst QR scanning
-            $('#survey-welcome').show();
-        } else if (Sail.app.user_metadata.state === 'GUESS_LOCATION_ASSIGNED') {
-            Sail.app.targetRainforest = Sail.app.user_metadata.currently_assigned_location;
-            $('#rotation-next-rainforest .next-rainforest').text(Sail.app.formatRainforestString(Sail.app.user_metadata.currently_assigned_location));
-            $('#rotation-next-rainforest').show();
-        } else if (Sail.app.user_metadata.state === 'AT_ASSIGNED_GUESS_LOCATION') {
-            // wait for task_assignment message (from agent once all team members are at this state)
-            Sail.app.targetRainforest = Sail.app.user_metadata.currently_assigned_location;
-            $('#loading-page').show();
-        } else if (Sail.app.user_metadata.state === 'GUESS_TASK_ASSIGNED') {
-            Sail.app.currentLocation = Sail.app.user_metadata.currently_assigned_location;
-            if (Sail.app.user_metadata.currently_assigned_task === 'scribe') {
-                $('#rotation-note-taker').show();
-            } else {
-                $('#rotation-field-guide-and-prediction').show();
-            }
-        } else if (Sail.app.user_metadata.state === 'INTERVIEWEES_ASSIGNED' || Sail.app.user_metadata.state === 'INTERVIEWING') {
-            $('#interview-intro .first-interviewee').text(Sail.app.user_metadata.interviewee_1);
-            $('#interview-intro .second-interviewee').text(Sail.app.user_metadata.interviewee_2);
-            $('#interview-intro').show();
-        } else if (Sail.app.user_metadata.state === 'WAITING_FOR_RANKINGS') {
-            $('#final-picks-ranking').show();
-        } else if (Sail.app.user_metadata.state === 'WAITING_FOR_RATIONALE_SUBMISSION') {
-            Sail.app.rationaleAssigned = Sail.app.user_metadata.assigned_rationale;
-            if (Sail.app.user_metadata.assigned_rationale === 'strategy') {
-                $('#discussion-content-box .question1').show();
-            } else if (Sail.app.user_metadata.assigned_rationale === 'evidence') {
-                $('#discussion-content-box .question2').show();
-            } else if (Sail.app.user_metadata.assigned_rationale === 'additional_info') {
-                $('#discussion-content-box .question3').show();
-            }
-            $('#final-picks-discuss').show();
-        } else if (Sail.app.user_metadata.state === 'WAITING_FOR_FINAL_GUESS') {
-            $('#final-picks-choice').show();
-        }
+        } else if (Sail.app.user_metadata.state === 'IN_ROOM') {
+            // show the wait for teacher thing
+            $('#wait-for-teacher').show();
+        } 
         else {
             console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
-        }*/
+        }
     },
 
     /********************************************* OUTGOING EVENTS *******************************************/
 
     submitCheckIn: function() {
         var sev = new Sail.Event('check_in', {
-            group_code:Sail.app.currentGroupCode,
-            location:Sail.app.currentLocation
+            group_code:EvoRoom.currentGroupCode,
+            location:EvoRoom.currentLocation
+        });
+        EvoRoom.groupchat.sendEvent(sev);
+    },
+    
+    submitOrgansimObserved: function(observedOrganism) {
+        var sev = new Sail.Event('organism_observed', {
+            organism:observedOrganism,
+            location:EvoRoom.currentLocation
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
