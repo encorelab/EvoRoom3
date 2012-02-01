@@ -1,18 +1,18 @@
-require 'golem'
-
 require 'sail/rollcall/user'
 require 'sail/rollcall/group'
+
+require 'golem'
+require File.dirname(__FILE__)+'/student_statemachine'
 
 class Student < Rollcall::User
   self.element_name = "user"
   
-  RAINFORESTS = [
-      'rainforest_a',
-      'rainforest_b',
-      'rainforest_c',
-      'rainforest_d'
+  LOCATIONS = [
+      'station_a',
+      'station_b',
+      'station_c',
+      'station_d'
     ]
-  
   
   include Golem
   
@@ -39,25 +39,30 @@ class Student < Rollcall::User
   delegate :mongo, :to => :agent
   delegate :log,   :to => :agent
   
-  def start_step_1
-    agent.start_step(username, :STEP_1)
+  def increment_rotation
+    if student.metadata.current_rotation
+      student.metadata.current_rotation = student.metadata.current_rotation.to_i + 1
+    else
+      student.metadata.current_rotation = 1
+    end
   end
   
-  def start_step_2
-    agent.start_step(username, :STEP_2)
+  def store_currently_assigned_location(loc)
+    student.metadata.currently_assigned_location = loc
   end
   
-  def start_step_3
-    agent.start_step(username, :STEP_3)
+  def store_organism_observation(observation)
+    log "Storing organism observation: #{observation.inspect}"
+    mongo.collection(:organism_observations).save(observation)
   end
   
-  def start_step_4
-    agent.start_step(username, :STEP_4)
+  def store_meetup_note(note)
+    raise NotImplementedError
   end
   
-  def store_rainforest_guess(guess)
-    log "Storing rainforest guess: #{guess.inspect}"
-    mongo.collection(:rainforest_guesses).save(guess)
+  def rotation_completed?
+    #mongo.collection(:organism_observations).find({})
+    raise NotImplementedError
   end
   
   def guess_received_for_all_locations?(guess)
@@ -296,120 +301,5 @@ class Student < Rollcall::User
     group.save
   end
   
-  define_statemachine do
-    initial_state :LOGGED_IN
-    
-    state_attribute_writer (proc do |student, new_state|
-      student.metadata.state = new_state
-    end)
-    
-    state_attribute_reader (proc do |student|
-      student.metadata.state? && student.metadata.state
-    end)
-    
-    on_all_transitions do |student, event, transition, *args|
-      student.agent.log "#{student.username.inspect} transitioning from #{transition.from.name} to #{transition.to.name}..."
-    end
-  
-    state :LOGGED_IN do
-      # we're assuming that they're checking in for the "room"
-      on :check_in do
-        transition :to => :IN_ROOM do
-          guard(:failure_message => "the student must check in at the room entrance first") {|student, loc| loc == "room"}
-          action :start_step_1
-        end
-      end
-    end
-    
-    state :IN_ROOM do
-      on :check_in, :to => :AT_PRESENCE_LOCATION
-    end
-    
-    state :AT_PRESENCE_LOCATION do
-      enter :announce_completed_rainforests
-      on :organism_present do
-        transition :to => :WAITING_FOR_LOCATION_FOR_GUESS, :if => :organism_presence_received_for_all_locations?, 
-          :action => :start_step_2
-        transition :to => :IN_ROOM
-      end
-      on :check_in, :to => :AT_PRESENCE_LOCATION
-    end
-    
-    state :WAITING_FOR_LOCATION_FOR_GUESS do
-      enter {|student| Student.agent.assign_location_for_guess(student) }
-      on :location_assignment, :to => :GUESS_LOCATION_ASSIGNED do
-        action {|student, loc| student.metadata.currently_assigned_location = loc }
-      end
-    end
-    
-    state :GUESS_LOCATION_ASSIGNED do
-      on :check_in, :to => :AT_ASSIGNED_GUESS_LOCATION do
-        guard(:failure_message => "the student is at the wrong location") do |student, loc| 
-          student.metadata.currently_assigned_location == loc
-        end
-      end
-    end
-    
-    state :AT_ASSIGNED_GUESS_LOCATION do
-      enter {|student| Student.agent.assign_tasks_to_group(student.group_code) if student.all_group_members_at_my_assigned_location? }
-      on :task_assignment, :to => :GUESS_TASK_ASSIGNED do
-        action {|student, task| student.metadata.currently_assigned_task = task }
-      end
-    end
-    
-    state :GUESS_TASK_ASSIGNED do
-      exit do |student, guess|
-        student.clear_group_location_assignment if guess && guess['author'] == student.username
-      end
-      on :rainforest_guess_submitted do
-        transition :to => :WAITING_FOR_INTERVIEWEES_ASSIGNMENT, :if => :guess_received_for_all_locations?,
-          :action => :start_step_3
-        transition :to => :WAITING_FOR_LOCATION_FOR_GUESS
-      end
-    end
-    
-    state :WAITING_FOR_INTERVIEWEES_ASSIGNMENT do
-      enter {|student| Student.agent.assign_interviewees_to_student(student) }
-      on :interviewees_assigned, :to => :INTERVIEWEES_ASSIGNED do
-        action do |student, first, second|
-          student.agent.log "*** TRANSITIONING TO :INTERVIEWING ==> first: #{first.inspect}, second: #{second.inspect}", :DEBUG
-          student.metadata.interviewee_1 = first
-          student.metadata.interviewee_2 = second
-        end
-      end
-    end
-    
-    state :INTERVIEWEES_ASSIGNED do
-      on :interview_started, :to => :INTERVIEWING
-    end
-    
-    state :INTERVIEWING do
-      on :interview_submitted do
-        transition :to => :WAITING_FOR_RANKINGS, :if => :interview_submitted_for_all_interviewees?
-        transition :to => :INTERVIEWEES_ASSIGNED # else
-      end
-      on :interview_started, :to => :INTERVIEWING # hack
-    end
-    
-    state :WAITING_FOR_RANKINGS do
-      on :rankings_submitted, :to => :WAITING_FOR_RATIONALE_ASSIGNMENT
-    end
-    
-    state :WAITING_FOR_RATIONALE_ASSIGNMENT do
-      enter {|student| Student.agent.assign_rationale(student) }
-      on :rationale_assigned, :to => :WAITING_FOR_RATIONALE_SUBMISSION do
-        action do |student, rationale|
-          student.metadata.assigned_rationale = rationale
-        end
-      end
-    end
-    
-    state :WAITING_FOR_RATIONALE_SUBMISSION do
-      on :rationale_submitted, :to => :WAITING_FOR_FINAL_GUESS
-    end
-    
-    state :WAITING_FOR_FINAL_GUESS do
-      on :check_in, :to => :DONE
-    end
-  end
+  define_statemachine(&StudentStatemachine)
 end
