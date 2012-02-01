@@ -6,10 +6,11 @@ var EvoRoom = {
     rotation: null,
     currentGroupCode: null,
     assignedStation: null,
+    currentLocation: null,
     
 /* ====================================== COLIN =================================== */    
     
-//    currentRainforest: false,
+//    currentLocation: false,
 //    organismsRainforestsCompleted: false,
 //    firstRainforestAssigned: false,
 //    targetRainforest: null,
@@ -25,22 +26,16 @@ var EvoRoom = {
             /********************************************* INCOMING EVENTS *******************************************/
             rotation_started: function(ev) {
                 if (ev.payload.rotation) {
-                    Sail.app.hidePageElements();
+                    //Sail.app.hidePageElements();
 
                     // show the question assigned to this student
-                    if (ev.payload.rotation === 1 || ev.payload.rotation === "1") {
-                        alert("rotation 1");
-                        //$('#final-picks-discuss .question1').show();
-                    }
-                    else if (ev.payload.rotation === 2 || ev.payload.rotation === "2") {
-                        alert("rotation 2");
-                        //$('#final-picks-discuss .question2').show();
+                    if (ev.payload.rotation === 1 || ev.payload.rotation === 2) {
+                        EvoRoom.rotation = ev.payload.rotation;
+                        alert("rotation " + EvoRoom.rotation);
                     }
                     else {
                         alert("Wrong rotation received. Please ask teacher to send again.");
                     }
-                    Sail.app.rationaleAssigned = ev.payload.question;
-                    $('#final-picks-discuss').show();
                 }
                 else {
                     console.log("rotation_started event received, but payload is incomplete or not for this user");
@@ -48,26 +43,27 @@ var EvoRoom = {
             },
             
             location_assignment: function(ev) {
-                if (ev.payload.rotation) {
+                if (ev.payload.go_to_location && ev.payload.username === Sail.app.session.account.login) {
+                    // hide all pages
                     Sail.app.hidePageElements();
-
-                    // show the question assigned to this student
-                    if (ev.payload.rotation === 1 || ev.payload.rotation === "1") {
-                        alert("rotation 1");
-                        //$('#final-picks-discuss .question1').show();
-                    }
-                    else if (ev.payload.rotation === 2 || ev.payload.rotation === "2") {
-                        alert("rotation 2");
-                        //$('#final-picks-discuss .question2').show();
+                    // sanity check
+                    if (ev.payload.go_to_location === "station_a" || ev.payload.go_to_location === "station_b"
+                        || ev.payload.go_to_location === "station_c" || ev.payload.go_to_location === "station_d") {
+                            // store assigned location
+                            EvoRoom.assignedStation = ev.payload.go_to_location;
+                            // show assigned location in DOM
+                            $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedStation));
+                            // show page
+                            $('#go-to-location').show();
                     }
                     else {
-                        alert("Wrong rotation received. Please ask teacher to send again.");
+                        console.error("Error, wrong location " + ev.payload.go_to_location + " received. Log in again!");
                     }
                     Sail.app.rationaleAssigned = ev.payload.question;
                     $('#final-picks-discuss').show();
                 }
                 else {
-                    console.log("rotation_started event received, but payload is incomplete or not for this user");
+                    console.log("location_assignment event received, but payload is incomplete or not for this user");
                 }
             },
             
@@ -134,16 +130,16 @@ var EvoRoom = {
 /*            rainforests_completed_announcement: function(ev) {
                 if (ev.payload.completed_rainforests && ev.payload.username === Sail.app.session.account.login) {
                     // if rainforest is empty we probably missed QR scanning so we just have to go to rainforest scanning first
-                    if (Sail.app.currentRainforest) {
+                    if (Sail.app.currentLocation) {
                         Sail.app.hidePageElements();
-                        $('#survey-organisms .location').text(Sail.app.formatRainforestString(Sail.app.currentRainforest));
+                        $('#survey-organisms .location').text(Sail.app.formatRainforestString(Sail.app.currentLocation));
                         $('#survey-organisms').show();
                         // clear radio buttons
                         $('input:radio').prop('checked', false);
                         $('#survey-organisms .radio').button('refresh');
 
                         // check if the user already did this rainforest
-                        if ( _.find(ev.payload.completed_rainforests, function (rainforest) { return rainforest === Sail.app.currentRainforest; }) ) {
+                        if ( _.find(ev.payload.completed_rainforests, function (rainforest) { return rainforest === Sail.app.currentLocation; }) ) {
                             // show message and disable radio buttons - user must scan again
                             alert("Rainforest already complete! Please scan another rainforest");
                             $('#survey-organisms .survey-content-box').hide();
@@ -198,19 +194,19 @@ var EvoRoom = {
                     $('#rotation-note-taker .radio').button('refresh');
 
                     if (ev.payload.task === "scribe") {
-                        $('#rotation-note-taker .current-rainforest').text(Sail.app.formatRainforestString(Sail.app.currentRainforest));
+                        $('#rotation-note-taker .current-rainforest').text(Sail.app.formatRainforestString(Sail.app.currentLocation));
                         $('#rotation-note-taker').show();
                     }
                     else if (ev.payload.task === "guide_looker_upper") {
-                        $('#rotation-field-guide .current-rainforest').text(Sail.app.formatRainforestString(Sail.app.currentRainforest));
+                        $('#rotation-field-guide .current-rainforest').text(Sail.app.formatRainforestString(Sail.app.currentLocation));
                         $('#rotation-field-guide').show();
                     }
                     else if (ev.payload.task === "prediction_looker_upper") {
-                        $('#rotation-prediction .current-rainforest').text(Sail.app.formatRainforestString(Sail.app.currentRainforest));
+                        $('#rotation-prediction .current-rainforest').text(Sail.app.formatRainforestString(Sail.app.currentLocation));
                         $('#rotation-prediction').show();
                     }
                     else if (ev.payload.task === "other") {
-                        $('#rotation-field-guide .current-rainforest').text(Sail.app.formatRainforestString(Sail.app.currentRainforest));
+                        $('#rotation-field-guide .current-rainforest').text(Sail.app.formatRainforestString(Sail.app.currentLocation));
                         $('#rotation-field-guide-and-prediction').show();
                     }
                 }
@@ -299,7 +295,7 @@ var EvoRoom = {
         unauthenticated: function(ev) {
             Sail.app.user_metadata = null;
             Sail.app.currentGroupCode = null;
-            Sail.app.currentRainforest = false;
+            Sail.app.currentLocation = false;
 //            Sail.app.organismsRainforestsCompleted = false;
             Sail.app.firstRainforestAssigned = false;
             Sail.app.targetRainforest = null;
@@ -367,6 +363,8 @@ var EvoRoom = {
         $('#log-in-success').hide();
         $('#room-scan-failure').hide();
         $('#wait-for-teacher').hide();
+        $('#go-to-location').hide();
+        $('#location-scan-failure').hide();
         
 /* ====================================== COLIN =================================== */
         
@@ -436,6 +434,30 @@ var EvoRoom = {
             Sail.app.barcodeScanRoomLoginSuccess('room');
         });
         
+        $('#go-to-location .big-button').click(function() {
+            // check if barcodeScanner is possible (won't be outside of PhoneGap app)
+            if (window.plugins.barcodeScanner) {
+                // trigger the QR scan screen/module to scan room entry
+                window.plugins.barcodeScanner.scan(Sail.app.barcodeScanLocationSuccess, Sail.app.barcodeScanLocationFailure);
+            } else {
+                // trigger the error handler to get alternative
+                Sail.app.barcodeScanLocationFailure('No scanner, probably desktop browser');
+            }
+        });
+        
+        // on-click listeners for rainforest QR scanning error resolution
+        $('#location-scan-failure .big-button').click(function() {
+            // hide everything
+            Sail.app.hidePageElements();
+            // show go-to-location page
+            $('#go-to-location').show();
+        });
+
+        $('#location-scan-failure .small-error-resolver-button').click(function() {
+            // call success function and hand in location from clicked button
+            Sail.app.barcodeScanLocationSuccess($(this).data('location'));
+        });
+        
 /* ====================================== COLIN =================================== */
         
 /*
@@ -460,7 +482,7 @@ var EvoRoom = {
 
         $('#rainforest-scan-failure .small-error-resolver-button').click(function() {
             // send out event check_in
-            Sail.app.currentRainforest = $(this).data('rainforest');
+            Sail.app.currentLocation = $(this).data('rainforest');
             Sail.app.submitCheckIn();
             // hide everything
             Sail.app.hidePageElements();
@@ -550,7 +572,7 @@ var EvoRoom = {
             Sail.app.hidePageElements();
             // check if they are at the correct place
             if (Sail.app.targetRainforest === result) {
-                Sail.app.currentRainforest = result;
+                Sail.app.currentLocation = result;
                 Sail.app.submitCheckIn();
                 $('#loading-page').show();
             }
@@ -694,7 +716,7 @@ var EvoRoom = {
 
         $('#final-picks-scan-failure .small-error-resolver-button').click(function() {
             // send out event check_in
-            Sail.app.currentRainforest = $(this).data('rainforest');
+            Sail.app.currentLocation = $(this).data('rainforest');
             Sail.app.submitCheckIn();
             // hide everything
             Sail.app.hidePageElements();
@@ -733,7 +755,7 @@ var EvoRoom = {
             Sail.app.targetRainforest = Sail.app.user_metadata.currently_assigned_location;
             $('#loading-page').show();
         } else if (Sail.app.user_metadata.state === 'GUESS_TASK_ASSIGNED') {
-            Sail.app.currentRainforest = Sail.app.user_metadata.currently_assigned_location;
+            Sail.app.currentLocation = Sail.app.user_metadata.currently_assigned_location;
             if (Sail.app.user_metadata.currently_assigned_task === 'scribe') {
                 $('#rotation-note-taker').show();
             } else {
@@ -768,7 +790,7 @@ var EvoRoom = {
     submitCheckIn: function() {
         var sev = new Sail.Event('check_in', {
             group_code:Sail.app.currentGroupCode,
-            location:Sail.app.currentRainforest
+            location:Sail.app.currentLocation
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
@@ -784,7 +806,7 @@ var EvoRoom = {
         var sev = new Sail.Event('organism_present', {
             group_code:Sail.app.currentGroupCode,
             author:Sail.app.session.account.login,
-            location:Sail.app.currentRainforest,
+            location:Sail.app.currentLocation,
             first_organism:{
                 organism:formattedOrg1,
                 present:formattedRadio1
@@ -802,7 +824,7 @@ var EvoRoom = {
         var sev = new Sail.Event('rainforest_guess_submitted', {
             group_code:Sail.app.currentGroupCode,
             author:Sail.app.session.account.login,
-            location:Sail.app.currentRainforest,
+            location:Sail.app.currentLocation,
             your_rainforest:formattedYesNo,
             explanation:$('#rotation-note-taker .rainforest-explanation-text-entry').val()
         });
@@ -869,13 +891,12 @@ var EvoRoom = {
     barcodeScanRoomLoginSuccess: function(result) {
         console.log("Got Barcode: " +result);
         // send out event check_in
-        Sail.app.currentRainforest = result;
+        Sail.app.currentLocation = result;
         Sail.app.submitCheckIn();
         // hide everything
         Sail.app.hidePageElements();
-        // show waiting page
+        // show waiting for teacher page
         $('#wait-for-teacher').show();
-//        $('#student-chosen-organisms').show();
     },
 
     barcodeScanRoomLoginFailure: function(msg) {
@@ -885,28 +906,36 @@ var EvoRoom = {
         $('#room-scan-failure').show();
     },
 
-    barcodeScanRainforestSuccess: function(result) {
+    barcodeScanLocationSuccess: function(result) {
         console.log("Got Barcode: " +result);
         // send out event check_in
-        Sail.app.currentRainforest = result;
-        Sail.app.submitCheckIn();
-        // hide everything
-        Sail.app.hidePageElements();
-        // show waiting page
-        $('#loading-page').show();
+        EvoRoom.currentLocation = result;
+        if (EvoRoom.currentLocation === EvoRoom.assignedStation) {
+            Sail.app.submitCheckIn();
+            // hide everything
+            Sail.app.hidePageElements();
+            // show waiting page
+            $('#loading-page').show();
+        } else {
+            alert("You scanned location " + EvoRoom.formatLocationString(EvoRoom.currentLocation) + " instead of " + EvoRoom.formatLocationString(EvoRoom.assignedStation));
+            // hide everything
+            Sail.app.hidePageElements();
+            // back to scanning again
+            $('#go-to-location').show();
+        }
     },
 
-    barcodeScanRainforestFailure: function(msg) {
+    barcodeScanLocationFailure: function(msg) {
         console.warn("SCAN FAILED: "+msg);
         // hide everything
         Sail.app.hidePageElements();
-        $('#rainforest-scan-failure').show();
+        $('#location-scan-failure').show();
     },
     
     barcodeScanFinalPicksSuccess: function(result) {
         console.log("Got Barcode: " +result);
         // send out event check_in
-        Sail.app.currentRainforest = result;
+        Sail.app.currentLocation = result;
         Sail.app.submitCheckIn();
         // hide everything
         Sail.app.hidePageElements();
@@ -930,7 +959,7 @@ var EvoRoom = {
         Sail.app.hidePageElements();
         // check if they are at the correct place
         if (Sail.app.targetRainforest === result) {
-            Sail.app.currentRainforest = result;
+            Sail.app.currentLocation = result;
             Sail.app.submitCheckIn();
             $('#loading-page').show();
         }
@@ -986,20 +1015,20 @@ var EvoRoom = {
         });
     },
 */
-    formatRainforestString: function(rainforestString) {
-        if (rainforestString === "rainforest_a") {
-            return "Rainforest A";
-        } else if (rainforestString === "rainforest_b") {
-            return "Rainforest B";
-        } else if (rainforestString === "rainforest_c") {
-            return "Rainforest C";
-        } else if (rainforestString === "rainforest_d") {
-            return "Rainforest D";
-        } else if (rainforestString === "room") {
-            console.warn('Rainforest ' + rainforestString + ' is wrong at this point. Inform user with alert!');
+    formatLocationString: function(locationString) {
+        if (locationString === "station_a") {
+            return "Station A";
+        } else if (locationString === "station_b") {
+            return "Station B";
+        } else if (locationString === "station_c") {
+            return "Station C";
+        } else if (locationString === "station_d") {
+            return "Station D";
+        } else if (locationString === "room") {
+            console.warn('Location ' + locationString + ' is wrong at this point. Inform user with alert!');
             alert("An error has occured. Please talk to a teacher");
         } else {
-            console.warn('Rainforest ' + rainforestString + ' is wrong at this point and we return <unknown rainforest>');
+            console.warn('Location ' + locationString + ' is wrong at this point and we return <unknown rainforest>');
             return "unknown rainforest";
         }
     },
