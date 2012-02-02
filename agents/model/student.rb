@@ -39,15 +39,12 @@ class Student < Rollcall::User
   delegate :mongo, :to => :agent
   delegate :log,   :to => :agent
   
-  def increment_rotation
-    if student.metadata.current_rotation
-      student.metadata.current_rotation = student.metadata.current_rotation.to_i + 1
-    else
-      student.metadata.current_rotation = 1
-    end
+  def present_observations_completed?
+    raise NotImplementedError
   end
   
-  def store_meetup_topic(topic)
+  def rotation_completed?
+    #mongo.collection(:organism_observations).find({})
     raise NotImplementedError
   end
   
@@ -57,6 +54,10 @@ class Student < Rollcall::User
   
   def going_to?(what)
     student.metadata.going_to == what
+  end
+  
+  def store_meetup_topic(topic)
+    raise NotImplementedError
   end
   
   def store_observation(observation)
@@ -71,6 +72,14 @@ class Student < Rollcall::User
     agent.event!(:stored_note, note)
   end
   
+  def increment_rotation!
+    if student.metadata.current_rotation
+      student.metadata.current_rotation = student.metadata.current_rotation.to_i + 1
+    else
+      student.metadata.current_rotation = 1
+    end
+  end
+  
   def assign_rotation_location!
     raise NotImplementedError
   end
@@ -79,18 +88,13 @@ class Student < Rollcall::User
     raise NotImplementedError
   end
   
-  def present_observations_completed?
-    raise NotImplementedError
-  end
-  
-  def rotation_completed?
-    #mongo.collection(:organism_observations).find({})
-    raise NotImplementedError
-  end
-  
   def join_meetup!
     raise NotImplementedError
   end
+  
+
+  
+
   
   
   
