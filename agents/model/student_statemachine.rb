@@ -28,7 +28,7 @@ StudentStatemachine = proc do
 
   state :IN_ROOM do
     on :rotation_started, :to => :IN_ROTATION,
-      :action => :increment_rotation
+      :action => :increment_rotation!
   end
 
   state :IN_ROTATION do
