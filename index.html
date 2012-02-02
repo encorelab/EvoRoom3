@@ -80,6 +80,40 @@
             <button class="small-button"><b>Done</b></button>
         </div>
                      <!-- START HERE, NOT TESTED -->
+        <div id="go-to-location" class="full-text-box" style="display:none">
+            <div class="title"><b>Step 1 complete</b></div>
+            <div>
+                One of these rainforests display the results from an environmental variable you and your group
+                members chose to analyze for a report. Your challenge is to eliminate the rainforests that most
+                likely did NOT result from your variable.
+                <br><br>
+                Gather your group members and go to <span class="current-location orange"></span>.
+                When you have all arrived, perform a QR scan. 
+            </div>
+            <button class="big-button"><b>QR scan</b></button>
+        </div>
+        
+        <div id="location-scan-failure" class="full-text-box" style="display:none">
+            <div class="title"><b>Location QR code scanning failed!</b></div>
+            <div>
+                Scanning the QR code of the location failed. Please try again or proceed by pressing the button for the location you are at. 
+            </div>
+            <button class="small-error-resolver-button" data-location="station_a"><b>Station A</b></button>
+            <button class="small-error-resolver-button" data-location="station_b"><b>Station B</b></button>
+            <button class="small-error-resolver-button" data-location="station_c"><b>Station C</b></button>
+            <button class="small-error-resolver-button" data-location="station_d"><b>Station D</b></button>
+            <button class="big-button"><b>Scan again</b></button>
+        </div>
+        
+        <div id="observe-organism" class="full-text-box" style="display:none">
+            <div class="title"><b>Do some observation</b></div>
+            <div>
+                This will tell to look for some animals and maybe lead to other dialogs to find
+                ancestor animals and such. 
+            </div>
+            <button class="big-button"><b>Submit observation</b></button>
+        </div>
+>>>>>>> upstream/integration
     
 <!-- ====================================== COLIN =================================== -->
         
