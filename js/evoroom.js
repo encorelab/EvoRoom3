@@ -7,8 +7,9 @@ var EvoRoom = {
     currentGroupCode: null,
     assignedStation: null,
     
-/* ====================================== COLIN =================================== */    
-    
+/* ====================================== COLIN =================================== */
+    currentStation: null,
+//    assignedTopic: null,
 //    currentRainforest: false,
 //    organismsRainforestsCompleted: false,
 //    firstRainforestAssigned: false,
@@ -73,15 +74,34 @@ var EvoRoom = {
             
 /* ====================================== COLIN =================================== */
             
+            rotation_completed: function(ev) {
+                // not sure we need this
+            },
+            
             meetup_started: function(ev) {
-                if (ev.payload.rotation) {
+                // this will be identical to location_assignment, right? Maybe with different text
+                if (ev.payload.location) {
                     Sail.app.hidePageElements();
-                    
+                    assignedStation = ev.payload.location;
+                    $('#go-to-station').show();
                 }
                 else {
                     console.log("meetup_started event received, but payload is incomplete or not for this user");
                 }
+            },
+            
+            topic_assignment: function(ev) {
+                if (ev.payload.topic) {
+                    Sail.app.higePageElements();
+                    $('#meetup .topic').text(ev.payload.topic);
+                    $('#meetup .tags').text(ev.payload.tags);
+                    $('#meetup').show();
+                }
+                else {
+                    console.log("topic_assignment event received, but payload is incomplete or not for this user");
+                }
             }
+            // START HERE, NOT TESTED
             
 /*            start_step: function(ev) {
                 if (ev.payload.username && ev.payload.username === Sail.app.session.account.login) {
@@ -768,7 +788,16 @@ var EvoRoom = {
     submitCheckIn: function() {
         var sev = new Sail.Event('check_in', {
             group_code:Sail.app.currentGroupCode,
-            location:Sail.app.currentRainforest
+            location:Sail.app.currentStation
+        });
+        EvoRoom.groupchat.sendEvent(sev);
+    },
+    
+    submitNote: function() {
+        var sev = new Sail.Event('check_in', {
+            group_code:Sail.app.currentGroupCode,
+            note:('#MEETUP .note_content'),
+            tags:"this will be the array holding the tags that was sent from the agent earlier"
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
