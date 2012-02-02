@@ -300,7 +300,7 @@ var EvoRoom = {
                 EvoRoom.user_metadata = data.user.metadata;
                 
                 // try to fill rotation from metadata
-                EvoRoom.rotation = data.user.metadata.rotation;
+                EvoRoom.rotation = data.user.metadata.current_rotation;
                 
                 console.log('metadata assigned');
                 EvoRoom.setupPageLayout();
