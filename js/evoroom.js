@@ -45,27 +45,39 @@ var EvoRoom = {
             },
             
             location_assignment: function(ev) {
-                if (ev.payload.go_to_location && ev.payload.username === Sail.app.session.account.login) {
+                if (ev.payload.location && ev.payload.username === Sail.app.session.account.login) {
                     // hide all pages
                     Sail.app.hidePageElements();
                     // sanity check
-                    if (ev.payload.go_to_location === "station_a" || ev.payload.go_to_location === "station_b"
-                        || ev.payload.go_to_location === "station_c" || ev.payload.go_to_location === "station_d") {
+                    if (ev.payload.location === "station_a" || ev.payload.location === "station_b"
+                        || ev.payload.location === "station_c" || ev.payload.location === "station_d") {
                             // store assigned location
-                            EvoRoom.assignedStation = ev.payload.go_to_location;
+                            EvoRoom.assignedStation = ev.payload.location;
                             // show assigned location in DOM
                             $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedStation));
                             // show page
                             $('#go-to-location').show();
                     }
                     else {
-                        console.error("Error, wrong location " + ev.payload.go_to_location + " received. Log in again!");
+                        console.error("Error, wrong location " + ev.payload.location + " received. Log in again!");
                     }
-                    Sail.app.rationaleAssigned = ev.payload.question;
                     $('#final-picks-discuss').show();
                 }
                 else {
                     console.log("location_assignment event received, but payload is incomplete or not for this user");
+                }
+            },
+            
+            start_observation: function(ev) {
+                if (ev.payload.username && ev.payload.username === Sail.app.session.account.login) {
+                    // hide all pages
+                    Sail.app.hidePageElements();
+                    
+                    
+                    $('#observe-organism').show();
+                }
+                else {
+                    console.log("start_observation event received, but payload is incomplete or not for this user");
                 }
             },
             
