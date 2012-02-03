@@ -797,18 +797,18 @@ var EvoRoom = {
     submitCheckIn: function() {
         var sev = new Sail.Event('check_in', {
             group_code:Sail.app.currentGroupCode,
-            location:Sail.app.currentStation
+            location:Sail.app.currentLocation
         });
         
         var stateChangeHandler = function (sev) {
             if (sev.payload.to === 'OBSERVING_IN_ROTATION') {
-                alert('Caught OBSERVING_IN_ROTATION')
+                alert('Caught oneoff event stateChangeHandler with to = OBSERVING_IN_ROTATION');
             }
         };
         
         // create state change handler if checkin is not in room
         // eventHandlerFunction, eventType, origin (user), payload,
-        if (EvoRoom.currentGroupCode !== 'room') {
+        if (EvoRoom.currentLocation !== 'room') {
             EvoRoom.groupchat.addOneoffEventHandler(stateChangeHandler, 'state_change', Sail.app.session.account.login);
         }
         
