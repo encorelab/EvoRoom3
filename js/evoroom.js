@@ -69,24 +69,11 @@ var EvoRoom = {
                 }
             },
             
-            // this should be cut, right? Otherwise, does it have something to do with rotation?
-            start_observation: function(ev) {
-                if (ev.payload.username && ev.payload.username === Sail.app.session.account.login) {
-                    // hide all pages
-                    Sail.app.hidePageElements();
-                    
-                    
-                    $('#observe-organism').show();
-                }
-                else {
-                    console.log("start_observation event received, but payload is incomplete or not for this user");
-                }
-            },
             
 /* ====================================== COLIN =================================== */
             
             topic_assignment: function(ev) {
-                if (ev.payload.topic) {
+                if (ev.payload.topic && ev.payload.tags) {
                     Sail.app.higePageElements();
                     $('#meetup .topic').text(ev.payload.topic);
                     $('#meetup .tags').text(ev.payload.tags);
@@ -811,9 +798,18 @@ var EvoRoom = {
             location:Sail.app.currentLocation
         });
         
+        // one off event handler which is set during the sending of check_in message
         var stateChangeHandler = function (sev) {
+            // catching 
             if (sev.payload.to === 'OBSERVING_IN_ROTATION') {
-                alert('Caught oneoff event stateChangeHandler with to = OBSERVING_IN_ROTATION');
+                console.log('Caught oneoff event stateChangeHandler with to = OBSERVING_IN_ROTATION');
+                EvoRoom.hidePageElements();
+                $('#observe-organism').show();
+            } else if (sev.payload.to === 'WAITING_FOR_MEETUP_TOPIC') {
+                // something will happen here ;)
+                alert('WAITING_FOR_MEETUP_TOPIC');
+            } else {
+                console.warn('Caught state_change event with one-off handler, but nobody seems to care. From: ' +sev.payload.from+ 'To: ' + sev.payload.to);
             }
         };
         
@@ -1082,7 +1078,7 @@ var EvoRoom = {
             }
             else {
                 console.log("year or station strings are missing, can't calculate year");
-                return "unknown time"
+                return "unknown time";
             }
         }
         if (Sail.app.rotation === 2) {
@@ -1100,7 +1096,7 @@ var EvoRoom = {
             }
             else {
                 console.log("year or station strings are missing, can't calculate year");
-                return "unknown time"
+                return "unknown time";
             }
         }
     },
