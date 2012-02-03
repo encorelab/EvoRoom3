@@ -28,19 +28,20 @@ var EvoRoom = {
             /********************************************* INCOMING EVENTS *******************************************/
             rotation_start: function(ev) {
                 if (ev.payload.rotation) {
-                    //Sail.app.hidePageElements();
-
                     // show the question assigned to this student
                     if (ev.payload.rotation === 1 || ev.payload.rotation === 2) {
                         EvoRoom.rotation = ev.payload.rotation;
                         alert("rotation " + EvoRoom.rotation);
+                        
+                        Sail.app.hidePageElements();
+                        $('#observe-organisms-instructions').show();
                     }
                     else {
                         alert("Wrong rotation received. Please ask teacher to send again.");
                     }
                 }
                 else {
-                    console.log("rotation_started event received, but payload is incomplete or not for this user");
+                    console.log("rotation_start event received, but payload is incomplete or not for this user");
                 }
             },
             
@@ -52,9 +53,9 @@ var EvoRoom = {
                     if (ev.payload.location === "station_a" || ev.payload.location === "station_b"
                         || ev.payload.location === "station_c" || ev.payload.location === "station_d") {
                             // store assigned location
-                            EvoRoom.assignedStation = ev.payload.location;
+                            EvoRoom.assignedLocation = ev.payload.location;
                             // show assigned location in DOM
-                            $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedStation));
+                            $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedLocation));
                             // show page
                             $('#go-to-location').show();
                     }
@@ -68,6 +69,7 @@ var EvoRoom = {
                 }
             },
             
+            // this should be cut, right? Otherwise, does it have something to do with rotation?
             start_observation: function(ev) {
                 if (ev.payload.username && ev.payload.username === Sail.app.session.account.login) {
                     // hide all pages
@@ -317,7 +319,7 @@ var EvoRoom = {
             EvoRoom.user_metadata = null;
             EvoRoom.rotation = null;
             EvoRoom.currentGroupCode = null;
-            EvoRoom.assignedStation = null;
+            EvoRoom.assignedLocation = null;
             EvoRoom.currentLocation = null;
             
             EvoRoom.hidePageElements();
@@ -486,17 +488,26 @@ var EvoRoom = {
             Sail.app.barcodeScanLocationSuccess($(this).data('location'));
         });
         
-        // on-click listeners for rainforest QR scanning error resolution
-        $('#observe-organism .big-button').click(function() {
-            // hide everything
-            EvoRoom.hidePageElements();
+        $('#observe-organisms-instructions .small-button').click(function() {
+            Sail.app.hidePageElements();
             
-            // send out organsim_observed event
-            EvoRoom.submitOrgansimObserved('fig_tree');
+            // fill in year and organisms for this student at this location
+            Sail.app.currentLocation = "station_a"; // TODO remove this when location_assignment is working
+            $('#observe-organisms .year').text(Sail.app.calculateYear());
+            //$('#assign the orgs
+            $('#observe-organisms').show();
+        });
+        
+        // on-click listeners for rainforest QR scanning error resolution
+        $('#observe-organisms .small-button').click(function() {
+            Sail.app.hidePageElements();
             
             // show waiting page
             $('#loading-page').show();
         });
+        
+        // send out organsim_observed event
+        //Sail.app.submitOrgansimObserved('fig_tree');
         
 /* ====================================== COLIN =================================== */
         
@@ -949,14 +960,14 @@ var EvoRoom = {
         console.log("Got Barcode: " +result);
         // send out event check_in
         EvoRoom.currentLocation = result;
-        if (EvoRoom.currentLocation === EvoRoom.assignedStation) {
+        if (EvoRoom.currentLocation === EvoRoom.assignedLocation) {
             Sail.app.submitCheckIn();
             // hide everything
             Sail.app.hidePageElements();
             // show waiting page
             $('#loading-page').show();
         } else {
-            alert("You scanned location " + EvoRoom.formatLocationString(EvoRoom.currentLocation) + " instead of " + EvoRoom.formatLocationString(EvoRoom.assignedStation));
+            alert("You scanned location " + EvoRoom.formatLocationString(EvoRoom.currentLocation) + " instead of " + EvoRoom.formatLocationString(EvoRoom.assignedLocation));
             // hide everything
             Sail.app.hidePageElements();
             // back to scanning again
@@ -1054,6 +1065,46 @@ var EvoRoom = {
         });
     },
 */
+    
+    calculateYear: function() {
+        if (Sail.app.rotation === 1) {
+            if (Sail.app.currentLocation === "station_a") {
+                return "200 mya";
+            }
+            else if (Sail.app.currentLocation === "station_b") {
+                return "150 mya";
+            }
+            else if (Sail.app.currentLocation === "station_c") {
+                return "100 mya";
+            }
+            else if (Sail.app.currentLocation === "station_d") {
+                return "50 mya";
+            }
+            else {
+                console.log("year or station strings are missing, can't calculate year");
+                return "unknown time"
+            }
+        }
+        if (Sail.app.rotation === 2) {
+            if (Sail.app.currentLocation === "station_a") {
+                return "25 mya";
+            }
+            else if (Sail.app.currentLocation === "station_b") {
+                return "10 mya";
+            }
+            else if (Sail.app.currentLocation === "station_c") {
+                return "5 mya";
+            }
+            else if (Sail.app.currentLocation === "station_d") {
+                return "2 mya";
+            }
+            else {
+                console.log("year or station strings are missing, can't calculate year");
+                return "unknown time"
+            }
+        }
+    },
+    
     formatLocationString: function(locationString) {
         if (locationString === "station_a") {
             return "Station A";
