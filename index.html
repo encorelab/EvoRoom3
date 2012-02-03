@@ -26,37 +26,23 @@
 </head>
 <body>
     <header>
-        <h1>EvoRoom</h1>
+        <h1>PUTTING PROGRESS BAR IN HERE</h1>
     </header>
 
     <div id="evoroom">
     
-<!-- ***********************************************SURVEY**************************************************** -->
+<!-- ***********************************************HELPERS**************************************************** -->
         
         <div id="loading-page" class="full-text-box" style="display:none">
-            <div class="title"><b>Loading, please wait...</b></div>
+            <div class="title"><b>Please wait...</b></div>
+            <div class="content">Fetching data from server</div>
+            <img class="loader-gif" src="loader.gif">
         </div>
         
-        <div id="student-chosen-organisms" style="display:none">
-            <img class="first-organism organism-image" src="/images/ant_icon.png" alt="Ant">
-            <img class="second-organism organism-image" src="/images/civet_icon.png" alt="Civet">
-        </div>
-            
-        <div id="log-in-success" class="full-text-box" style="display:none">
-            <div class="title"><b>Log in successful</b></div>
-            <div>
-                <p>
-                    Congratulations! You are now in the final stages of training in gaining entry to our elite team of rainforest ecologists.
-                </p>
-                <p>
-                    More text (get it from Wiki)
-                </p>
-                <p>
-                    Explain, explain, ...
-                </p>
-            </div>
-            <button class="big-button"><b>QR scan</b></button>
-        </div>
+        <!-- scan page here -->
+        <!-- fail page here -->
+
+<!-- ***********************************************ENTRY**************************************************** -->
         
         <div id="room-scan-failure" class="full-text-box" style="display:none">
             <div class="title"><b>QR code scanning failed</b></div>
@@ -67,14 +53,75 @@
             <button class="big-button"><b>Scan again</b></button>
         </div>
         
-        <div id="wait-for-teacher" class="full-text-box" style="display:none">
-            <div class="title"><b>Listen to teacher</b></div>
+        <div id="log-in-success" class="full-text-box" style="display:none">
+            <div class="title"><b>Log in successful</b></div>
             <div>
-                In order to understand the task at hand, please listen to the teacher and
-                wait until the teacher gives the signal to continue.
+                <p>
+                    Congratulations! You are now in the final stages of training in gaining entry to our elite team of rainforest ecologists. 
+                </p>
+                <p>
+                    To successfully complete this exercise, you must demonstrate your knowledge of evolutionary concepts, knowledge of your specialist species, problem solving-skills and ability to work in a team-based environment.
+                </p>
+                <p>
+                    This exercise consists of 6 steps and will take approximately 30 minutes to complete. When you are ready to begin, perform a QR scan at the entrance of the simulation lab.
+                </p>
+            </div>
+            <button class="big-button"><b>QR scan</b></button>
+        </div>
+
+        <div id="team-assignment" class="full-text-box" style="display:none">
+            <div class="title"><b>Welcome to the simulation lab</b></div>
+            <div class="content">
+                For this exercise, instead of working in your specialty groups (i.e., birds, other mammals, plants & insects, primates), you will be working with people from various specialties as a team. Your team should have at least one expert from each of the specialty groups. 
+            </div>
+            <br>
+            <div>Team assignment:</div>
+            <div class="team-name orange indent">Not working from rollcall</div>
+            <br>
+            <div>Team members:</div>
+            <div class="team-members orange indent">GET FROM ROLLCALL?</div>
+            
+            <button class="small-button"><b>Next</b></button>
+        </div>
+        
+        <div id="organism-assignment" class="full-text-box" style="display:none">
+            <div class="title"><b>Welcome to the simulation lab</b></div>
+            <div class="content">
+                In addition, you will be responsible for observing the following organisms within your team. 
+            </div>
+            <br>
+            <div>Organism assignment:</div>
+            <div class="assigned-organism-1 orange indent"></div>
+            <div class="assigned-organism-2 orange indent"></div>
+            <div class="assigned-organism-3 orange indent"></div>
+            <!-- <div class="assigned-organism-4 orange"></div>
+            <div class="assigned-organism-5 orange"></div>
+            <div class="assigned-organism-6 orange"></div> -->
+            <br>
+            <div>
+                During this exercise, you will be taken back in time to: 200, 150, 100, 50, 25, 10, 5, 2 million years ago (mya). As a team, you will complete a cladogram, by identifying your assigned organism and/or their ancestors at the specified times.
+            </div>
+            <br>
+            <div>
+                You will receive an orientation from your science teacher. Once it is complete, your teacher will advance everyone to the next step.
+            </div>
+            <br>
+            <div>
+                The orientation will begin shortly.
             </div>
         </div>
         
+<!-- ***********************************************ROTATION**************************************************** -->
+
+        
+        <div id="meetup" class="full-text-box" style="display:none">
+            <div class="title"><b>Location: </b><span class="current-rainforest"></span></div>
+            <div><b>TOPIC:</b><span class="topic"></span></div>
+
+
+            <button class="small-button"><b>Done</b></button>
+        </div>
+                     <!-- START HERE, NOT TESTED -->
         <div id="go-to-location" class="full-text-box" style="display:none">
             <div class="title"><b>Step 1 complete</b></div>
             <div>
@@ -107,6 +154,13 @@
                 ancestor animals and such. 
             </div>
             <button class="big-button"><b>Submit observation</b></button>
+        </div>
+
+        
+        <!-- CAN CUT THIS? -->
+        <div id="student-chosen-organisms" style="display:none">
+            <img class="first-organism organism-image" src="/images/ant_icon.png" alt="Ant">
+            <img class="second-organism organism-image" src="/images/civet_icon.png" alt="Civet">
         </div>
     
 <!-- ====================================== COLIN =================================== -->
