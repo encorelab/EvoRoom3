@@ -28,19 +28,20 @@ var EvoRoom = {
             /********************************************* INCOMING EVENTS *******************************************/
             rotation_start: function(ev) {
                 if (ev.payload.rotation) {
-                    //Sail.app.hidePageElements();
-
                     // show the question assigned to this student
                     if (ev.payload.rotation === 1 || ev.payload.rotation === 2) {
                         EvoRoom.rotation = ev.payload.rotation;
                         alert("rotation " + EvoRoom.rotation);
+                        
+                        Sail.app.hidePageElements();
+                        $('#observe-organisms-instructions').show();
                     }
                     else {
                         alert("Wrong rotation received. Please ask teacher to send again.");
                     }
                 }
                 else {
-                    console.log("rotation_started event received, but payload is incomplete or not for this user");
+                    console.log("rotation_start event received, but payload is incomplete or not for this user");
                 }
             },
             
@@ -52,9 +53,9 @@ var EvoRoom = {
                     if (ev.payload.location === "station_a" || ev.payload.location === "station_b"
                         || ev.payload.location === "station_c" || ev.payload.location === "station_d") {
                             // store assigned location
-                            EvoRoom.assignedStation = ev.payload.location;
+                            EvoRoom.assignedLocation = ev.payload.location;
                             // show assigned location in DOM
-                            $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedStation));
+                            $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedLocation));
                             // show page
                             $('#go-to-location').show();
                     }
@@ -68,6 +69,7 @@ var EvoRoom = {
                 }
             },
             
+            // this should be cut, right? Otherwise, does it have something to do with rotation?
             start_observation: function(ev) {
                 if (ev.payload.username && ev.payload.username === Sail.app.session.account.login) {
                     // hide all pages
@@ -317,7 +319,7 @@ var EvoRoom = {
             EvoRoom.user_metadata = null;
             EvoRoom.rotation = null;
             EvoRoom.currentGroupCode = null;
-            EvoRoom.assignedStation = null;
+            EvoRoom.assignedLocation = null;
             EvoRoom.currentLocation = null;
             
             EvoRoom.hidePageElements();
@@ -486,13 +488,19 @@ var EvoRoom = {
             Sail.app.barcodeScanLocationSuccess($(this).data('location'));
         });
         
+        $('#observe-organisms-instructions .small-button').click(function() {
+            Sail.app.hidePageElements();
+            //$('#assign the orgs
+            $('#observe-organism').show();
+        });
+        
         // on-click listeners for rainforest QR scanning error resolution
         $('#observe-organism .big-button').click(function() {
             // hide everything
-            EvoRoom.hidePageElements();
+            Sail.app.hidePageElements();
             
             // send out organsim_observed event
-            EvoRoom.submitOrgansimObserved('fig_tree');
+            Sail.app.submitOrgansimObserved('fig_tree');
             
             // show waiting page
             $('#loading-page').show();
@@ -797,7 +805,7 @@ var EvoRoom = {
     submitCheckIn: function() {
         var sev = new Sail.Event('check_in', {
             group_code:Sail.app.currentGroupCode,
-            location:Sail.app.currentStation
+            location:Sail.app.currentLocation
         });
         
         var stateChangeHandler = function (sev) {
@@ -949,14 +957,14 @@ var EvoRoom = {
         console.log("Got Barcode: " +result);
         // send out event check_in
         EvoRoom.currentLocation = result;
-        if (EvoRoom.currentLocation === EvoRoom.assignedStation) {
+        if (EvoRoom.currentLocation === EvoRoom.assignedLocation) {
             Sail.app.submitCheckIn();
             // hide everything
             Sail.app.hidePageElements();
             // show waiting page
             $('#loading-page').show();
         } else {
-            alert("You scanned location " + EvoRoom.formatLocationString(EvoRoom.currentLocation) + " instead of " + EvoRoom.formatLocationString(EvoRoom.assignedStation));
+            alert("You scanned location " + EvoRoom.formatLocationString(EvoRoom.currentLocation) + " instead of " + EvoRoom.formatLocationString(EvoRoom.assignedLocation));
             // hide everything
             Sail.app.hidePageElements();
             // back to scanning again
