@@ -24,7 +24,7 @@ var EvoRoom = {
     events: {
         sail: {
             /********************************************* INCOMING EVENTS *******************************************/
-            rotation_started: function(ev) {
+            rotation_start: function(ev) {
                 if (ev.payload.rotation) {
                     //Sail.app.hidePageElements();
 
@@ -780,6 +780,19 @@ var EvoRoom = {
             group_code:EvoRoom.currentGroupCode,
             location:EvoRoom.currentLocation
         });
+        
+        var stateChangeHandler = function (sev) {
+            if (sev.payload.to === 'OBSERVING_IN_ROTATION') {
+                alert('Caught OBSERVING_IN_ROTATION')
+            }
+        };
+        
+        // create state change handler if checkin is not in room
+        // eventHandlerFunction, eventType, origin (user), payload,
+        if (EvoRoom.currentGroupCode !== 'room') {
+            EvoRoom.groupchat.addOneoffEventHandler(stateChangeHandler, 'state_change', Sail.app.session.account.login);
+        }
+        
         EvoRoom.groupchat.sendEvent(sev);
     },
     
@@ -790,6 +803,7 @@ var EvoRoom = {
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
+    
     
 /* ====================================== COLIN =================================== */
     
