@@ -142,16 +142,50 @@
             <div class="content">
                  <b>Instructions: </b>Choose an organism to begin.
             </div>
-            <div class="organism-boxes">
+<!--             <div class="organism-boxes">
                 <img class="first-organism organism-image" src="/images/ant_icon.png" alt="ERROR">
                 <img class="second-organism organism-image" src="/images/civet_icon.png" alt="ERROR">
                 <img class="first-organism organism-image" src="/images/ant_icon.png" alt="ERROR">
-                <!-- <img class="second-organism organism-image" src="/images/civet_icon.png" alt="Civet"> -->
-            </div>
-            
+                <img class="second-organism organism-image" src="/images/civet_icon.png" alt="Civet">
+            </div> -->
+            <table class="organism-table">
+                <tr>
+                    <td class="organism-boxes">
+                        <button class="organism-table-button">IMG TEXT 1</button>
+                    </td>
+                    <td class="organism-boxes">
+                        <button class="organism-table-button">IMG TEXT 2</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="organism-boxes">
+                        <button class="organism-table-button">IMG TEXT 3</button>
+                    </td>
+                    <td class="organism-boxes">
+                        <button class="organism-table-button">IMG TEXT 4</button>
+                    </td>
+                </tr>
+            </table>
             
             <button class="small-button"><b>(Done)</b></button> <!-- style="display:none" -->
         </div>
+        
+        <div id="is-organism-present" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Time: </b><span class="year orange"></span>
+            </div>
+            <div class="content">
+                 <b>Organism: </b><span class="chosen-organism">To fill</span>
+            </div>
+            <div class="organism-choice-box">
+                <p>Is the organism present here?<p>
+                <input type="radio" name="org-choice-button" id="org-choice-yes" class="radio yes-no-radios" value="true" /><label for="org-choice-yes">Yes</label>
+                <input type="radio" name="org-choice-button" id="org-choice-no" class="radio yes-no-radios" value="false" /><label for="org-choice-no">No</label>
+            </div>
+
+            <button class="small-button"><b>Done</b></button>
+        </div>
+        
 
 
 <!-- ***********************************************MEETUP**************************************************** -->

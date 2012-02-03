@@ -377,14 +377,15 @@ var EvoRoom = {
 
     hidePageElements: function() {
         $('#loading-page').hide();
-        $('#student-chosen-organisms').hide();
         $('#log-in-success').hide();
         $('#room-scan-failure').hide();
         $('#team-assignment').hide();
         $('#organism-assignment').hide();
         $('#go-to-location').hide();
         $('#location-scan-failure').hide();
-        $('#observe-organism').hide();
+        $('#observe-organisms-instructions').hide();
+        $('#observe-organisms').hide();
+        $('#is-organism-present').hide();
         
 /* ====================================== COLIN =================================== */
         
@@ -494,9 +495,25 @@ var EvoRoom = {
             // fill in year and organisms for this student at this location
             Sail.app.currentLocation = "station_a"; // TODO remove this when location_assignment is working
             $('#observe-organisms .year').text(Sail.app.calculateYear());
+            $('#is-organism-present .year').text(Sail.app.calculateYear());
             //$('#assign the orgs
             $('#observe-organisms').show();
         });
+        
+        $('#observe-organisms .organism-table-button').click(function() {
+            Sail.app.hidePageElements();
+            $('#is-organism-present').show();
+        });
+        
+        $('#is-organism-present .small-button').click(function() {
+            // get value from "org-choice-yes" or "org-choice-no"
+            // send sev with that value for (organism_observation)
+            
+            Sail.app.hidePageElements();
+            $('#observe-organisms').show();
+        });
+        
+        // TODO no-button
         
         // on-click listeners for rainforest QR scanning error resolution
         $('#observe-organisms .small-button').click(function() {
@@ -510,7 +527,7 @@ var EvoRoom = {
         //Sail.app.submitOrgansimObserved('fig_tree');
         
 /* ====================================== COLIN =================================== */
-        
+
 /*
         $('#survey-welcome .big-button').click(function() {
             
@@ -1082,7 +1099,7 @@ var EvoRoom = {
             }
             else {
                 console.log("year or station strings are missing, can't calculate year");
-                return "unknown time"
+                return "unknown time";
             }
         }
         if (Sail.app.rotation === 2) {
@@ -1100,7 +1117,7 @@ var EvoRoom = {
             }
             else {
                 console.log("year or station strings are missing, can't calculate year");
-                return "unknown time"
+                return "unknown time";
             }
         }
     },
