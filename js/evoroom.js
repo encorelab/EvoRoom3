@@ -5,7 +5,7 @@ var EvoRoom = {
     user_metadata: null,
     rotation: null,
     currentGroupCode: null,
-    assignedStation: null,
+    assignedLocation: null,
     currentLocation: null,
     
 /* ====================================== COLIN =================================== */
@@ -462,6 +462,11 @@ var EvoRoom = {
         $('#room-scan-failure .big-error-resolver-button').click(function() {
             // don't need to trigger, just call the function
             Sail.app.barcodeScanRoomLoginSuccess('room');
+        });
+        
+        $('#welcome .small-button').click(function() {
+            Sail.app.higePageElements();
+            $('#organism-assignment').show();
         });
         
         $('#go-to-location .big-button').click(function() {
