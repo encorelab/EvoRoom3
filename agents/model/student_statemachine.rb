@@ -1,5 +1,4 @@
-# $: << '../../EvoRoom3/agents/sail.rb/lib'; $: << '../../EvoRoom3/agents'; require 'model/student'; Student.site = "http://rollcall.proto.encorelab.org"; s = Student.find(:first); load 'golem/visualizer.rb'; v = Golem::Visualizer.new; v.visualize(s.statemachine); s.statemachine.inspect.scan(/@callback=\:([\w_\?\!]+)/i).flatten.uniq.each{|m| puts (s.respond_to?(m) ? "√" : "x") + " #{m}"}; nil
-
+# $: << '../../EvoRoom3/agents/sail.rb/lib'; $: << '../../EvoRoom3/agents'; require 'model/student'; Student.site = "http://rollcall.proto.encorelab.org"; s = Student.find(:first); load 'golem/visualizer.rb'; v = Golem::Visualizer.new; v.visualize(s.statemachine); puts "--[ callbacks in use ]--"; s.statemachine.inspect.scan(/@callback=\:([\w_\?\!]+)/i).flatten.uniq.each{|m| puts (s.respond_to?(m) ? "√" : "x") + " #{m}"}; puts "--[ events ]--"; puts s.statemachine.events.values.collect{|ev| ev.name}; nil
 StudentStatemachine = proc do
   initial_state :LOGGED_IN
 
@@ -27,7 +26,7 @@ StudentStatemachine = proc do
   end
 
   state :IN_ROOM do
-    on :rotation_started, :to => :IN_ROTATION,
+    on :rotation_start, :to => :IN_ROTATION,
       :action => :increment_rotation!
   end
 
@@ -42,7 +41,7 @@ StudentStatemachine = proc do
   end
 
   state :OBSERVING_IN_ROTATION do
-    on :organism_observed do
+    on :organism_observation do
       transition :to => :ROTATION_COMPLETED, :if => :rotation_completed?, :action => :store_observation
       transition :to => :IN_ROTATION, :action => :store_observation
     end
@@ -81,9 +80,9 @@ StudentStatemachine = proc do
   end
   
   state :MEETUP_TOPIC_ASSIGNED do
-    on :note_submitted, :action => :store_note
-    on :meetup_completed, :to => :IN_ROTATION, :action => :increment_rotation
-    on :homework_assigned, :to => :COMPLETED_DAY_1
+    on :note, :action => :store_note
+    on :meetup_end, :to => :IN_ROTATION, :action => :increment_rotation!
+    on :homework_assignment, :to => :COMPLETED_DAY_1
   end
 
   # DAY 2
@@ -97,7 +96,7 @@ StudentStatemachine = proc do
   end
   
   state :PAST do
-    on :note_submitted, :action => :store_note
+    on :note, :action => :store_note
     on :transition, :to => :PRESENT
   end
   
@@ -112,7 +111,7 @@ StudentStatemachine = proc do
   end
   
   state :OBSERVING_PRESENT do
-    on :note_submitted do
+    on :observation_tabulation do
       transition :to => :BRAINSTORMING do
         guard :present_observations_completed?
         action :store_note
@@ -124,7 +123,7 @@ StudentStatemachine = proc do
   end
   
   state :BRAINSTORMING do
-    on :discussion_note_submitted, :action => :store_note
-    on :homework_assigned, :to => :COMPLETED_DAY_2
+    on :concept_discussion, :action => :store_note
+    on :homework_assignment, :to => :COMPLETED_DAY_2
   end
 end
