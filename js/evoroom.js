@@ -26,7 +26,7 @@ var EvoRoom = {
     events: {
         sail: {
             /********************************************* INCOMING EVENTS *******************************************/
-            rotation_started: function(ev) {
+            rotation_start: function(ev) {
                 if (ev.payload.rotation) {
                     //Sail.app.hidePageElements();
 
@@ -305,7 +305,7 @@ var EvoRoom = {
                 EvoRoom.user_metadata = data.user.metadata;
                 
                 // try to fill rotation from metadata
-                EvoRoom.rotation = data.user.metadata.rotation;
+                EvoRoom.rotation = data.user.metadata.current_rotation;
                 
                 console.log('metadata assigned');
                 EvoRoom.setupPageLayout();
@@ -799,6 +799,19 @@ var EvoRoom = {
             group_code:Sail.app.currentGroupCode,
             location:Sail.app.currentStation
         });
+        
+        var stateChangeHandler = function (sev) {
+            if (sev.payload.to === 'OBSERVING_IN_ROTATION') {
+                alert('Caught OBSERVING_IN_ROTATION')
+            }
+        };
+        
+        // create state change handler if checkin is not in room
+        // eventHandlerFunction, eventType, origin (user), payload,
+        if (EvoRoom.currentGroupCode !== 'room') {
+            EvoRoom.groupchat.addOneoffEventHandler(stateChangeHandler, 'state_change', Sail.app.session.account.login);
+        }
+        
         EvoRoom.groupchat.sendEvent(sev);
     },
 
@@ -809,6 +822,7 @@ var EvoRoom = {
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
+    
     
 /* ====================================== COLIN =================================== */
     
