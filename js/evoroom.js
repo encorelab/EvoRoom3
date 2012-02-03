@@ -807,6 +807,8 @@ var EvoRoom = {
                 console.log('Caught oneoff event stateChangeHandler with to = OBSERVING_IN_ROTATION');
                 EvoRoom.hidePageElements;
                 $('#observe-organism').show();
+            } else if (sev.payload.to === 'WAITING_FOR_MEETUP_TOPIC') {
+                // something will happen here ;)
             } else {
                 console.warn('Caught state_change event with one-off handler, but nobody seems to care. From: ' +sev.payload.from+ 'To: ' + sev.payload.to);
             }
