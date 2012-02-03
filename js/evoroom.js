@@ -394,7 +394,8 @@ var EvoRoom = {
         $('#student-chosen-organisms').hide();
         $('#log-in-success').hide();
         $('#room-scan-failure').hide();
-        $('#wait-for-teacher').hide();
+        $('#team-assignment').hide();
+        $('#organism-assignment').hide();
         $('#go-to-location').hide();
         $('#location-scan-failure').hide();
         $('#observe-organism').hide();
@@ -432,6 +433,7 @@ var EvoRoom = {
     },
 
     setupPageLayout: function() {
+        // these top two will need to be changed
         $('#student-chosen-organisms .first-organism').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
         $('#student-chosen-organisms .second-organism').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_2 + '_icon.png');
         $('#survey-organisms .first-organism-name').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
@@ -464,7 +466,7 @@ var EvoRoom = {
             Sail.app.barcodeScanRoomLoginSuccess('room');
         });
         
-        $('#welcome .small-button').click(function() {
+        $('#team-assignment .small-button').click(function() {
             Sail.app.higePageElements();
             $('#organism-assignment').show();
         });
@@ -792,7 +794,7 @@ var EvoRoom = {
             $('#log-in-success').show();
         } else if (Sail.app.user_metadata.state === 'IN_ROOM') {
             // show the wait for teacher thing
-            $('#wait-for-teacher').show();
+            $('#organism-assignment').show();
         } 
         else {
             console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
@@ -928,7 +930,7 @@ var EvoRoom = {
         // hide everything
         Sail.app.hidePageElements();
         // show waiting for teacher page
-        $('#wait-for-teacher').show();
+        $('#log-in-success').show();
     },
 
     barcodeScanRoomLoginFailure: function(msg) {
