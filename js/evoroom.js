@@ -5,10 +5,12 @@ var EvoRoom = {
     user_metadata: null,
     rotation: null,
     currentGroupCode: null,
-    assignedStation: null,
+    assignedLocation: null,
     currentLocation: null,
     
-/* ====================================== COLIN =================================== */    
+/* ====================================== COLIN =================================== */
+//    assignedTopic: null,
+//    currentRainforest: false,
     
 //    currentLocation: false,
 //    organismsRainforestsCompleted: false,
@@ -81,15 +83,18 @@ var EvoRoom = {
             
 /* ====================================== COLIN =================================== */
             
-            meetup_started: function(ev) {
-                if (ev.payload.rotation) {
-                    Sail.app.hidePageElements();
-                    
+            topic_assignment: function(ev) {
+                if (ev.payload.topic) {
+                    Sail.app.higePageElements();
+                    $('#meetup .topic').text(ev.payload.topic);
+                    $('#meetup .tags').text(ev.payload.tags);
+                    $('#meetup').show();
                 }
                 else {
-                    console.log("meetup_started event received, but payload is incomplete or not for this user");
+                    console.log("topic_assignment event received, but payload is incomplete or not for this user");
                 }
             }
+            // START HERE, NOT TESTED
             
 /*            start_step: function(ev) {
                 if (ev.payload.username && ev.payload.username === Sail.app.session.account.login) {
@@ -373,7 +378,8 @@ var EvoRoom = {
         $('#student-chosen-organisms').hide();
         $('#log-in-success').hide();
         $('#room-scan-failure').hide();
-        $('#wait-for-teacher').hide();
+        $('#team-assignment').hide();
+        $('#organism-assignment').hide();
         $('#go-to-location').hide();
         $('#location-scan-failure').hide();
         $('#observe-organism').hide();
@@ -411,6 +417,7 @@ var EvoRoom = {
     },
 
     setupPageLayout: function() {
+        // these top two will need to be changed
         $('#student-chosen-organisms .first-organism').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
         $('#student-chosen-organisms .second-organism').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_2 + '_icon.png');
         $('#survey-organisms .first-organism-name').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
@@ -441,6 +448,11 @@ var EvoRoom = {
         $('#room-scan-failure .big-error-resolver-button').click(function() {
             // don't need to trigger, just call the function
             Sail.app.barcodeScanRoomLoginSuccess('room');
+        });
+        
+        $('#team-assignment .small-button').click(function() {
+            Sail.app.higePageElements();
+            $('#organism-assignment').show();
         });
         
         $('#go-to-location .big-button').click(function() {
@@ -766,7 +778,7 @@ var EvoRoom = {
             $('#log-in-success').show();
         } else if (Sail.app.user_metadata.state === 'IN_ROOM') {
             // show the wait for teacher thing
-            $('#wait-for-teacher').show();
+            $('#organism-assignment').show();
         } 
         else {
             console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
@@ -777,12 +789,12 @@ var EvoRoom = {
 
     submitCheckIn: function() {
         var sev = new Sail.Event('check_in', {
-            group_code:EvoRoom.currentGroupCode,
-            location:EvoRoom.currentLocation
+            group_code:Sail.app.currentGroupCode,
+            location:Sail.app.currentStation
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
-    
+
     submitOrgansimObserved: function(observedOrganism) {
         var sev = new Sail.Event('organism_observed', {
             organism:observedOrganism,
@@ -792,6 +804,16 @@ var EvoRoom = {
     },
     
 /* ====================================== COLIN =================================== */
+    
+    submitNote: function() {
+        var sev = new Sail.Event('note_submitted', {
+            group_code:Sail.app.currentGroupCode,
+            note:('#MEETUP .note_content'),
+            tags:"this will be the array holding the tags that was sent from the agent earlier"
+        });
+        EvoRoom.groupchat.sendEvent(sev);
+    },
+
     
 /*
     submitOrganismsPresent: function() {
@@ -892,7 +914,7 @@ var EvoRoom = {
         // hide everything
         Sail.app.hidePageElements();
         // show waiting for teacher page
-        $('#wait-for-teacher').show();
+        $('#log-in-success').show();
     },
 
     barcodeScanRoomLoginFailure: function(msg) {
