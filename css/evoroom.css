@@ -86,6 +86,12 @@
 	border: 1px solid #007ADF;	
 }
 
+.organism-table-button {
+    width: 200px;
+    height: 200px;
+    background: #555555;
+}
+
 .orange {
 	color: #FB983B;
 }
@@ -107,6 +113,22 @@
 }
 
 
+.organism-table {
+    margin-left: auto;
+    margin-right: auto; 
+    margin-top: 30px;
+    width: 410px;
+    height: 500px; /* TODO isn't going to work with 5+*/
+    border: 1px dotted black;
+    border-left: 1px dotted black;
+    border-bottom: 1px dotted black;
+    border-collapse: collapse;
+}
+
+#is-organism-present .organism-choice-box {
+    margin-top: 100px;
+    text-align: center;
+}
 
 
 
