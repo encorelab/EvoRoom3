@@ -490,21 +490,24 @@ var EvoRoom = {
         
         $('#observe-organisms-instructions .small-button').click(function() {
             Sail.app.hidePageElements();
+            
+            // fill in year and organisms for this student at this location
+            Sail.app.currentLocation = "station_a"; // TODO remove this when location_assignment is working
+            $('#observe-organisms .year').text(Sail.app.calculateYear());
             //$('#assign the orgs
-            $('#observe-organism').show();
+            $('#observe-organisms').show();
         });
         
         // on-click listeners for rainforest QR scanning error resolution
-        $('#observe-organism .big-button').click(function() {
-            // hide everything
+        $('#observe-organisms .small-button').click(function() {
             Sail.app.hidePageElements();
-            
-            // send out organsim_observed event
-            Sail.app.submitOrgansimObserved('fig_tree');
             
             // show waiting page
             $('#loading-page').show();
         });
+        
+        // send out organsim_observed event
+        //Sail.app.submitOrgansimObserved('fig_tree');
         
 /* ====================================== COLIN =================================== */
         
@@ -1062,6 +1065,46 @@ var EvoRoom = {
         });
     },
 */
+    
+    calculateYear: function() {
+        if (Sail.app.rotation === 1) {
+            if (Sail.app.currentLocation === "station_a") {
+                return "200 mya";
+            }
+            else if (Sail.app.currentLocation === "station_b") {
+                return "150 mya";
+            }
+            else if (Sail.app.currentLocation === "station_c") {
+                return "100 mya";
+            }
+            else if (Sail.app.currentLocation === "station_d") {
+                return "50 mya";
+            }
+            else {
+                console.log("year or station strings are missing, can't calculate year");
+                return "unknown time"
+            }
+        }
+        if (Sail.app.rotation === 2) {
+            if (Sail.app.currentLocation === "station_a") {
+                return "25 mya";
+            }
+            else if (Sail.app.currentLocation === "station_b") {
+                return "10 mya";
+            }
+            else if (Sail.app.currentLocation === "station_c") {
+                return "5 mya";
+            }
+            else if (Sail.app.currentLocation === "station_d") {
+                return "2 mya";
+            }
+            else {
+                console.log("year or station strings are missing, can't calculate year");
+                return "unknown time"
+            }
+        }
+    },
+    
     formatLocationString: function(locationString) {
         if (locationString === "station_a") {
             return "Station A";
