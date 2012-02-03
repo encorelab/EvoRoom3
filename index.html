@@ -39,8 +39,24 @@
             <img class="loader-gif" src="loader.gif">
         </div>
         
-        <!-- scan page here -->
-        <!-- fail page here -->
+        <div id="go-to-location" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Instructions</b>Go to <span class="current-location orange"></span> and perform a QR scan.
+            </div>
+            <button class="big-button"><b>QR scan</b></button>
+        </div>
+
+        <div id="location-scan-failure" class="full-text-box" style="display:none">
+            <div class="title"><b>Location QR code scanning failed!</b></div>
+            <div>
+                Scanning the QR code of the location failed. Please try again or proceed by pressing the button for the location you are at. 
+            </div>
+            <button class="small-error-resolver-button" data-location="station_a"><b>Station A</b></button>
+            <button class="small-error-resolver-button" data-location="station_b"><b>Station B</b></button>
+            <button class="small-error-resolver-button" data-location="station_c"><b>Station C</b></button>
+            <button class="small-error-resolver-button" data-location="station_d"><b>Station D</b></button>
+            <button class="big-button"><b>Scan again</b></button>
+        </div>
 
 <!-- ***********************************************ENTRY**************************************************** -->
         
@@ -55,17 +71,15 @@
         
         <div id="log-in-success" class="full-text-box" style="display:none">
             <div class="title"><b>Log in successful</b></div>
-            <div>
-                <p>
-                    Congratulations! You are now in the final stages of training in gaining entry to our elite team of rainforest ecologists. 
-                </p>
-                <p>
-                    To successfully complete this exercise, you must demonstrate your knowledge of evolutionary concepts, knowledge of your specialist species, problem solving-skills and ability to work in a team-based environment.
-                </p>
-                <p>
-                    This exercise consists of 6 steps and will take approximately 30 minutes to complete. When you are ready to begin, perform a QR scan at the entrance of the simulation lab.
-                </p>
-            </div>
+            <p>
+                Congratulations! You are now in the final stages of training in gaining entry to our elite team of rainforest ecologists. 
+            </p>
+            <p>
+                To successfully complete this exercise, you must demonstrate your knowledge of evolutionary concepts, knowledge of your specialist species, problem solving-skills and ability to work in a team-based environment.  
+            </p>
+            <p>
+                This exercise consists of 6 steps and will take approximately 30 minutes to complete. When you are ready to begin, perform a QR scan at the entrance of the simulation lab.  
+            </p>
             <button class="big-button"><b>QR scan</b></button>
         </div>
 
@@ -74,10 +88,10 @@
             <div class="content">
                 For this exercise, instead of working in your specialty groups (i.e., birds, other mammals, plants & insects, primates), you will be working with people from various specialties as a team. Your team should have at least one expert from each of the specialty groups. 
             </div>
-            <br>
+            <br />
             <div>Team assignment:</div>
             <div class="team-name orange indent">Not working from rollcall</div>
-            <br>
+            <br />
             <div>Team members:</div>
             <div class="team-members orange indent">GET FROM ROLLCALL?</div>
             
@@ -89,7 +103,7 @@
             <div class="content">
                 In addition, you will be responsible for observing the following organisms within your team. 
             </div>
-            <br>
+            <br />
             <div>Organism assignment:</div>
             <div class="assigned-organism-1 orange indent"></div>
             <div class="assigned-organism-2 orange indent"></div>
@@ -98,72 +112,57 @@
             <div class="assigned-organism-5 orange"></div>
             <div class="assigned-organism-6 orange"></div> -->
             <br>
-            <div>
+            <p>
                 During this exercise, you will be taken back in time to: 200, 150, 100, 50, 25, 10, 5, 2 million years ago (mya). As a team, you will complete a cladogram, by identifying your assigned organism and/or their ancestors at the specified times.
-            </div>
-            <br>
-            <div>
+            </p>
+            <p>
                 You will receive an orientation from your science teacher. Once it is complete, your teacher will advance everyone to the next step.
-            </div>
-            <br>
-            <div>
+            </p>
+            <p>
                 The orientation will begin shortly.
-            </div>
+            </p>
         </div>
         
 <!-- ***********************************************ROTATION**************************************************** -->
+        
+        <div id="observe-organisms-instructions" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Instructions: </b>There are four different versions of Southeast Asia set at different times in this room: 200, 150, 100, and 50 mya.
+            </div>
+            <div class="content">
+                When you click &#146;Next&#146; your list of assigned organisms will appear. Your task is to determine whether your organisms are present at the time periods and if not, whether their ancestral forms are present. 
+            </div>
+            <button class="small-button"><b>Next</b></button>
+        </div>
+        
+        <div id="observe-organisms" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Time: </b><span class="year orange"></span>
+            </div>
+            <div class="content">
+                 <b>Instructions: </b>Choose an organism to begin.
+            </div>
+            <div class="organism-boxes">
+                <img class="first-organism organism-image" src="/images/ant_icon.png" alt="ERROR">
+                <img class="second-organism organism-image" src="/images/civet_icon.png" alt="ERROR">
+                <img class="first-organism organism-image" src="/images/ant_icon.png" alt="ERROR">
+                <!-- <img class="second-organism organism-image" src="/images/civet_icon.png" alt="Civet"> -->
+            </div>
+            
+            
+            <button class="small-button"><b>(Done)</b></button> <!-- style="display:none" -->
+        </div>
 
+
+<!-- ***********************************************MEETUP**************************************************** -->
         
         <div id="meetup" class="full-text-box" style="display:none">
             <div class="title"><b>Location: </b><span class="current-rainforest"></span></div>
             <div><b>TOPIC:</b><span class="topic"></span></div>
-
-
+            
             <button class="small-button"><b>Done</b></button>
         </div>
-                     <!-- START HERE, NOT TESTED -->
-        <div id="go-to-location" class="full-text-box" style="display:none">
-            <div class="title"><b>Step 1 complete</b></div>
-            <div>
-                One of these rainforests display the results from an environmental variable you and your group
-                members chose to analyze for a report. Your challenge is to eliminate the rainforests that most
-                likely did NOT result from your variable.
-                <br><br>
-                Gather your group members and go to <span class="current-location orange"></span>.
-                When you have all arrived, perform a QR scan. 
-            </div>
-            <button class="big-button"><b>QR scan</b></button>
-        </div>
-        
-        <div id="location-scan-failure" class="full-text-box" style="display:none">
-            <div class="title"><b>Location QR code scanning failed!</b></div>
-            <div>
-                Scanning the QR code of the location failed. Please try again or proceed by pressing the button for the location you are at. 
-            </div>
-            <button class="small-error-resolver-button" data-location="station_a"><b>Station A</b></button>
-            <button class="small-error-resolver-button" data-location="station_b"><b>Station B</b></button>
-            <button class="small-error-resolver-button" data-location="station_c"><b>Station C</b></button>
-            <button class="small-error-resolver-button" data-location="station_d"><b>Station D</b></button>
-            <button class="big-button"><b>Scan again</b></button>
-        </div>
-        
-        <div id="observe-organism" class="full-text-box" style="display:none">
-            <div class="title"><b>Do some observation</b></div>
-            <div>
-                This will tell to look for some animals and maybe lead to other dialogs to find
-                ancestor animals and such. 
-            </div>
-            <button class="big-button"><b>Submit observation</b></button>
-        </div>
 
-        
-        <!-- CAN CUT THIS? -->
-        <div id="student-chosen-organisms" style="display:none">
-            <img class="first-organism organism-image" src="/images/ant_icon.png" alt="Ant">
-            <img class="second-organism organism-image" src="/images/civet_icon.png" alt="Civet">
-        </div>
-    
-<!-- ====================================== COLIN =================================== -->
         
 <!--    
         <div id="survey-welcome" class="full-text-box" style="display:none">
