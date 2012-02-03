@@ -83,22 +83,6 @@ var EvoRoom = {
             
 /* ====================================== COLIN =================================== */
             
-            rotation_completed: function(ev) {
-                // not sure we need this
-            },
-            
-            meetup_started: function(ev) {
-                // this will be identical to location_assignment, right? Maybe with different text
-                if (ev.payload.location) {
-                    Sail.app.hidePageElements();
-                    assignedStation = ev.payload.location;
-                    $('#go-to-station').show();
-                }
-                else {
-                    console.log("meetup_started event received, but payload is incomplete or not for this user");
-                }
-            },
-            
             topic_assignment: function(ev) {
                 if (ev.payload.topic) {
                     Sail.app.higePageElements();
