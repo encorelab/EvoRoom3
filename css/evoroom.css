@@ -90,13 +90,33 @@
 	color: #FB983B;
 }
 
+.indent {
+    margin-left: 30px;
+}
+
 #loading-page .title {
 	position: absolute;
 	top: 200px;
 	left: 140px;
 }
 
-/*************************************TO BE MOVED?****************************************/
+#loading-page .loader-gif {
+    position: absolute;
+    top: 600px;
+    left: 140px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
 
 #student-chosen-organisms {
 	position: absolute;
@@ -139,8 +159,6 @@
 	margin-top: 170px;
 	text-align: center;
 }
-
-/*************************************TO BE MOVED?****************************************/
 
 #rotation-note-taker .rainforest-choice {
 	margin-top: 35px;
@@ -187,7 +205,6 @@
 	font-size: 14px;
 }
 
-/*************************************TO BE MOVED?****************************************/
 
 #interview-intro .links {
 	margin-top: 100px;
@@ -236,7 +253,6 @@
 	font-size: 24px;
 }
 
-/*************************************TO BE MOVED?****************************************/
 
 #group-notes {
 	position: absolute;
@@ -320,7 +336,8 @@
 }
 
 
-/*************************************TO BE MOVED?****************************************/
+
+
 
 #final-picks-ranking .final-picks-content-table {
 	margin-left: auto;
@@ -364,4 +381,5 @@
 	width: 440px;
 	height: 284px;
 	font-size: 24px;
-}
+}*/
+

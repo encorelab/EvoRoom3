@@ -418,10 +418,19 @@ var EvoRoom = {
 
     setupPageLayout: function() {
         // these top two will need to be changed
-        $('#student-chosen-organisms .first-organism').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
+        /*$('#student-chosen-organisms .first-organism').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
         $('#student-chosen-organisms .second-organism').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_2 + '_icon.png');
         $('#survey-organisms .first-organism-name').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
-        $('#survey-organisms .second-organism-name').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_2));
+        $('#survey-organisms .second-organism-name').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_2));*/
+        
+        $('#team-assignment .team-name').text(EvoRoom.user_metadata.group);
+        $('#team-assignment .team-members').text('team members, how do I get this from rollcall?');
+        $('#organism-assignment .assigned-organism-1').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
+        $('#organism-assignment .assigned-organism-2').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_2));
+        $('#organism-assignment .assigned-organism-3').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_3));
+        //$('#organism-assignment .assigned-organism-4').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_4));
+        //$('#organism-assignment .assigned-organism-5').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_5));
+        //$('#organism-assignment .assigned-organism-6').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_6));
         $('.jquery-radios').buttonset();
         $('#log-in-success').show();
 
@@ -440,8 +449,6 @@ var EvoRoom = {
         $('#room-scan-failure .big-button').click(function() {
             // hide everything
             Sail.app.hidePageElements();
-            // show start page and organisms
-            $('#student-chosen-organisms').show();
             $('#log-in-success').show();
         });
 
@@ -451,7 +458,7 @@ var EvoRoom = {
         });
         
         $('#team-assignment .small-button').click(function() {
-            Sail.app.higePageElements();
+            Sail.app.hidePageElements();
             $('#organism-assignment').show();
         });
         
@@ -914,7 +921,7 @@ var EvoRoom = {
         // hide everything
         Sail.app.hidePageElements();
         // show waiting for teacher page
-        $('#log-in-success').show();
+        $('#team-assignment').show();
     },
 
     barcodeScanRoomLoginFailure: function(msg) {
@@ -1092,6 +1099,10 @@ var EvoRoom = {
             return "Leopard cat";
         } else if (organismString === "malabar_grey_hornbill") {
             return "Malabar grey hornbill";
+        } else if (organismString === "meggaris_tree") {
+            return "Meggaris tree";
+        } else if (organismString === "mitered_leaf_monkey") {
+            return "Mitered leaf monkey";
         } else if (organismString === "muellers_gibbon") {
             return "Mueller's gibbon";
         } else if (organismString === "pangolin") {
@@ -1106,6 +1117,20 @@ var EvoRoom = {
             return "Rafflesia";
         } else if (organismString === "rhinoceros_hornbill") {
             return "Rhinoceros hornbill";
+        } else if (organismString === "sumatran_orangutan") {
+            return "Sumatran orangutan";
+        } else if (organismString === "sumatran_rhinoceros") {
+            return "Sumatran rhinoceros";
+        } else if (organismString === "sumatran_striped rabbit") {
+            return "Sumatran striped rabbit";
+        } else if (organismString === "sumatran_tiger") {
+            return "Sumatran tiger ";
+        } else if (organismString === "sunda_pangolin") {
+            return "Sunda pangolin";
+        } else if (organismString === "termite") {
+            return "Termite";
+        } else if (organismString === "titan_arum") {
+            return "Titan arum";
         } else if (organismString === "white_fronted_langur") {
             return "White fronted langur";
         } else {
