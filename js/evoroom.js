@@ -29,12 +29,13 @@ var EvoRoom = {
             rotation_start: function(ev) {
                 if (ev.payload.rotation) {
                     // show the question assigned to this student
-                    if (ev.payload.rotation === 1 || ev.payload.rotation === 2) {
+                    if (ev.payload.rotation === "1" || ev.payload.rotation === "2") {
                         EvoRoom.rotation = ev.payload.rotation;
-                        alert("rotation " + EvoRoom.rotation);
+                        console.log("rotation " + EvoRoom.rotation);
                         
-                        Sail.app.hidePageElements();
-                        $('#observe-organisms-instructions').show();
+                        // can't do show and hide here
+                        //Sail.app.hidePageElements();
+                        //$('#observe-organisms-instructions').show();
                     }
                     else {
                         alert("Wrong rotation received. Please ask teacher to send again.");
@@ -794,13 +795,13 @@ var EvoRoom = {
     },
     
     restoreState: function() {
-        //alert('bring user back to state');
+        EvoRoom.hidePageElements();
         if (!Sail.app.user_metadata.state || Sail.app.user_metadata.state === 'LOGGED_IN') {
             // show login success page
             $('#log-in-success').show();
         } else if (Sail.app.user_metadata.state === 'IN_ROOM') {
             // show the wait for teacher thing
-            $('#organism-assignment').show();
+            $('#team-assignment').show();
         } 
         else {
             console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
@@ -821,7 +822,7 @@ var EvoRoom = {
             if (sev.payload.to === 'OBSERVING_IN_ROTATION') {
                 console.log('Caught oneoff event stateChangeHandler with to = OBSERVING_IN_ROTATION');
                 EvoRoom.hidePageElements();
-                $('#observe-organism').show();
+                $('#observe-organisms-instructions').show();
             } else if (sev.payload.to === 'WAITING_FOR_MEETUP_TOPIC') {
                 // something will happen here ;)
                 alert('WAITING_FOR_MEETUP_TOPIC');
