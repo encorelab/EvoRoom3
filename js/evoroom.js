@@ -7,6 +7,7 @@ var EvoRoom = {
     currentGroupCode: null,
     assignedLocation: null,
     currentLocation: null,
+    selectedOrganism: null,
     
 /* ====================================== COLIN =================================== */
 //    assignedTopic: null,
@@ -63,7 +64,7 @@ var EvoRoom = {
                     else {
                         console.error("Error, wrong location " + ev.payload.location + " received. Log in again!");
                     }
-                    $('#final-picks-discuss').show();
+                    $('#go-to-location').show();
                 }
                 else {
                     console.log("location_assignment event received, but payload is incomplete or not for this user");
@@ -374,6 +375,8 @@ var EvoRoom = {
         $('#observe-organisms-instructions').hide();
         $('#observe-organisms').hide();
         $('#is-organism-present').hide();
+        $('#ancestor-information').hide();
+        $('#choose-ancestor').hide();
         
 /* ====================================== COLIN =================================== */
         
@@ -450,7 +453,8 @@ var EvoRoom = {
         
         $('#team-assignment .small-button').click(function() {
             Sail.app.hidePageElements();
-            $('#organism-assignment').show();
+            //$('#organism-assignment').show();
+            $('#observe-organisms-instructions').show();
         });
         
         $('#go-to-location .big-button').click(function() {
@@ -484,35 +488,70 @@ var EvoRoom = {
             Sail.app.currentLocation = "station_a"; // TODO remove this when location_assignment is working
             $('#observe-organisms .year').text(Sail.app.calculateYear());
             $('#is-organism-present .year').text(Sail.app.calculateYear());
-            //$('#assign the orgs
+            $('#ancestor-information .year').text(Sail.app.calculateYear());
+            // fill in the student's assigned organisms
+            // TODO should be done with a foreach
+            $('#observe-organisms .organism1').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
+            $('#observe-organisms .text1').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
+            //$('#observe-organisms .button1').addClass(Sail.app.user_metadata.assigned_organism_1 TODO
+            $('#observe-organisms .organism2').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_2 + '_icon.png');
+            $('#observe-organisms .text2').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_2));
+            $('#observe-organisms .organism3').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_3 + '_icon.png');
+            $('#observe-organisms .text3').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_3));
+            // $('#observe-organisms .button4').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism4));
             $('#observe-organisms').show();
         });
         
         $('#observe-organisms .organism-table-button').click(function() {
             Sail.app.hidePageElements();
+            // TODO make this dynamic
+            Sail.app.selectedOrganism = Sail.app.user_metadata.assigned_organism_1;
+            $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
+            $('#student-chosen-organisms').show();
+            $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
             $('#is-organism-present').show();
         });
-        
-        $('#is-organism-present .small-button').click(function() {
-            // get value from "org-choice-yes" or "org-choice-no"
-            // send sev with that value for (organism_observation)
-            
-            Sail.app.hidePageElements();
-            $('#observe-organisms').show();
-        });
-        
-        // TODO no-button
         
         // on-click listeners for rainforest QR scanning error resolution
         $('#observe-organisms .small-button').click(function() {
             Sail.app.hidePageElements();
-            
-            // show waiting page
             $('#loading-page').show();
+
         });
         
-        // send out organsim_observed event
-        //Sail.app.submitOrgansimObserved('fig_tree');
+        $('#is-organism-present .small-button').click(function() {
+            Sail.app.hidePageElements();
+
+            if ($('#org-choice-yes').is(':checked')) {
+                $('#student-chosen-organisms').hide();
+                // TODO grey out the organism that is already done on #observe-organisms
+                
+                // both params are the same in this case
+                Sail.app.submitOrgansimObserved(Sail.app.selectedOrganism, Sail.app.selectedOrganism);
+                // clear radio buttons
+                $('input:radio').prop('checked', false);
+                $('#is-organism-present .radio').button('refresh');
+                
+                $('#observe-organisms').show();
+            }
+            else {
+                // clear radio buttons
+                $('input:radio').prop('checked', false);
+                $('#is-organism-present .radio').button('refresh');
+                
+                // TODO make this dynamic, for each etc
+                $('#observe-organisms .organism1').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
+                $('#observe-organisms .text1').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
+                $('#ancestor-information').show();
+            }
+        });
+        
+        $('#ancestor-information .small-button').click(function() {
+            Sail.app.hidePageElements();
+            $('#choose-ancestor').show();
+        });
+        
+
         
 /* ====================================== COLIN =================================== */
 
@@ -795,7 +834,7 @@ var EvoRoom = {
     },
     
     restoreState: function() {
-        EvoRoom.hidePageElements();
+        Sail.app.hidePageElements();
         if (!Sail.app.user_metadata.state || Sail.app.user_metadata.state === 'LOGGED_IN') {
             // show login success page
             $('#log-in-success').show();
@@ -821,7 +860,7 @@ var EvoRoom = {
             // catching 
             if (sev.payload.to === 'OBSERVING_IN_ROTATION') {
                 console.log('Caught oneoff event stateChangeHandler with to = OBSERVING_IN_ROTATION');
-                EvoRoom.hidePageElements();
+                Sail.app.hidePageElements();
                 $('#observe-organisms-instructions').show();
             } else if (sev.payload.to === 'WAITING_FOR_MEETUP_TOPIC') {
                 // something will happen here ;)
@@ -833,19 +872,23 @@ var EvoRoom = {
         
         // create state change handler if checkin is not in room
         // eventHandlerFunction, eventType, origin (user), payload,
-        if (EvoRoom.currentLocation !== 'room') {
-            EvoRoom.groupchat.addOneoffEventHandler(stateChangeHandler, 'state_change', Sail.app.session.account.login);
+        if (Sail.app.currentLocation !== 'room') {
+            Sail.app.groupchat.addOneoffEventHandler(stateChangeHandler, 'state_change', Sail.app.session.account.login);
         }
         
-        EvoRoom.groupchat.sendEvent(sev);
+        Sail.app.groupchat.sendEvent(sev);
     },
 
-    submitOrgansimObserved: function(observedOrganism) {
-        var sev = new Sail.Event('organism_observed', {
-            organism:observedOrganism,
-            location:EvoRoom.currentLocation
+    submitOrgansimObserved: function(observedOrganism, assignedOrganism) {
+        currentTime = Sail.app.calculateYear();
+        var sev = new Sail.Event('organism_observation', {
+            team_name:"Team name to fill in",              // TODO Sail.app.user_metadata
+            assigned_organism:assignedOrganism,
+            observed_organism:observedOrganism,
+            location:Sail.app.currentLocation,
+            time:Sail.app.currentTime,
         });
-        EvoRoom.groupchat.sendEvent(sev);
+        Sail.app.groupchat.sendEvent(sev);
     },
     
     
