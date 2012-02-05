@@ -29,6 +29,19 @@
 	margin-bottom: 20px;
 }
 
+.orange {
+    color: #FB983B;
+}
+
+.indent {
+    margin-left: 30px;
+}
+
+.organism-image {
+    height: 200px;
+    width: 200px;
+}
+
 .big-button {
 	position: absolute;
 	bottom: 80px;
@@ -86,43 +99,43 @@
 	border: 1px solid #007ADF;	
 }
 
+.organism-table {
+
+    margin-top: 30px;
+    width: 510px;
+    height: 500px; /* TODO isn't going to work with 5+*/
+}
+
+.organism-boxes {
+    border: 1px dotted black;
+    text-align: center;
+}
+
 .organism-table-button {
-    width: 200px;
+    width: 240px;
     height: 200px;
-    background: #555555;
+    border: 0;
+    background: transparent;
 }
 
-.orange {
-	color: #FB983B;
-}
 
-.indent {
-    margin-left: 30px;
-}
-
-#loading-page .title {
-	position: absolute;
-	top: 200px;
-	left: 140px;
-}
 
 #loading-page .loader-gif {
     position: absolute;
-    top: 600px;
-    left: 140px;
+    top: 400px;
+    left: 50%;
+    margin-left: -30px;
 }
 
+#student-chosen-organisms {
+    position: absolute;
+    top: 15px;
+    right: 50px;
+}
 
-.organism-table {
-    margin-left: auto;
-    margin-right: auto; 
-    margin-top: 30px;
-    width: 410px;
-    height: 500px; /* TODO isn't going to work with 5+*/
-    border: 1px dotted black;
-    border-left: 1px dotted black;
-    border-bottom: 1px dotted black;
-    border-collapse: collapse;
+#student-chosen-organisms .chosen-organism {
+    width: 300px;
+    height: 300px;
 }
 
 #is-organism-present .organism-choice-box {
