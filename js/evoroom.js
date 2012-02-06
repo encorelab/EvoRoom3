@@ -8,7 +8,9 @@ var EvoRoom = {
     assignedLocation: null,
     currentLocation: null,
     selectedOrganism: null,
+    tagsArray: null,
     currentTime: null,
+
     
 /* ====================================== COLIN =================================== */
 //    assignedTopic: null,
@@ -77,23 +79,15 @@ var EvoRoom = {
             
             topic_assignment: function(ev) {
                 if (ev.payload.topic && ev.payload.tags && ev.payload.username === Sail.app.session.account.login) {
-                    var tag_string = "";
                     Sail.app.hidePageElements();
                     $('#meetup .topic').text(ev.payload.topic);
-// TODO: I don't think this works 1) no target 2) array has to be transformed into text
-                    //$('#meetup .tags').data('tags');
-                    //$('#meetup .tags').text(ev.payload.tags);
-                    _.each(ev.payload.tags, function(tag){
-                        tag_string += (tag + " ");
-                    });
-                    $('#meetup .tags').text(tag_string);
-                    $('#meetup').show();
+                    Sail.app.tagsArray = ev.payload.tags;
+                    $('#meetup-instructions').show();
                 }
                 else {
                     console.log("topic_assignment event received, but payload is incomplete or not for this user");
                 }
             }
-            // START HERE, NOT TESTED
             
 /*            start_step: function(ev) {
                 if (ev.payload.username && ev.payload.username === Sail.app.session.account.login) {
@@ -241,7 +235,7 @@ var EvoRoom = {
             /*****************************************EVENTS ADDED FOR STEP 3***********************************************/
 /*
             interviewees_assigned: function(ev) {
-                if (ev.payload.username && ev.payload.username === Sail.app.session.account.login) {       // this is a little strange. Is this intentional?
+                if (ev.payload.username && ev.payload.username === Sail.app.session.account.login) {
                     if (ev.payload.first_interviewee && ev.payload.second_interviewee) {
                         Sail.app.hidePageElements();
                         // set up first interviewee
@@ -384,7 +378,11 @@ var EvoRoom = {
         $('#observe-organisms').hide();
         $('#is-organism-present').hide();
         $('#ancestor-information').hide();
+        $('#ancestor-information-details').hide();
         $('#choose-ancestor').hide();
+        
+        $('#meetup-instructions').hide();
+        $('#meetup').hide();
         
 /* ====================================== COLIN =================================== */
         
@@ -419,20 +417,31 @@ var EvoRoom = {
     },
 
     setupPageLayout: function() {
-        // these top two will need to be changed
-        /*$('#student-chosen-organisms .first-organism').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
-        $('#student-chosen-organisms .second-organism').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_2 + '_icon.png');
-        $('#survey-organisms .first-organism-name').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
-        $('#survey-organisms .second-organism-name').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_2));*/
+        // there's still an issue with this (loops one too many times, throws an exception, doesn't break anything)
+        // set up display of group members on 'team assignment' page
+        var i = 0;
+        var groupMember;
+        Sail.app.rollcall.request(Sail.app.rollcall.url + "/groups/" + Sail.app.currentGroupCode + ".json", "GET", {}, function(data) {
+            while (true) {
+                groupMember = data.group.members[i].user.display_name;
+                if (groupMember)
+                    $('#team-assignment .member'+i).text(groupMember);
+                else 
+                    break;
+                i++;
+            }
+        });
+        // set up display of team name on 'team assignment' page
+        $('#team-assignment .team-name').text(Sail.app.currentGroupCode);
         
-        $('#team-assignment .team-name').text(EvoRoom.user_metadata.group);
-        $('#team-assignment .team-members').text('team members, how do I get this from rollcall?');
-        $('#organism-assignment .assigned-organism-1').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
-        $('#organism-assignment .assigned-organism-2').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_2));
-        $('#organism-assignment .assigned-organism-3').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_3));
-        //$('#organism-assignment .assigned-organism-4').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_4));
-        //$('#organism-assignment .assigned-organism-5').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_5));
-        //$('#organism-assignment .assigned-organism-6').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_6));
+        // set up display of organisms on 'organism assignment' page
+        var j = 0;
+        var organismArray = Sail.app.getCurrentStudentOrganisms();
+        while (j < organismArray.length) {
+            j++;
+            $('#organism-assignment .assigned-organism-'+j).text(Sail.app.formatOrganismString(organismArray[j-1]));
+        }
+
         $('.jquery-radios').buttonset();
         $('#log-in-success').show();
 
@@ -446,7 +455,57 @@ var EvoRoom = {
                 Sail.app.barcodeScanRoomLoginFailure('No scanner, probably desktop browser');
             }
         });
-
+        
+        // set up the year on each page that needs it
+        $('#observe-organisms .year').text(Sail.app.calculateYear());
+        $('#is-organism-present .year').text(Sail.app.calculateYear());
+        $('#ancestor-information .year').text(Sail.app.calculateYear());
+        // fill in the student's assigned organisms
+        
+        // show and fill the table <td>s as necessary
+        //var table = $('.organism-table');
+/*        var k = 0;
+        while (k < Sail.app.getCurrentStudentOrganisms().length) {
+            k++;
+            //table.append('<tr><td><img src=/images/' + Sail.app.getCurrentStudentOrganisms()[k] + '_icon.png></td></tr>');
+            $('#observe-organisms .organism'+k).attr('src', '/images/' + Sail.app.getCurrentStudentOrganisms()[k-1] + '_icon.png');
+            $('#observe-organisms .text'+k).text(Sail.app.formatOrganismString(Sail.app.getCurrentStudentOrganisms()[k-1]));
+            $('#observe-organisms .box'+k).show();
+        }
+*/      // START HERE (FIX THE td/tr issue, ABSTRACT AWAY?)
+        var table = $('.organism-table');
+        var k = 0;
+        _.each(EvoRoom.getCurrentStudentOrganisms(), function(org) {
+            k++;
+            var img = $('<img />');
+            img.data('organism', org);
+            img.attr('src', '/images/' + org + '_icon.png');
+            img.addClass('organism'+k);
+            img.addClass('organism-image');
+            img.click(function() { 
+                Sail.app.selectedOrganism = $(this).data('organism');
+                $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
+                $('#student-chosen-organisms').show();
+                $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
+                $('#is-organism-present').show();
+            });
+            
+            var td = $('<td />');
+            td.addClass('organism-boxes');
+            td.addClass('box'+k);
+            
+            if (k === 1 || k === 3 || k === 5) {
+                var tr = $('<tr />');
+                td.append(img);
+                tr.append(td);
+                table.append(tr);
+            }
+            else {
+                td.append(img);
+                table.append(td);
+            }
+        });
+        
         // register on-click listeners for room QR code scanning error resolution
         $('#room-scan-failure .big-button').click(function() {
             // hide everything
@@ -461,8 +520,10 @@ var EvoRoom = {
         
         $('#team-assignment .small-button').click(function() {
             Sail.app.hidePageElements();
-            //$('#organism-assignment').show();
             $('#organism-assignment').show();
+            //$('#observe-organisms-instructions').show();
+            //$('#meetup-instructions').show();
+            // I switch these around for testing purposes... the first one is the 'correct' one
         });
         
         $('#go-to-location .big-button').click(function() {
@@ -492,29 +553,21 @@ var EvoRoom = {
         $('#observe-organisms-instructions .small-button').click(function() {
             Sail.app.hidePageElements();
             
-            // fill in year and organisms for this student at this location
             Sail.app.currentLocation = "station_a"; // TODO remove this when location_assignment is working
-            $('#observe-organisms .year').text(Sail.app.calculateYear());
-            $('#is-organism-present .year').text(Sail.app.calculateYear());
-            $('#ancestor-information .year').text(Sail.app.calculateYear());
-            // fill in the student's assigned organisms
-            // TODO should be done with a foreach
-            $('#observe-organisms .organism1').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
-            $('#observe-organisms .text1').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
-            //$('#observe-organisms .button1').addClass(Sail.app.user_metadata.assigned_organism_1 TODO
-            $('#observe-organisms .organism2').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_2 + '_icon.png');
-            $('#observe-organisms .text2').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_2));
-            $('#observe-organisms .organism3').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_3 + '_icon.png');
-            $('#observe-organisms .text3').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_3));
-            // $('#observe-organisms .button4').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism4));
+
             $('#observe-organisms').show();
         });
         
         $('#observe-organisms .organism-table-button').click(function() {
             Sail.app.hidePageElements();
-            // TODO make this dynamic
-            Sail.app.selectedOrganism = Sail.app.user_metadata.assigned_organism_1;
-            $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
+            
+            // TODO fix this up
+            // populate the image in the top right corner, set as selectedOrganism
+/*            var tempString = this.nextSibling.getClass();
+            console.log("its coming..................................")
+            console.log(tempString);
+            Sail.app.selectedOrganism = "ant"//Sail.app.getCurrentStudentOrganisms()[some integer];
+*/            $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
             $('#student-chosen-organisms').show();
             $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
             $('#is-organism-present').show();
@@ -524,7 +577,6 @@ var EvoRoom = {
         $('#observe-organisms .small-button').click(function() {
             Sail.app.hidePageElements();
             $('#loading-page').show();
-
         });
         
         $('#is-organism-present .small-button').click(function() {
@@ -559,10 +611,25 @@ var EvoRoom = {
             $('#choose-ancestor').show();
         });
         
+        $('#ancestor-information-details .small-button').click(function() {
+            Sail.app.hidePageElements();
+            $('#ancestor-information').show();
+        });
 
+
+/* ====================================== MEETUP =================================== */
+
+
+        $('#meetup-instructions .small-button').click(function() {
+            Sail.app.hidePageElements();
+            $('#meetup').show();
+        });
         
-/* ====================================== COLIN =================================== */
-
+        $('#meetup .small-button').click(function() {
+            Sail.app.hidePageElements();
+            Sail.app.submitNote();
+            $('#loading-page').show();
+        });
 /*
         $('#survey-welcome .big-button').click(function() {
             
@@ -916,10 +983,9 @@ var EvoRoom = {
 /* ====================================== COLIN =================================== */
     
     submitNote: function() {
-        var sev = new Sail.Event('note_submitted', {
-            group_code:Sail.app.currentGroupCode,
-            note:('#MEETUP .note_content'),
-            tags:"this will be the array holding the tags that was sent from the agent earlier"
+        var sev = new Sail.Event('note', {
+            note:$('#meetup .meetup-text-entry').val(),
+            tags:Sail.app.tagsArray
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
@@ -1143,6 +1209,10 @@ var EvoRoom = {
         });
     },
 */
+    getCurrentStudentOrganisms: function() {
+        return JSON.parse(Sail.app.user_metadata['assigned_organisms']);
+    },
+    
     
     calculateYear: function() {
         if (Sail.app.rotation === 1) {
@@ -1163,7 +1233,7 @@ var EvoRoom = {
                 return "unknown time";
             }
         }
-        if (Sail.app.rotation === 2) {
+        else if (Sail.app.rotation === 2) {
             if (Sail.app.currentLocation === "station_a") {
                 return "25 mya";
             }
@@ -1180,6 +1250,10 @@ var EvoRoom = {
                 console.log("year or station strings are missing, can't calculate year");
                 return "unknown time";
             }
+        }
+        else {
+            console.log("rotation undefined, can't calculate year");
+            return "unknown time";
         }
     },
     
