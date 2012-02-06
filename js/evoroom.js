@@ -8,6 +8,7 @@ var EvoRoom = {
     assignedLocation: null,
     currentLocation: null,
     selectedOrganism: null,
+    tagsArray: null,
     
 /* ====================================== COLIN =================================== */
 //    assignedTopic: null,
@@ -76,16 +77,15 @@ var EvoRoom = {
             
             topic_assignment: function(ev) {
                 if (ev.payload.topic && ev.payload.tags) {
-                    Sail.app.higePageElements();
+                    Sail.app.hidePageElements();
                     $('#meetup .topic').text(ev.payload.topic);
-                    $('#meetup .tags').text(ev.payload.tags);
-                    $('#meetup').show();
+                    Sail.app.tagsArray = ev.payload.tags;
+                    $('#meetup-instructions').show();
                 }
                 else {
                     console.log("topic_assignment event received, but payload is incomplete or not for this user");
                 }
             }
-            // START HERE, NOT TESTED
             
 /*            start_step: function(ev) {
                 if (ev.payload.username && ev.payload.username === Sail.app.session.account.login) {
@@ -376,7 +376,11 @@ var EvoRoom = {
         $('#observe-organisms').hide();
         $('#is-organism-present').hide();
         $('#ancestor-information').hide();
+        $('#ancestor-information-details').hide();
         $('#choose-ancestor').hide();
+        
+        $('#meetup-instructions').hide();
+        $('#meetup').hide();
         
 /* ====================================== COLIN =================================== */
         
@@ -417,8 +421,8 @@ var EvoRoom = {
         $('#survey-organisms .first-organism-name').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
         $('#survey-organisms .second-organism-name').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_2));*/
         
-        $('#team-assignment .team-name').text(EvoRoom.user_metadata.group);
-        $('#team-assignment .team-members').text('team members, how do I get this from rollcall?');
+        $('#team-assignment .team-name').text(Sail.app.currentGroupCode);
+        $('#team-assignment .team-members').text('TODO');
         $('#organism-assignment .assigned-organism-1').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
         $('#organism-assignment .assigned-organism-2').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_2));
         $('#organism-assignment .assigned-organism-3').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_3));
@@ -453,8 +457,10 @@ var EvoRoom = {
         
         $('#team-assignment .small-button').click(function() {
             Sail.app.hidePageElements();
-            //$('#organism-assignment').show();
-            $('#observe-organisms-instructions').show();
+            $('#organism-assignment').show();
+            //$('#observe-organisms-instructions').show();
+            //$('#meetup-instructions').show();
+            // ARMIN: I switch these around for testing purposes... the first is the correct one
         });
         
         $('#go-to-location .big-button').click(function() {
@@ -490,10 +496,17 @@ var EvoRoom = {
             $('#is-organism-present .year').text(Sail.app.calculateYear());
             $('#ancestor-information .year').text(Sail.app.calculateYear());
             // fill in the student's assigned organisms
-            // TODO should be done with a foreach
+            
+            var table = $('.organism-table');
+            _.each(Sail.app.getCurrentStudentOrganisms(), function(org) {
+              table.append('<tr><td><img src="'+
+                // stuff here +
+                '"</td></tr>')
+            });
+            //$('#observe-organisms .button1').addClass(Sail.app.user_metadata.assigned_organism_1 TODO
+            
             $('#observe-organisms .organism1').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
             $('#observe-organisms .text1').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
-            //$('#observe-organisms .button1').addClass(Sail.app.user_metadata.assigned_organism_1 TODO
             $('#observe-organisms .organism2').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_2 + '_icon.png');
             $('#observe-organisms .text2').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_2));
             $('#observe-organisms .organism3').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_3 + '_icon.png');
@@ -551,10 +564,25 @@ var EvoRoom = {
             $('#choose-ancestor').show();
         });
         
+        $('#ancestor-information-details .small-button').click(function() {
+            Sail.app.hidePageElements();
+            $('#ancestor-information').show();
+        });
 
+
+/* ====================================== MEETUP =================================== */
+
+
+        $('#meetup-instructions .small-button').click(function() {
+            Sail.app.hidePageElements();
+            $('#meetup').show();
+        });
         
-/* ====================================== COLIN =================================== */
-
+        $('#meetup .small-button').click(function() {
+            Sail.app.hidePageElements();
+            Sail.app.submitNote();
+            $('#loading-page').show();
+        });
 /*
         $('#survey-welcome .big-button').click(function() {
             
@@ -895,10 +923,9 @@ var EvoRoom = {
 /* ====================================== COLIN =================================== */
     
     submitNote: function() {
-        var sev = new Sail.Event('note_submitted', {
-            group_code:Sail.app.currentGroupCode,
-            note:('#MEETUP .note_content'),
-            tags:"this will be the array holding the tags that was sent from the agent earlier"
+        var sev = new Sail.Event('note', {
+            note:$('#meetup .meetup-text-entry').val(),
+            tags:Sail.app.tagsArray
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
@@ -1122,6 +1149,21 @@ var EvoRoom = {
         });
     },
 */
+    getCurrentStudentOrganisms: function() {
+        var i = 0;
+        var org;
+        var studentOrgs = [];
+        while (true) {
+          i++;
+          organism = student.metadata['assigned_organism_'+i];
+          if (organism)
+            studentOrgs.push(organism);
+          else 
+            break;
+        }
+        return studentOrgs;
+    }
+    
     
     calculateYear: function() {
         if (Sail.app.rotation === 1) {

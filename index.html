@@ -144,7 +144,7 @@
                 <b>Time: </b><span class="year orange"></span>
             </div>
             <div class="content">
-                 <b>Instructions: </b>Choose an organism to begin.
+                <b>Instructions: </b>Choose an organism to begin.
             </div>
 
             <table class="organism-table">
@@ -186,7 +186,7 @@
                 <b>Time: </b><span class="year orange"></span>
             </div>
             <div class="content">
-                 <b>Organism: </b><span class="chosen-organism"></span>
+                <b>Organism: </b><span class="chosen-organism"></span>
             </div>
             <div class="organism-choice-box jquery-radios">
                 <p>Is the organism present here?<p>
@@ -202,7 +202,7 @@
                 <b>Time: </b><span class="year orange"></span>
             </div>
             <div class="content">
-                 <b>Organism: </b><span class="chosen-organism"></span>
+                <b>Organism: </b><span class="chosen-organism"></span>
             </div>
             <p>
                 Which of the following is most likely the organism&#146;s ancestor? Click on each organism to read more about it. Click &#146;Next&#146; you are ready to answer the question.
@@ -233,6 +233,20 @@
             </table>
             
             <button class="small-button"><b>Next</b></button>
+        </div>
+        
+        <div id="ancestor-information-details" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Time: </b><span class="year orange"></span>
+            </div>
+            <div class="content">
+                <b>Organism: </b><span class="chosen-organism"></span>
+            </div>
+            <div class="ancestor-content">
+                <b>Description: </b><span class="ancestor-description"></span>
+            </div>
+            
+            <button class="small-button"><b>Back</b></button>
         </div>
         
         <div id="choose-ancestor" class="full-text-box" style="display:none">
@@ -275,13 +289,30 @@
 
 <!-- ***********************************************MEETUP**************************************************** -->
         
-        <div id="meetup" class="full-text-box" style="display:none">
-            <div class="title"><b>Location: </b><span class="current-rainforest"></span></div>
-            <div><b>TOPIC:</b><span class="topic"></span></div>
+        <div id="meetup-instructions" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Instructions: </b>
+                <span class="rotation1">You and your team members have just completed a survey of the organisms at 200, 150, 100, and 50 mya. Your task now is to review this information together.</span>
+                
+                <!-- use show/hide in the js based on rotation 1 or 2
+                <span class="rotation2">You and your team members have just completed a survey of the organisms at 25, 10, 5, and 2 mya. Your task now is to review this information together.</span> -->
+            </div>
             
             <button class="small-button"><b>Done</b></button>
         </div>
-
+        
+        <div id="meetup" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Instructions: </b>
+                Review the cladogram at the front of the room and discuss the following question with your team members. Record your answer below.
+            </div>
+            <br/>
+            <div class="topic"></div>
+            
+            <textarea class="meetup-text-entry"></textarea>
+            
+            <button class="small-button"><b>Done</b></button>
+        </div>
         
 <!--    
         <div id="survey-welcome" class="full-text-box" style="display:none">

@@ -100,14 +100,17 @@
 }
 
 .organism-table {
-
     margin-top: 30px;
     width: 510px;
     height: 500px; /* TODO isn't going to work with 5+*/
+    border-collapse: collapse;
+}
+
+.organism-table td {
+    border: 1px dotted #949494;
 }
 
 .organism-boxes {
-    border: 1px dotted black;
     text-align: center;
 }
 
@@ -133,7 +136,7 @@
     right: 50px;
 }
 
-#student-chosen-organisms .chosen-organism {
+#student-chosen-organisms .chosen-organism-image {
     width: 300px;
     height: 300px;
 }
@@ -143,7 +146,12 @@
     text-align: center;
 }
 
-
+#meetup .meetup-text-entry {
+    margin-top: 25px;
+    width: 510px;
+    height: 330px;
+    font-size: 24px;
+}
 
 
 
