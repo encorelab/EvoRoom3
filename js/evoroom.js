@@ -4,12 +4,11 @@
 var EvoRoom = {
     user_metadata: null,
     rotation: null,
-    currentGroupCode: null,
+    currentTeam: null,
     assignedLocation: null,
     currentLocation: null,
     selectedOrganism: null,
     tagsArray: null,
-    currentTime: null,
 
     
 /* ====================================== COLIN =================================== */
@@ -294,7 +293,7 @@ var EvoRoom = {
 
         connected: function(ev) {
             Sail.app.rollcall.request(Sail.app.rollcall.url + "/users/"+Sail.app.session.account.login+".json", "GET", {}, function(data) {
-                EvoRoom.currentGroupCode = data.user.groups[0].name;
+                EvoRoom.currentTeam = data.user.groups[0].name;
                 EvoRoom.user_metadata = data.user.metadata;
                 
                 // try to fill rotation from metadata
@@ -309,7 +308,7 @@ var EvoRoom = {
         unauthenticated: function(ev) {
             EvoRoom.user_metadata = null;
             EvoRoom.rotation = null;
-            EvoRoom.currentGroupCode = null;
+            EvoRoom.currentTeam = null;
             EvoRoom.assignedLocation = null;
             EvoRoom.currentLocation = null;
             
@@ -421,18 +420,19 @@ var EvoRoom = {
         // set up display of group members on 'team assignment' page
         var i = 0;
         var groupMember;
-        Sail.app.rollcall.request(Sail.app.rollcall.url + "/groups/" + Sail.app.currentGroupCode + ".json", "GET", {}, function(data) {
+        Sail.app.rollcall.request(Sail.app.rollcall.url + "/groups/" + Sail.app.currentTeam + ".json", "GET", {}, function(data) {
             while (true) {
                 groupMember = data.group.members[i].user.display_name;
-                if (groupMember)
+                if (groupMember) {
                     $('#team-assignment .member'+i).text(groupMember);
-                else 
+                } else { 
                     break;
+                }
                 i++;
             }
         });
         // set up display of team name on 'team assignment' page
-        $('#team-assignment .team-name').text(Sail.app.currentGroupCode);
+        $('#team-assignment .team-name').text(Sail.app.currentTeam);
         
         // set up display of organisms on 'organism assignment' page
         var j = 0;
@@ -520,8 +520,8 @@ var EvoRoom = {
         
         $('#team-assignment .small-button').click(function() {
             Sail.app.hidePageElements();
-            $('#organism-assignment').show();
-            //$('#observe-organisms-instructions').show();
+            //$('#organism-assignment').show();
+            $('#observe-organisms-instructions').show();
             //$('#meetup-instructions').show();
             // I switch these around for testing purposes... the first one is the 'correct' one
         });
@@ -939,7 +939,7 @@ var EvoRoom = {
 
     submitCheckIn: function() {
         var sev = new Sail.Event('check_in', {
-            group_code:Sail.app.currentGroupCode,
+            team_name:Sail.app.currentTeam,
             location:Sail.app.currentLocation
         });
         
@@ -968,13 +968,12 @@ var EvoRoom = {
     },
 
     submitOrgansimObserved: function(observedOrganism, assignedOrganism) {
-        Sail.app.currentTime = Sail.app.calculateYear();
         var sev = new Sail.Event('organism_observation', {
-            team_name:"Team name to fill in",              // TODO Sail.app.user_metadata
+            team_name:Sail.app.currentTeam,
             assigned_organism:assignedOrganism,
             observed_organism:observedOrganism,
-            location:Sail.app.currentLocation,
-            time:Sail.app.currentTime,
+            location:EvoRoom.currentLocation,
+            time:Sail.app.calculateYear()
         });
         Sail.app.groupchat.sendEvent(sev);
     },
