@@ -12,8 +12,8 @@ var EvoRoom = {
 
     
 /* ====================================== COLIN =================================== */
-//    assignedTopic: null,
-//    currentRainforest: false,
+
+    ancestors: {"proboscis_monkey":["ant","civet","fig_wasp"]},              // TODO fill this in, useing real data
     
 //    currentLocation: false,
 //    organismsRainforestsCompleted: false,
@@ -518,8 +518,8 @@ var EvoRoom = {
         
         $('#team-assignment .small-button').click(function() {
             Sail.app.hidePageElements();
-            //$('#organism-assignment').show();
-            $('#observe-organisms-instructions').show();
+            $('#organism-assignment').show();
+            //$('#observe-organisms-instructions').show();
             //$('#meetup-instructions').show();
             // I switch these around for testing purposes... the first one is the 'correct' one
         });
@@ -559,21 +559,15 @@ var EvoRoom = {
             $('#observe-organisms').show();
         });
         
-        $('#observe-organisms .organism-table-button').click(function() {
+/*        $('#observe-organisms .organism-table-button').click(function() {
             Sail.app.hidePageElements();
             
-            // TODO fix this up
-            // populate the image in the top right corner, set as selectedOrganism
-/*            var tempString = this.nextSibling.getClass();
-            console.log("its coming..................................")
-            console.log(tempString);
-            Sail.app.selectedOrganism = "ant"//Sail.app.getCurrentStudentOrganisms()[some integer];
-*/            $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
+            $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
             $('#student-chosen-organisms').show();
             $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
             $('#is-organism-present').show();
         });
-        
+*/        
         // on-click listeners for rainforest QR scanning error resolution
         $('#observe-organisms .small-button').click(function() {
             Sail.app.hidePageElements();
@@ -585,7 +579,6 @@ var EvoRoom = {
 
             if ($('#org-choice-yes').is(':checked')) {
                 $('#student-chosen-organisms').hide();
-                // TODO grey out the organism that is already done on #observe-organisms
                 
                 // both params are the same in this case
                 Sail.app.submitOrgansimObserved(Sail.app.selectedOrganism, Sail.app.selectedOrganism);
