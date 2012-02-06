@@ -8,6 +8,7 @@ var EvoRoom = {
     assignedLocation: null,
     currentLocation: null,
     selectedOrganism: null,
+    currentTime: null,
     
 /* ====================================== COLIN =================================== */
 //    assignedTopic: null,
@@ -30,7 +31,7 @@ var EvoRoom = {
             rotation_start: function(ev) {
                 if (ev.payload.rotation) {
                     // show the question assigned to this student
-                    if (ev.payload.rotation === "1" || ev.payload.rotation === "2") {
+                    if (ev.payload.rotation === 1 || ev.payload.rotation === 2) {
                         EvoRoom.rotation = ev.payload.rotation;
                         console.log("rotation " + EvoRoom.rotation);
                         
@@ -75,10 +76,17 @@ var EvoRoom = {
 /* ====================================== COLIN =================================== */
             
             topic_assignment: function(ev) {
-                if (ev.payload.topic && ev.payload.tags) {
-                    Sail.app.higePageElements();
+                if (ev.payload.topic && ev.payload.tags && ev.payload.username === Sail.app.session.account.login) {
+                    var tag_string = "";
+                    Sail.app.hidePageElements();
                     $('#meetup .topic').text(ev.payload.topic);
-                    $('#meetup .tags').text(ev.payload.tags);
+// TODO: I don't think this works 1) no target 2) array has to be transformed into text
+                    //$('#meetup .tags').data('tags');
+                    //$('#meetup .tags').text(ev.payload.tags);
+                    _.each(ev.payload.tags, function(tag){
+                        tag_string += (tag + " ");
+                    });
+                    $('#meetup .tags').text(tag_string);
                     $('#meetup').show();
                 }
                 else {
@@ -296,7 +304,7 @@ var EvoRoom = {
                 EvoRoom.user_metadata = data.user.metadata;
                 
                 // try to fill rotation from metadata
-                EvoRoom.rotation = data.user.metadata.current_rotation;
+                EvoRoom.rotation = parseInt(data.user.metadata.current_rotation, 10);
                 
                 console.log('metadata assigned');
                 EvoRoom.setupPageLayout();
@@ -454,7 +462,7 @@ var EvoRoom = {
         $('#team-assignment .small-button').click(function() {
             Sail.app.hidePageElements();
             //$('#organism-assignment').show();
-            $('#observe-organisms-instructions').show();
+            $('#organism-assignment').show();
         });
         
         $('#go-to-location .big-button').click(function() {
@@ -841,7 +849,20 @@ var EvoRoom = {
         } else if (Sail.app.user_metadata.state === 'IN_ROOM') {
             // show the wait for teacher thing
             $('#team-assignment').show();
-        } 
+        } else if (Sail.app.user_metadata.state === 'IN_ROTATION') {
+            // show the wait for teacher thing
+            $('#loading-page').show();
+        } else if (Sail.app.user_metadata.state === 'GOING_TO_ASSIGNED_LOCATION') {
+            // retrieve the assigned location to make UI work correctly
+            EvoRoom.assignedLocation = Sail.app.user_metadata.currently_assigned_location;
+            $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedLocation));
+            // show screen to scan in location
+            $('#go-to-location').show();
+        } else if (Sail.app.user_metadata.state === 'OBSERVING_IN_ROTATION') {
+            // retrieve the assigned location to make UI work correctly
+            EvoRoom.currentLocation = Sail.app.user_metadata.currently_assigned_location;
+            $('#observe-organisms-instructions').show();
+        }
         else {
             console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
         }
@@ -880,7 +901,7 @@ var EvoRoom = {
     },
 
     submitOrgansimObserved: function(observedOrganism, assignedOrganism) {
-        currentTime = Sail.app.calculateYear();
+        Sail.app.currentTime = Sail.app.calculateYear();
         var sev = new Sail.Event('organism_observation', {
             team_name:"Team name to fill in",              // TODO Sail.app.user_metadata
             assigned_organism:assignedOrganism,
