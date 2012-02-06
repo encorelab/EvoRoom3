@@ -12,8 +12,8 @@ var EvoRoom = {
 
     
 /* ====================================== COLIN =================================== */
-//    assignedTopic: null,
-//    currentRainforest: false,
+
+    ancestors: {"proboscis_monkey":["ant","civet","fig_wasp"]},              // TODO fill this in, useing real data
     
 //    currentLocation: false,
 //    organismsRainforestsCompleted: false,
@@ -459,25 +459,11 @@ var EvoRoom = {
             }
         });
         
-        // set up the year on each page that needs it
-        $('#observe-organisms .year').text(Sail.app.calculateYear());
-        $('#is-organism-present .year').text(Sail.app.calculateYear());
-        $('#ancestor-information .year').text(Sail.app.calculateYear());
         // fill in the student's assigned organisms
-        
-        // show and fill the table <td>s as necessary
-        //var table = $('.organism-table');
-/*        var k = 0;
-        while (k < Sail.app.getCurrentStudentOrganisms().length) {
-            k++;
-            //table.append('<tr><td><img src=/images/' + Sail.app.getCurrentStudentOrganisms()[k] + '_icon.png></td></tr>');
-            $('#observe-organisms .organism'+k).attr('src', '/images/' + Sail.app.getCurrentStudentOrganisms()[k-1] + '_icon.png');
-            $('#observe-organisms .text'+k).text(Sail.app.formatOrganismString(Sail.app.getCurrentStudentOrganisms()[k-1]));
-            $('#observe-organisms .box'+k).show();
-        }
-*/      // START HERE (FIX THE td/tr issue, ABSTRACT AWAY?)
+        // ABSTRACT AWAY?
         var table = $('.organism-table');
         var k = 0;
+        var tr;
         _.each(EvoRoom.getCurrentStudentOrganisms(), function(org) {
             k++;
             var img = $('<img />');
@@ -487,9 +473,15 @@ var EvoRoom = {
             img.addClass('organism-image');
             img.click(function() { 
                 Sail.app.selectedOrganism = $(this).data('organism');
+                
+                // populate the top right corner image
                 $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
                 $('#student-chosen-organisms').show();
                 $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
+                
+                // disable the button out after it's clicked
+                $(this).addClass('faded');
+                $(this).unbind("click");
                 $('#is-organism-present').show();
             });
             
@@ -497,17 +489,23 @@ var EvoRoom = {
             td.addClass('organism-boxes');
             td.addClass('box'+k);
             
-            if (k === 1 || k === 3 || k === 5) {
-                var tr = $('<tr />');
-                td.append(img);
-                tr.append(td);
+            td.append(img);
+            
+            if (k%2 !== 0) {
+                tr = $('<tr />');
+            }
+            
+            tr.append(td);
+            
+            if (k%2 === 0) {
                 table.append(tr);
             }
-            else {
-                td.append(img);
-                table.append(td);
-            }
         });
+        if (k%2 !== 0) {
+            table.append(tr);
+        }
+        
+        //*****************************************************************************************
         
         // register on-click listeners for room QR code scanning error resolution
         $('#room-scan-failure .big-button').click(function() {
@@ -556,26 +554,23 @@ var EvoRoom = {
         $('#observe-organisms-instructions .small-button').click(function() {
             Sail.app.hidePageElements();
             
-            Sail.app.currentLocation = "station_a"; // TODO remove this when location_assignment is working
+            // set up the year on each page that needs it
+            $('#observe-organisms .year').text(Sail.app.calculateYear());
+            $('#is-organism-present .year').text(Sail.app.calculateYear());
+            $('#ancestor-information .year').text(Sail.app.calculateYear());
 
             $('#observe-organisms').show();
         });
         
-        $('#observe-organisms .organism-table-button').click(function() {
+/*        $('#observe-organisms .organism-table-button').click(function() {
             Sail.app.hidePageElements();
             
-            // TODO fix this up
-            // populate the image in the top right corner, set as selectedOrganism
-/*            var tempString = this.nextSibling.getClass();
-            console.log("its coming..................................")
-            console.log(tempString);
-            Sail.app.selectedOrganism = "ant"//Sail.app.getCurrentStudentOrganisms()[some integer];
-*/            $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
+            $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
             $('#student-chosen-organisms').show();
             $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
             $('#is-organism-present').show();
         });
-        
+*/        
         // on-click listeners for rainforest QR scanning error resolution
         $('#observe-organisms .small-button').click(function() {
             Sail.app.hidePageElements();
@@ -587,7 +582,6 @@ var EvoRoom = {
 
             if ($('#org-choice-yes').is(':checked')) {
                 $('#student-chosen-organisms').hide();
-                // TODO grey out the organism that is already done on #observe-organisms
                 
                 // both params are the same in this case
                 Sail.app.submitOrgansimObserved(Sail.app.selectedOrganism, Sail.app.selectedOrganism);
