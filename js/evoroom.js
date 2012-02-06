@@ -298,6 +298,9 @@ var EvoRoom = {
                 
                 // try to fill rotation from metadata
                 EvoRoom.rotation = parseInt(data.user.metadata.current_rotation, 10);
+                // fill the location variables
+                EvoRoom.currentLocation = Sail.app.user_metadata.currently_assigned_location;
+                EvoRoom.assignedLocation = Sail.app.user_metadata.current_location;
                 
                 console.log('metadata assigned');
                 EvoRoom.setupPageLayout();
@@ -520,8 +523,8 @@ var EvoRoom = {
         
         $('#team-assignment .small-button').click(function() {
             Sail.app.hidePageElements();
-            //$('#organism-assignment').show();
-            $('#observe-organisms-instructions').show();
+            $('#organism-assignment').show();
+            //$('#observe-organisms-instructions').show();
             //$('#meetup-instructions').show();
             // I switch these around for testing purposes... the first one is the 'correct' one
         });
@@ -920,14 +923,10 @@ var EvoRoom = {
             // show the wait for teacher thing
             $('#loading-page').show();
         } else if (Sail.app.user_metadata.state === 'GOING_TO_ASSIGNED_LOCATION') {
-            // retrieve the assigned location to make UI work correctly
-            EvoRoom.assignedLocation = Sail.app.user_metadata.currently_assigned_location;
             $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedLocation));
             // show screen to scan in location
             $('#go-to-location').show();
         } else if (Sail.app.user_metadata.state === 'OBSERVING_IN_ROTATION') {
-            // retrieve the assigned location to make UI work correctly
-            EvoRoom.currentLocation = Sail.app.user_metadata.currently_assigned_location;
             $('#observe-organisms-instructions').show();
         }
         else {
