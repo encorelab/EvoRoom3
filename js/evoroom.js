@@ -78,10 +78,7 @@ var EvoRoom = {
                     console.log("location_assignment event received, but payload is incomplete or not for this user");
                 }
             },
-            
-            
-/* ====================================== COLIN =================================== */
-            
+                       
             topic_assignment: function(ev) {
                 if (ev.payload.topic && ev.payload.tags && ev.payload.username === Sail.app.session.account.login) {
                     Sail.app.hidePageElements();
@@ -91,6 +88,16 @@ var EvoRoom = {
                 }
                 else {
                     console.log("topic_assignment event received, but payload is incomplete or not for this user");
+                }
+            },
+            
+            homework_assignment: function(ev) {
+                if (ev.payload) {
+                    Sail.app.hidePageElements();
+                    $('#day1-complete').show();
+                }
+                else {
+                    console.log("homework_assignment event received, but payload is incomplete or not for this user");
                 }
             }
         },
@@ -196,6 +203,7 @@ var EvoRoom = {
         $('#ancestor-information-details').hide();
         $('#choose-ancestor').hide();
         $('#team-meeting').hide();
+        $('#day1-complete').hide();
         
         $('#meetup-instructions').hide();
         $('#meetup').hide();
@@ -396,6 +404,16 @@ var EvoRoom = {
             $('#loading-page').show();
         } else if (Sail.app.user_metadata.state === 'WAITING_FOR_MEETUP_TOPIC') {
             $('#team-meeting').show();
+        } else if (Sail.app.user_metadata.state === 'MEETUP_TOPIC_ASSIGNED') {
+            if (Sail.app.user_metadata.topic && Sail.app.user_metadata.tags) {
+                $('#meetup .topic').text(Sail.app.user_metadata.topic);
+                Sail.app.tagsArray = Sail.app.user_metadata.tags;
+                // show the meetup page
+                $('#meetup-instructions').show();
+            } else {
+                console.warn('restoreState: state MEETUP_TOPIC_ASSIGNED but either topic or tags was empty');
+                alert('restoreState: state MEETUP_TOPIC_ASSIGNED but either topic or tags was empty');
+            }
         }
         else {
             console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
