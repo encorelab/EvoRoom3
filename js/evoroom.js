@@ -202,20 +202,20 @@ var EvoRoom = {
     },
 
     setupPageLayout: function() {
-        // there's still an issue with this (loops one too many times, throws an exception, doesn't break anything)
-        // set up display of group members on 'team assignment' page
-        var i = 0;
-        var groupMember;
+        // using each() now to iterate over the members and creating div's on the fly
         Sail.app.rollcall.request(Sail.app.rollcall.url + "/groups/" + Sail.app.currentTeam + ".json", "GET", {}, function(data) {
-            while (true) {
-                groupMember = data.group.members[i].user.display_name;
-                if (groupMember) {
-                    $('#team-assignment .member'+i).text(groupMember);
-                } else { 
-                    break;
-                }
-                i++;
-            }
+            _.each(data.group.members, function(member) {
+                // create a new div object
+                var memberDiv = $('<div />');
+                // assign the needed classes
+                memberDiv.addClass('team-members');
+                memberDiv.addClass('orange');
+                memberDiv.addClass('indent');
+                // insert the username to be displayed
+                memberDiv.text(member.user.display_name);
+                // add the div to the members div
+                $('#team-assignment .members').append(memberDiv);
+            });
         });
         // set up display of team name on 'team assignment' page
         $('#team-assignment .team-name').text(Sail.app.currentTeam);
@@ -299,7 +299,7 @@ var EvoRoom = {
             $('#choose-ancestor .year').text(Sail.app.calculateYear());
             
             // set up organism table for next screen
-            Sail.app.setUpOrganismTable();
+            Sail.app.setupOrganismTable();
 
             $('#observe-organisms').show();
         });
@@ -663,8 +663,10 @@ var EvoRoom = {
     
     //**************FUNCTIONS TO CREATE AND FILL TABLES************************************************
 
-    setUpOrganismTable: function() {
+    setupOrganismTable: function() {
         var table = $('.observe-organism-table');
+        table.html('');
+
         var k = 0;
         var tr;
         _.each(EvoRoom.getCurrentStudentOrganisms(), function(org) {
