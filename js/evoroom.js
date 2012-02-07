@@ -203,15 +203,15 @@ var EvoRoom = {
         var i = 0;
         var groupMember;
         Sail.app.rollcall.request(Sail.app.rollcall.url + "/groups/" + Sail.app.currentTeam + ".json", "GET", {}, function(data) {
-            while (true) {
-                groupMember = data.group.members[i].user.display_name;
-                if (groupMember) {
-                    $('#team-assignment .member'+i).text(groupMember);
-                } else { 
-                    break;
-                }
-                i++;
-            }
+            _.each(data.group.members, function(member) {
+                var memberDiv = $('<div />');
+                memberDiv.addClass('team-members');
+                memberDiv.addClass('orange');
+                memberDiv.addClass('indent');
+                memberDiv.text(member.user.display_name);
+                
+                $('#team-assignment .members').append(memberDiv);
+            });
         });
         // set up display of team name on 'team assignment' page
         $('#team-assignment .team-name').text(Sail.app.currentTeam);
