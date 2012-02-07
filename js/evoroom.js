@@ -9,10 +9,23 @@ var EvoRoom = {
     currentLocation: null,
     selectedOrganism: null,
     tagsArray: null,
-    
+
+
 /* ====================================== COLIN =================================== */
 
     ancestors: {"proboscis_monkey":["ant","civet","fig_wasp"]},              // TODO fill this in, useing real data
+
+//    currentLocation: false,
+//    organismsRainforestsCompleted: false,
+//    firstRainforestAssigned: false,
+//    targetRainforest: null,
+//    rotationRainforestsCompleted: false,
+//    firstInterview: false,
+//    secondInterview: false,
+//    rationaleAssigned: null,
+    
+/* ====================================== COLIN =================================== */
+
     rollcallURL: '/rollcall',
 
     events: {
@@ -225,54 +238,6 @@ var EvoRoom = {
             }
         });
         
-        // fill in the student's assigned organisms
-        // ABSTRACT AWAY?
-        var table = $('.organism-table');
-        var k = 0;
-        var tr;
-        _.each(EvoRoom.getCurrentStudentOrganisms(), function(org) {
-            k++;
-            var img = $('<img />');
-            img.data('organism', org);
-            img.attr('src', '/images/' + org + '_icon.png');
-            img.addClass('organism'+k);
-            img.addClass('organism-image');
-            img.click(function() { 
-                Sail.app.selectedOrganism = $(this).data('organism');
-                
-                // populate the top right corner image
-                $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
-                $('#student-chosen-organisms').show();
-                $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
-                
-                // disable the button out after it's clicked
-                $(this).addClass('faded');
-                $(this).unbind("click");
-                $('#is-organism-present').show();
-            });
-            
-            var td = $('<td />');
-            td.addClass('organism-boxes');
-            td.addClass('box'+k);
-            
-            td.append(img);
-            
-            if (k%2 !== 0) {
-                tr = $('<tr />');
-            }
-            
-            tr.append(td);
-            
-            if (k%2 === 0) {
-                table.append(tr);
-            }
-        });
-        if (k%2 !== 0) {
-            table.append(tr);
-        }
-        
-        //*****************************************************************************************
-        
         // register on-click listeners for room QR code scanning error resolution
         $('#room-scan-failure .big-button').click(function() {
             // hide everything
@@ -287,8 +252,8 @@ var EvoRoom = {
         
         $('#team-assignment .small-button').click(function() {
             Sail.app.hidePageElements();
-            $('#organism-assignment').show();
-            //$('#observe-organisms-instructions').show();
+            //$('#organism-assignment').show();
+            $('#observe-organisms-instructions').show();
             //$('#meetup-instructions').show();
             // I switch these around for testing purposes... the first one is the 'correct' one
         });
@@ -324,6 +289,9 @@ var EvoRoom = {
             $('#observe-organisms .year').text(Sail.app.calculateYear());
             $('#is-organism-present .year').text(Sail.app.calculateYear());
             $('#ancestor-information .year').text(Sail.app.calculateYear());
+            
+            // set up organism table for next screen
+            Sail.app.setUpOrganismTable();
 
             $('#observe-organisms').show();
         });
@@ -535,13 +503,10 @@ var EvoRoom = {
         $('#final-picks-debrief').show();
     },
     
-/* ====================================== COLIN =================================== */
     
-
     getCurrentStudentOrganisms: function() {
         return JSON.parse(Sail.app.user_metadata['assigned_organisms']);
     },
-    
     
     calculateYear: function() {
         if (Sail.app.rotation === 1) {
@@ -682,5 +647,55 @@ var EvoRoom = {
         } else {
             return "unknown animal";
         }
+    },
+    
+    //**************FUNCTIONS TO CREATE AND FILL TABLES************************************************
+
+    setUpOrganismTable: function() {
+        var table = $('.organism-table');
+        var k = 0;
+        var tr;
+        _.each(EvoRoom.getCurrentStudentOrganisms(), function(org) {
+            k++;
+            var img = $('<img />');
+            img.data('organism', org);
+            img.attr('src', '/images/' + org + '_icon.png');
+            img.addClass('organism'+k);
+            img.addClass('organism-image');
+            img.click(function() { 
+                Sail.app.selectedOrganism = $(this).data('organism');
+                
+                // populate the top right corner image
+                $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
+                $('#student-chosen-organisms').show();
+                $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
+                
+                // disable the button out after it's clicked
+                $(this).addClass('faded');
+                $(this).unbind("click");
+                $('#is-organism-present').show();
+            });
+            
+            var td = $('<td />');
+            td.addClass('organism-boxes');
+            td.addClass('box'+k);
+            
+            td.append(img);
+            
+            if (k%2 !== 0) {
+                tr = $('<tr />');
+            }
+            
+            tr.append(td);
+            
+            if (k%2 === 0) {
+                table.append(tr);
+            }
+        });
+        if (k%2 !== 0) {
+            table.append(tr);
+        }
     }
+
+
 };
