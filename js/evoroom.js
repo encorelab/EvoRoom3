@@ -11,24 +11,12 @@ var EvoRoom = {
     buttonRevealCounter: 0,
     tagsArray: null, // kill this?
 
-
     ancestors: {
         "proboscis_monkey":["ant","civet","fig_wasp","rafflesia"],
         "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","rafflesia"],
         "muellers_gibbon":["civet","fig_wasp","white_fronted_langur","rafflesia"]
         },              // TODO fill this in, using real data, each must end with none_of_the_above, or whatever the png ends up being called 
 
-
-//    currentLocation: false,
-//    organismsRainforestsCompleted: false,
-//    firstRainforestAssigned: false,
-//    targetRainforest: null,
-//    rotationRainforestsCompleted: false,
-//    firstInterview: false,
-//    secondInterview: false,
-//    rationaleAssigned: null,
-    
-/* ====================================== COLIN =================================== */
 
     rollcallURL: '/rollcall',
 
