@@ -252,8 +252,8 @@ var EvoRoom = {
         
         $('#team-assignment .small-button').click(function() {
             Sail.app.hidePageElements();
-            //$('#organism-assignment').show();
-            $('#observe-organisms-instructions').show();
+            $('#organism-assignment').show();
+            //$('#observe-organisms-instructions').show();
             //$('#meetup-instructions').show();
             // I switch these around for testing purposes... the first one is the 'correct' one
         });
@@ -291,7 +291,7 @@ var EvoRoom = {
             $('#ancestor-information .year').text(Sail.app.calculateYear());
             
             // set up organism table for next screen
-            Sail.app.setUpOrganismTable();
+            Sail.app.setupOrganismTable();
 
             $('#observe-organisms').show();
         });
@@ -654,8 +654,9 @@ var EvoRoom = {
     
     //**************FUNCTIONS TO CREATE AND FILL TABLES************************************************
 
-    setUpOrganismTable: function() {
+    setupOrganismTable: function() {
         var table = $('.organism-table');
+        table.html('');
         var k = 0;
         var tr;
         _.each(EvoRoom.getCurrentStudentOrganisms(), function(org) {
