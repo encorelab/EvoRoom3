@@ -359,6 +359,9 @@ var EvoRoom = {
         $('#meetup .small-button').click(function() {
             Sail.app.hidePageElements();
             Sail.app.submitNote();
+            
+            // clear text in preparation for rotation 2
+            $('#meetup .meetup-text-entry').val('');
             $('#loading-page').show();
         });
     },
