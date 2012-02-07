@@ -8,12 +8,16 @@ var EvoRoom = {
     assignedLocation: null,
     currentLocation: null,
     selectedOrganism: null,
-    tagsArray: null,
+    buttonRevealCounter: 0,
+    tagsArray: null, // kill this?
 
 
-/* ====================================== COLIN =================================== */
+    ancestors: {
+        "proboscis_monkey":["ant","civet","fig_wasp","rafflesia"],
+        "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","rafflesia"],
+        "muellers_gibbon":["civet","fig_wasp","white_fronted_langur","rafflesia"]
+        },              // TODO fill this in, using real data, each must end with none_of_the_above, or whatever the png ends up being called 
 
-    ancestors: {"proboscis_monkey":["ant","civet","fig_wasp"]},              // TODO fill this in, useing real data
 
 //    currentLocation: false,
 //    organismsRainforestsCompleted: false,
@@ -252,9 +256,11 @@ var EvoRoom = {
         
         $('#team-assignment .small-button').click(function() {
             Sail.app.hidePageElements();
-            //$('#organism-assignment').show();
-            $('#observe-organisms-instructions').show();
+            $('#organism-assignment').show();
+            //$('#observe-organisms-instructions').show();
             //$('#meetup-instructions').show();
+            //Sail.app.currentLocation = "station_a"; // only for testing... REMOVE
+            //Sail.app.rotation = 1;
             // I switch these around for testing purposes... the first one is the 'correct' one
         });
         
@@ -289,6 +295,8 @@ var EvoRoom = {
             $('#observe-organisms .year').text(Sail.app.calculateYear());
             $('#is-organism-present .year').text(Sail.app.calculateYear());
             $('#ancestor-information .year').text(Sail.app.calculateYear());
+            $('#ancestor-information-details .year').text(Sail.app.calculateYear());
+            $('#choose-ancestor .year').text(Sail.app.calculateYear());
             
             // set up organism table for next screen
             Sail.app.setUpOrganismTable();
@@ -318,7 +326,7 @@ var EvoRoom = {
                 $('#student-chosen-organisms').hide();
                 
                 // both params are the same in this case
-                Sail.app.submitOrgansimObserved(Sail.app.selectedOrganism, Sail.app.selectedOrganism);
+                Sail.app.submitOrganismObservation(Sail.app.selectedOrganism, Sail.app.selectedOrganism);
                 // clear radio buttons
                 $('input:radio').prop('checked', false);
                 $('#is-organism-present .radio').button('refresh');
@@ -330,15 +338,17 @@ var EvoRoom = {
                 $('input:radio').prop('checked', false);
                 $('#is-organism-present .radio').button('refresh');
                 
-                // TODO make this dynamic, for each etc
-                $('#observe-organisms .organism1').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
-                $('#observe-organisms .text1').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
+                //$('#observe-organisms .organism1').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
+                //$('#observe-organisms .text1').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
+                // TODO what is this stuff above... also make the below dynamic
+                Sail.app.setupAncestorTable(Sail.app.selectedOrganism, "partial");
                 $('#ancestor-information').show();
             }
         });
         
         $('#ancestor-information .small-button').click(function() {
             Sail.app.hidePageElements();
+            Sail.app.setupAncestorTable(Sail.app.selectedOrganism, "full");
             $('#choose-ancestor').show();
         });
         
@@ -346,7 +356,6 @@ var EvoRoom = {
             Sail.app.hidePageElements();
             $('#ancestor-information').show();
         });
-
 
 /* ====================================== MEETUP =================================== */
 
@@ -426,7 +435,7 @@ var EvoRoom = {
         Sail.app.groupchat.sendEvent(sev);
     },
 
-    submitOrgansimObserved: function(observedOrganism, assignedOrganism) {
+    submitOrganismObservation: function(observedOrganism, assignedOrganism) {
         var sev = new Sail.Event('organism_observation', {
             team_name:Sail.app.currentTeam,
             assigned_organism:assignedOrganism,
@@ -655,7 +664,7 @@ var EvoRoom = {
     //**************FUNCTIONS TO CREATE AND FILL TABLES************************************************
 
     setUpOrganismTable: function() {
-        var table = $('.organism-table');
+        var table = $('.observe-organism-table');
         var k = 0;
         var tr;
         _.each(EvoRoom.getCurrentStudentOrganisms(), function(org) {
@@ -666,6 +675,7 @@ var EvoRoom = {
             img.addClass('organism'+k);
             img.addClass('organism-image');
             img.click(function() { 
+                Sail.app.hidePageElements();
                 Sail.app.selectedOrganism = $(this).data('organism');
                 
                 // populate the top right corner image
@@ -673,9 +683,15 @@ var EvoRoom = {
                 $('#student-chosen-organisms').show();
                 $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
                 
-                // disable the button out after it's clicked
+                // disable the button out after it's clicked, and add to the button reveal counter
                 $(this).addClass('faded');
                 $(this).unbind("click");
+
+                Sail.app.buttonRevealCounter++;
+                if (Sail.app.buttonRevealCounter >= EvoRoom.getCurrentStudentOrganisms().length) {
+                    $('#observe-organisms .small-button').show();
+                }
+                
                 $('#is-organism-present').show();
             });
             
@@ -698,7 +714,83 @@ var EvoRoom = {
         if (k%2 !== 0) {
             table.append(tr);
         }
-    }
+    },
+    
+    setupAncestorTable: function(animal, selector) {
+        var k = 0;
+        var tr;
+        var table;
+        var ancestorChosenString = null;
+        
+        // for the first ancestor table
+        if (selector === "partial") {
+            $('.ancestor-information-table').html('');
+            table = $('.ancestor-information-table');
+        }
+        // for the second ancestor table
+        else if (selector === "full") {
+            $('.choose-ancestor-table').html('');
+            table = $('.choose-ancestor-table');
+        }
+        else {
+            console.log('error creating ancestor tables - missing selector');
+        }
+            
+        _.each(Sail.app.ancestors[animal], function(org) {
+            k++;
+            var img = $('<img />');
+            img.data('organism', org);
+            img.attr('src', '/images/' + org + '_icon.png');
+            img.addClass('organism'+k);
+            img.addClass('organism-image');
+            var td = $('<td />');
+            td.addClass('organism-boxes');
+            td.addClass('box'+k);
+            
+            
+            // for the first ancestor table
+            if (selector === "partial") {
+                img.click(function() { 
+                    ancestorChosenString = $(this).data('organism');
+                    Sail.app.hidePageElements();
+                    
+                    $('#ancestor-information-details .chosen-organism').text(Sail.app.formatOrganismString(ancestorChosenString));
+                    $('#ancestor-information-details .ancestor-description').text('Where are we going to pull this stuff from?');
+                    $('#ancestor-information-details').show();
+                });
+            }
+            // for the second ancestor table
+            else if (selector === "full") {
+                img.click(function() { 
+                    ancestorChosenString = $(this).data('organism');
+                    Sail.app.hidePageElements();
+                    
+                    // send event with guessed ancestor and its antecedant
+                    Sail.app.submitOrganismObservation(ancestorChosenString, Sail.app.selectedOrganism);
+                    
+                    $('#observe-organisms').show();
+                });
+            }
+            else {
+                console.log('error binding click in ancestor tables - missing selector');
+            }
 
+            // finish the table
+            td.append(img);
+            
+            if (k%2 !== 0) {
+                tr = $('<tr />');
+            }
+            
+            tr.append(td);
+            
+            if (k%2 === 0) {
+                table.append(tr);
+            }
+        });
+        if (k%2 !== 0) {
+            table.append(tr);
+        }
+    },
 
 };

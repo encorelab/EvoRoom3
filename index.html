@@ -102,6 +102,7 @@
             <div class="team-members member1 orange indent"></div>
             <div class="team-members member2 orange indent"></div>
             <div class="team-members member3 orange indent"></div>
+            <div class="team-members member4 orange indent"></div>
             
             <button class="small-button"><b>Next</b></button>
         </div>
@@ -155,7 +156,7 @@
                 <b>Instructions: </b>Choose an organism to begin.
             </div>
 
-             <table class="organism-table">
+             <table class="organism-table observe-organism-table">
 <!--                 <tr>
                     <td class="organism-boxes box1" style="display:none">
                         <button type="submit" class="organism-table-button button1">
@@ -200,7 +201,7 @@
                 </tr> -->
             </table>
 
-            <button class="small-button"><b>(Done)</b></button> <!-- style="display:none" -->
+            <button class="small-button" style="display:none"><b>Done</b></button>
         </div>
         
         <div id="is-organism-present" class="full-text-box" style="display:none">
@@ -227,31 +228,9 @@
                 <b>Organism: </b><span class="chosen-organism"></span>
             </div>
             <p>
-                Which of the following is most likely the organism&#146;s ancestor? Click on each organism to read more about it. Click &#146;Next&#146; you are ready to answer the question.
+                Which of the following is most likely the organism&#146;s ancestor? Click on each organism to read more about it. Click &#146;Next&#146; when you are ready to answer the question.
             </p>
-            <table class="organism-table">
-                <tr>
-                    <td class="organism-boxes">
-                        <button type="submit" class="organism-table-button button1">
-                            <img class="organism1 organism-image">
-                        </button>
-                        <div class="organism-table-text text1"></div>
-                    </td>
-                    <td class="organism-boxes">
-                        <button type="submit" class="organism-table-button button2">
-                            <img class="organism2 organism-image">
-                        </button>
-                        <div class="organism-table-text text2"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="organism-boxes">
-                        <button type="submit" class="organism-table-button button3">
-                            <img class="organism3 organism-image">
-                        </button>
-                        <div class="organism-table-text text3"></div>
-                    </td>
-                </tr>
+            <table class="organism-table ancestor-information-table">
             </table>
             
             <button class="small-button"><b>Next</b></button>
@@ -264,6 +243,7 @@
             <div class="content">
                 <b>Organism: </b><span class="chosen-organism"></span>
             </div>
+            <br />
             <div class="ancestor-content">
                 <b>Description: </b><span class="ancestor-description"></span>
             </div>
@@ -281,29 +261,8 @@
             <p>
                 Which of the following is most likely the organism&#146;s ancestor or predecessor?
             </p>
-            <table class="organism-table">
-                <tr>
-                    <td class="organism-boxes">
-                        <button type="submit" class="organism-table-button button1">
-                            <img class="organism1 organism-image">
-                        </button>
-                        <div class="organism-table-text text1"></div>
-                    </td>
-                    <td class="organism-boxes">
-                        <button type="submit" class="organism-table-button button2">
-                            <img class="organism2 organism-image">
-                        </button>
-                        <div class="organism-table-text text2"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="organism-boxes">
-                        <button type="submit" class="organism-table-button button3">
-                            <img class="organism3 organism-image">
-                        </button>
-                        <div class="organism-table-text text3"></div>
-                    </td>
-                </tr>
+            <table class="organism-table choose-ancestor-table">
+
             </table>
         </div>
         
