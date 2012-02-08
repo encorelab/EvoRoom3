@@ -12,6 +12,46 @@
 	font-family: 'Droid Sans', sans-serif !important;
 }
 
+/* ===================== HEADER STUFF ===================== */
+header .progressbar {
+    height: 40px;
+    padding-bottom: 5px;
+    font-family: 'Droid Sans', sans-serif !important;
+    font-size: 12pt !important;
+}
+
+header .progressbar .indicator {
+    display: inline-block;
+    width: 103px;
+    height: 30px;
+    text-align: center;
+    padding-top: 10px;
+    margin-top: 2px;
+    margin-right: 3px;
+    /*border: 1px solid red;*/
+}
+
+header .done {
+    /*background-image: url('/images/arrow2_green.png');*/
+    background-color: #40B34F;
+    background-repeat: no-repeat;
+    background-position:center;
+    color: white;
+}
+
+header .todo {
+    /*background-image: url('/images/arrow2_grey.png');*/
+    background-color: #333333;
+    background-repeat: no-repeat;
+    background-position:center;
+    color: #808080;
+}
+
+header .hide {
+    display:none;
+}
+/* ===================== HEADER STUFF ===================== */
+
 .banner {
 	position: absolute;
 	bottom: 840px;
