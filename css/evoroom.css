@@ -12,6 +12,20 @@
 	font-family: 'Droid Sans', sans-serif;
 }
 
+.banner {
+	position: absolute;
+	bottom: 860px;
+	left: 50%;			
+	margin-left: -260px;				/* always width/2 */
+	width: 520px;
+	/*height: 780px;*/
+	display: table;
+	color: #F7F7F7;
+	/*background-color: #F7F7F7;*/
+	padding: 35px;
+	font-size: 36px;
+}
+
 .full-text-box {
 	position: absolute;
 	bottom: 0px;
