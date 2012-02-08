@@ -1,4 +1,5 @@
-# $: << '../../EvoRoom3/agents/sail.rb/lib'; $: << '../../EvoRoom3/agents'; require 'model/student'; Student.site = "http://rollcall.proto.encorelab.org"; s = Student.find(:first); load 'golem/visualizer.rb'; v = Golem::Visualizer.new; v.visualize(s.statemachine); puts "--[ callbacks in use ]--"; s.statemachine.inspect.scan(/@callback=\:([\w_\?\!]+)/i).flatten.uniq.each{|m| puts (s.respond_to?(m) ? "√" : "x") + " #{m}"}; puts "--[ events ]--"; puts s.statemachine.events.values.collect{|ev| ev.name}; nil
+# $: << '../../EvoRoom3/agents/sail.rb/lib'; $: << '../../EvoRoom3/agents'; require 'model/student'; Student.site = "http://rollcall.proto.encorelab.org"; s = Student.find('mzukowski'); load 'golem/visualizer.rb'; v = Golem::Visualizer.new(s.statemachine); v.visualize(:png, '../../EvoRoom3/agents/model/student_statemachine.png'); puts "--[ callbacks in use ]--"; s.statemachine.inspect.scan(/@callback=\:([\w_\?\!]+)/i).flatten.uniq.each{|m| puts (s.respond_to?(m) ? "√" : "x") + " #{m}"}; puts "--[ events ]--"; puts s.statemachine.events.values.collect{|ev| ev.name}; nil
+
 StudentStatemachine = proc do
   initial_state :LOGGED_IN
 
@@ -72,17 +73,18 @@ StudentStatemachine = proc do
   end
   
   state :WAITING_FOR_MEETUP_TOPIC do
-    enter do |student|
-      student.agent.event!(:at_meetup_location)
-    end
-    on :topic_assignment, :to => :MEETUP_TOPIC_ASSIGNED, 
+    on :topic_assignment, :to => :IN_MEETUP, 
       :action => :store_meetup_topic
   end
   
-  state :MEETUP_TOPIC_ASSIGNED do
-    on :note, :action => :store_note
+  state :IN_MEETUP do
+    on :note, :to => :WAITING_FOR_MEETUP_END, :action => :store_note
     on :meetup_end, :to => :IN_ROTATION, :action => :increment_rotation!
     on :homework_assignment, :to => :COMPLETED_DAY_1
+  end
+  
+  state :WAITING_FOR_MEETUP_END do
+    on :meetup_end, :to => :IN_ROTATION, :action => :increment_rotation!
   end
 
   # DAY 2
