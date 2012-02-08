@@ -101,7 +101,7 @@
             </div>
             <br />
             <div>Team assignment:</div>
-            <div class="team-name orange indent">Not working from rollcall</div>
+            <div class="team-name orange indent"></div>
             <br />
             <div>Team members:</div>
             <div class="members"></div>
@@ -264,7 +264,6 @@
                 Which of the following is most likely the organism&#146;s ancestor or predecessor?
             </p>
             <table class="organism-table choose-ancestor-table">
-
             </table>
         </div>
         
@@ -277,7 +276,7 @@
                 <b>Instructions: </b>
                 <span class="rotation1">You and your team members have just completed a survey of the organisms at 200, 150, 100, and 50 mya. Your task now is to review this information together.</span>
                 
-                <!-- use show/hide in the js based on rotation 1 or 2
+                <!-- use show/hide in the js based on rotation 1 or 2 TODO?
                 <span class="rotation2">You and your team members have just completed a survey of the organisms at 25, 10, 5, and 2 mya. Your task now is to review this information together.</span> -->
             </div>
             
@@ -292,7 +291,7 @@
             <br/>
             <div class="topic"></div>
             
-            <textarea class="meetup-text-entry"></textarea>
+            <textarea class="meetup-text-entry text-entry"></textarea>
 
             <button class="small-button"><b>Done</b></button>
         </div>
@@ -309,7 +308,95 @@
                 Go to your learning portfolio website to complete your homework, there will be more instructions there.
             </p>
         </div>
-               
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- **************************************************** DAY 2 *********************************************************** -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+<!-- *****************************************************2 MYA************************************************************ -->
+
+
+        <div id="log-in-success-day2" class="full-text-box" style="display:none">
+            <div class="title"><b>Log in successful</b></div>
+            <p>
+                Welcome to day 2 of your training.
+            </p>
+            <p>
+                Today&#146;s exercise continues from day 1 and consists of 6 steps. It will take approximately 30 minutes to complete. When you are ready to begin, perform a QR scan at the entrance of the simulation lab.   
+            </p>
+
+            <button class="big-button"><b>QR scan</b></button>
+        </div>
+        
+        <!-- TODO change font size, eliminate the extra copy that doesn't exist on the mockups? If there are 6 orgs, it looks like shit -->
+        <div id="team-organism-assignment-day2" class="full-text-box" style="display:none">
+            <div class="title"><b>Welcome to the simulation lab</b></div>
+            <div class="content">
+                You will be working with the same team and be responsible for observing the same organisms as on day 1.
+            </div>
+            <p>
+                The room is currently set at 2 million years ago (mya) - the last time period you examined on day 1. As we transition the room to present day, you will finish completing the cladogram with your team.
+                You will also identify the various evolutionary mechanisms observed on both day 1 and 2.
+            </p>
+            
+            <div>Team assignment:</div>
+            <div class="team-name orange indent"></div>
+            
+            <p>
+                In addition, you will be responsible for observing the following organisms within your team. 
+            <p>
+            <div>Organism assignment:</div>
+            <div class="assigned-organism-1 orange indent"></div>
+            <div class="assigned-organism-2 orange indent"></div>
+            <div class="assigned-organism-3 orange indent"></div>
+            <div class="assigned-organism-4 orange indent"></div>
+            <div class="assigned-organism-5 orange indent"></div>
+            <div class="assigned-organism-6 orange indent"></div>
+
+            <button class="small-button"><b>Next</b></button>
+        </div>
+        
+        <div id="2mya-instructions" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Instructions: </b>Your task is to review the information for each of your assigned organisms from day 1 and your homework in relation to your organism at 2 mya. You may need to consult your team members to complete this task.
+            </div>
+
+            <button class="small-button"><b>Next</b></button>
+        </div>
+        
+        <div id="2mya-choose-organisms" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Time: </b><span class="orange">2 mya</span>
+            </div>
+            <div class="content">
+                <b>Instructions: </b>Choose an organism to begin.
+            </div>
+            <table class="organism-table 2mya-table">
+            </table>
+            
+            <button class="small-button" style="display:none"><b>Done</b></button>
+        </div>
+        
+        <div id="2mya-organism-details" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Time: </b><span class="orange">2 mya</span>
+            </div>
+            <div class="content">
+                <b>Organism: </b><span class="organism"></span>
+            </div>
+            <p>
+                Describe the organism&#146;s main features and the main evolutionary mechanism(s) behind each feature.
+            </p>
+            
+            <textarea class="2mya-organism-details-text-entry text-entry"></textarea>
+
+            <button class="small-button"><b>Done</b></button>
+        </div>
+        
+        
+        
     </div>
 
 </body>

@@ -12,9 +12,9 @@ var EvoRoom = {
     tagsArray: null, // kill this?
 
     ancestors: {
-        "proboscis_monkey":["ant","civet","fig_wasp","rafflesia"],
-        "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","rafflesia"],
-        "muellers_gibbon":["civet","fig_wasp","white_fronted_langur","rafflesia"]
+        "proboscis_monkey":["ant","civet","fig_wasp","none"],
+        "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
+        "muellers_gibbon":["civet","fig_wasp","white_fronted_langur","none"]
         },              // TODO fill this in, using real data, each must end with none_of_the_above, or whatever the png ends up being called 
 
 
@@ -191,10 +191,16 @@ var EvoRoom = {
         $('#ancestor-information-details').hide();
         $('#choose-ancestor').hide();
         $('#team-meeting').hide();
-        $('#day1-complete').hide();
-        
         $('#meetup-instructions').hide();
         $('#meetup').hide();
+        $('#day1-complete').hide();
+        
+        $('#log-in-success-day2').hide();
+        $('#team-organism-assignment-day2').hide();
+        $('#2mya-instructions').hide();
+        $('#2mya-choose-organisms').hide();
+        $('#2mya-organism-details').hide();
+
     },
 
     setupPageLayout: function() {
@@ -213,19 +219,27 @@ var EvoRoom = {
                 $('#team-assignment .members').append(memberDiv);
             });
         });
-        // set up display of team name on 'team assignment' page
-        $('#team-assignment .team-name').text(Sail.app.currentTeam);
+        // set up display of team name on 'team assignment' page for day one and the 'team-organism-assignment-day2' for day 2
+        $('.team-name').text(Sail.app.currentTeam);
         
-        // set up display of organisms on 'organism assignment' page
+        // set up display of organisms on 'organism assignment' page for day one and the 'team-organism-assignment-day2' for day 2
         var j = 0;
         var organismArray = Sail.app.getCurrentStudentOrganisms();
         while (j < organismArray.length) {
             j++;
             $('#organism-assignment .assigned-organism-'+j).text(Sail.app.formatOrganismString(organismArray[j-1]));
+            $('#team-organism-assignment-day2 .assigned-organism-'+j).text(Sail.app.formatOrganismString(organismArray[j-1]));
         }
 
         $('.jquery-radios').buttonset();
-        $('#log-in-success').show();
+        
+        // check which day it is
+        if (EvoRoom.user_metadata.day === "2") {
+            $('#log-in-success-day2').show();
+        }
+        else { 
+            $('#log-in-success').show();
+        }
 
         $('#log-in-success .big-button').click(function() {
             // check if barcodeScanner is possible (won't be outside of PhoneGap app)
@@ -238,11 +252,16 @@ var EvoRoom = {
             }
         });
         
-        // register on-click listeners for room QR code scanning error resolution
+        // register on-click listeners for room QR code scanning error resolution               // ARMIN, I've added the day 2 thing here, but it's different than the others... but I think it's right
         $('#room-scan-failure .big-button').click(function() {
             // hide everything
             Sail.app.hidePageElements();
-            $('#log-in-success').show();
+            if (EvoRoom.user_metadata.day === "2") {
+                $('#team-organism-assignment-day2').show();
+            }
+            else { 
+                $('#log-in-success').show();
+            }
         });
 
         $('#room-scan-failure .big-error-resolver-button').click(function() {
@@ -369,44 +388,51 @@ var EvoRoom = {
             $('#meetup .meetup-text-entry').val('');
             $('#loading-page').show();
         });
-    },
+///////////////////////////////////////////////////////////////////////////////////////
+/* ====================================== DAY 2 ==================================== */
+///////////////////////////////////////////////////////////////////////////////////////
+
     
-    restoreState: function() {
-        Sail.app.hidePageElements();
-        if (!Sail.app.user_metadata.state || Sail.app.user_metadata.state === 'LOGGED_IN') {
-            // show login success page
-            $('#log-in-success').show();
-        } else if (Sail.app.user_metadata.state === 'IN_ROOM') {
-            // show the wait for teacher thing
-            $('#team-assignment').show();
-        } else if (Sail.app.user_metadata.state === 'IN_ROTATION') {
-            // show the wait for teacher thing
-            $('#loading-page').show();
-        } else if (Sail.app.user_metadata.state === 'GOING_TO_ASSIGNED_LOCATION') {
-            $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedLocation));
-            // show screen to scan in location
-            $('#go-to-location').show();
-        } else if (Sail.app.user_metadata.state === 'OBSERVING_IN_ROTATION') {
-            $('#observe-organisms-instructions').show();
-        } else if (Sail.app.user_metadata.state === 'ROTATION_COMPLETED') {
-            $('#loading-page').show();
-        } else if (Sail.app.user_metadata.state === 'WAITING_FOR_MEETUP_TOPIC') {
-            $('#team-meeting').show();
-        } else if (Sail.app.user_metadata.state === 'IN_MEETUP') {
-            if (Sail.app.user_metadata.topic && Sail.app.user_metadata.tags) {
-                $('#meetup .topic').text(Sail.app.user_metadata.topic);
-                Sail.app.tagsArray = Sail.app.user_metadata.tags;
-                // show the meetup page
-                $('#meetup-instructions').show();
-            } else {
-                console.warn('restoreState: state IN_MEETUP but either topic or tags was empty');
-                alert('restoreState: state IN_MEETUP but either topic or tags was empty');
-            }
-        } else if (Sail.app.user_metadata.state === 'COMPLETED_DAY_1') {
-            $('#day1-complete').show();
+    $('#log-in-success-day2 .big-button').click(function() {
+        // check if barcodeScanner is possible (won't be outside of PhoneGap app)
+        if (window.plugins.barcodeScanner) {
+            // trigger the QR scan screen/module to scan room entry
+            window.plugins.barcodeScanner.scan(Sail.app.barcodeScanRoomLoginSuccess, Sail.app.barcodeScanRoomLoginFailure);
         } else {
-            console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
+            // trigger the error handler to get alternative
+            Sail.app.barcodeScanRoomLoginFailure('No scanner, probably desktop browser');
         }
+    });
+    
+    $('#team-organism-assignment-day2 .small-button').click(function() {
+        Sail.app.hidePageElements();
+        $('#2mya-instructions').show();
+    });
+    
+    $('#2mya-instructions .small-button').click(function() {
+        Sail.app.hidePageElements();
+        
+        EvoRoom.setupOrganismTable();
+        $('#2mya-choose-organisms').show();
+    });
+    
+    $('#2mya-choose-organisms .small-button').click(function() {
+        Sail.app.hidePageElements();
+        $('#loading-page').show();
+    });
+    
+    $('#2mya-organism-details .small-button').click(function() {
+        Sail.app.hidePageElements();
+        
+        Sail.app.submitOrganismFeatures();
+        
+        // clear text entry field
+        $('#2mya-organism-details .2mya-organism-details-text-entry').val('');
+        $('#2mya-choose-organisms').show();
+    });
+
+    
+    
     },
 
     /********************************************* OUTGOING EVENTS *******************************************/
@@ -453,9 +479,6 @@ var EvoRoom = {
         Sail.app.groupchat.sendEvent(sev);
     },
     
-    
-/* ====================================== COLIN =================================== */
-    
     submitNote: function() {
         var sev = new Sail.Event('note', {
             note:$('#meetup .meetup-text-entry').val(),
@@ -463,10 +486,62 @@ var EvoRoom = {
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
-
+    
+    submitOrganismFeatures: function() {
+        var sev = new Sail.Event('organism_features', {
+            team_name:Sail.app.currentTeam,
+            author:Sail.app.session.account.login,
+            organism:Sail.app.selectedOrganism,
+            explanation:$('#2mya-organism-details .2mya-organism-details-text-entry').val()
+        });
+        EvoRoom.groupchat.sendEvent(sev);
+    },
+    
 
     /****************************************** HELPER FUNCTIONS *************************************/
 
+    restoreState: function() {
+        Sail.app.hidePageElements();
+        if (!Sail.app.user_metadata.state || Sail.app.user_metadata.state === 'LOGGED_IN') {
+            if (EvoRoom.user_metadata.day === "2") {
+                $('#log-in-success-day2').show();
+            }
+            else { 
+                $('#log-in-success').show();
+            }
+        } else if (Sail.app.user_metadata.state === 'IN_ROOM') {
+            // show the wait for teacher thing
+            $('#team-assignment').show();
+        } else if (Sail.app.user_metadata.state === 'IN_ROTATION') {
+            // show the wait for teacher thing
+            $('#loading-page').show();
+        } else if (Sail.app.user_metadata.state === 'GOING_TO_ASSIGNED_LOCATION') {
+            $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedLocation));
+            // show screen to scan in location
+            $('#go-to-location').show();
+        } else if (Sail.app.user_metadata.state === 'OBSERVING_IN_ROTATION') {
+            $('#observe-organisms-instructions').show();
+        } else if (Sail.app.user_metadata.state === 'ROTATION_COMPLETED') {
+            $('#loading-page').show();
+        } else if (Sail.app.user_metadata.state === 'WAITING_FOR_MEETUP_TOPIC') {
+            $('#team-meeting').show();
+        } else if (Sail.app.user_metadata.state === 'IN_MEETUP') {
+            if (Sail.app.user_metadata.topic && Sail.app.user_metadata.tags) {
+                $('#meetup .topic').text(Sail.app.user_metadata.topic);
+                Sail.app.tagsArray = Sail.app.user_metadata.tags;
+                // show the meetup page
+                $('#meetup-instructions').show();
+            } else {
+                console.warn('restoreState: state IN_MEETUP but either topic or tags was empty');
+                alert('restoreState: state IN_MEETUP but either topic or tags was empty');
+            }
+        } else if (Sail.app.user_metadata.state === 'COMPLETED_DAY_1') {
+            $('#day1-complete').show();
+        } else {
+            console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
+        }
+    },
+    
     barcodeScanRoomLoginSuccess: function(result) {
         console.log("Got Barcode: " +result);
         // send out event check_in
@@ -474,8 +549,15 @@ var EvoRoom = {
         Sail.app.submitCheckIn();
         // hide everything
         Sail.app.hidePageElements();
-        // show waiting for teacher page
-        $('#team-assignment').show();
+        
+        // check which day it is
+        if (EvoRoom.user_metadata.day === "2") {
+            $('#team-organism-assignment-day2').show();
+        }
+        else { 
+            // show waiting for teacher page
+            $('#team-assignment').show();
+        }
     },
 
     barcodeScanRoomLoginFailure: function(msg) {
@@ -671,11 +753,20 @@ var EvoRoom = {
     //**************FUNCTIONS TO CREATE AND FILL TABLES************************************************
 
     setupOrganismTable: function() {
-        var table = $('.observe-organism-table');
-        table.html('');
-
         var k = 0;
+        var table;
         var tr;
+        Sail.app.buttonRevealCounter = 0;
+        
+        if (EvoRoom.user_metadata.day === "2") {
+            table = $('.2mya-table');
+        }
+        else { 
+            table = $('.observe-organism-table');
+            table.html('');
+        }
+
+        
         _.each(EvoRoom.getCurrentStudentOrganisms(), function(org) {
             k++;
             var img = $('<img />');
@@ -683,31 +774,53 @@ var EvoRoom = {
             img.attr('src', '/images/' + org + '_icon.png');
             img.addClass('organism'+k);
             img.addClass('organism-image');
-            img.click(function() { 
-                Sail.app.hidePageElements();
-                Sail.app.selectedOrganism = $(this).data('organism');
-                
-                // populate the top right corner image
-                $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
-                $('#student-chosen-organisms').show();
-                $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
-                
-                // disable the button out after it's clicked, and add to the button reveal counter
-                $(this).addClass('faded');
-                $(this).unbind("click");
-
-                Sail.app.buttonRevealCounter++;
-                if (Sail.app.buttonRevealCounter >= EvoRoom.getCurrentStudentOrganisms().length) {
-                    $('#observe-organisms .small-button').show();
-                }
-                
-                $('#is-organism-present').show();
-            });
-            
             var td = $('<td />');
             td.addClass('organism-boxes');
             td.addClass('box'+k);
             
+            // check what day it is and build the table based on that
+            if (EvoRoom.user_metadata.day === "2") {
+                img.click(function() { 
+                    Sail.app.hidePageElements();
+                    Sail.app.selectedOrganism = $(this).data('organism');
+                    
+                    // disable the button out after it's clicked, and add to the button reveal counter
+                    $(this).addClass('faded');
+                    $(this).unbind("click");
+                    
+                    Sail.app.buttonRevealCounter++;
+                    if (Sail.app.buttonRevealCounter >= EvoRoom.getCurrentStudentOrganisms().length) {
+                        $('#2mya-choose-organisms .small-button').show();
+                    }
+                    
+                    $('#2mya-organism-details .organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
+                    $('#2mya-organism-details').show();
+                });
+            }
+            else { 
+                img.click(function() { 
+                    Sail.app.hidePageElements();
+                    Sail.app.selectedOrganism = $(this).data('organism');
+                    
+                    // populate the top right corner image
+                    $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
+                    $('#student-chosen-organisms').show();
+                    $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
+                    
+                    // disable the button out after it's clicked, and add to the button reveal counter
+                    $(this).addClass('faded');
+                    $(this).unbind("click");
+
+                    Sail.app.buttonRevealCounter++;
+                    if (Sail.app.buttonRevealCounter >= EvoRoom.getCurrentStudentOrganisms().length) {
+                        $('#observe-organisms .small-button').show();
+                    }
+                    
+                    $('#is-organism-present').show();
+                });
+            }
+
+            // add the image and determine whether to add a new row or cell
             td.append(img);
             
             if (k%2 !== 0) {
@@ -720,6 +833,7 @@ var EvoRoom = {
                 table.append(tr);
             }
         });
+        // close the table
         if (k%2 !== 0) {
             table.append(tr);
         }
@@ -755,7 +869,6 @@ var EvoRoom = {
             var td = $('<td />');
             td.addClass('organism-boxes');
             td.addClass('box'+k);
-            
             
             // for the first ancestor table
             if (selector === "partial") {
