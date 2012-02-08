@@ -3,13 +3,27 @@
 }
 
 #evoroom {
-	background-image: url('/images/bkgd_evoroom.png');
+	background-image: url('/images/bkgd.png');
 	background-repeat: no-repeat;
 	width: 800px;
 	height: 1186px;
 	font-size: 24px;
 	position: relative;
-	font-family: 'Droid Sans', sans-serif;
+	font-family: 'Droid Sans', sans-serif !important;
+}
+
+.banner {
+	position: absolute;
+	bottom: 840px;
+	left: 50%;			
+	margin-left: -295px;
+	width: 520px;
+	/*height: 780px;*/
+	display: table;
+	color: white;
+	/*background-color: #F7F7F7;*/
+	padding: 35px;
+	font-size: 36px;
 }
 
 .full-text-box {
