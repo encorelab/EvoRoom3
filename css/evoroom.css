@@ -23,7 +23,10 @@
 	color: white;
 	/*background-color: #F7F7F7;*/
 	padding: 35px;
-	font-size: 36px;
+}
+
+.banner .project {
+    font-size: 48px;
 }
 
 .full-text-box {
