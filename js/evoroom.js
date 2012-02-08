@@ -1,4 +1,4 @@
-/*jslint devel: true, regexp: true, browser: true, unparam: true, debug: true, sloppy: true, sub: true, es5: true, vars: true, evil: true, fragment: true, plusplus: true, nomen: true, white: true */
+/*jslint devel: true, regexp: true, browser: true, unparam: true, debug: true, sloppy: true, sub: true, es5: true, vars: true, evil: true, fragment: true, plusplus: true, nomen: true, white: true, eqeq: false */
 /*globals Sail, Rollcall, $, Foo, _, window */
 
 var EvoRoom = {
@@ -392,18 +392,19 @@ var EvoRoom = {
             $('#loading-page').show();
         } else if (Sail.app.user_metadata.state === 'WAITING_FOR_MEETUP_TOPIC') {
             $('#team-meeting').show();
-        } else if (Sail.app.user_metadata.state === 'MEETUP_TOPIC_ASSIGNED') {
+        } else if (Sail.app.user_metadata.state === 'IN_MEETUP') {
             if (Sail.app.user_metadata.topic && Sail.app.user_metadata.tags) {
                 $('#meetup .topic').text(Sail.app.user_metadata.topic);
                 Sail.app.tagsArray = Sail.app.user_metadata.tags;
                 // show the meetup page
                 $('#meetup-instructions').show();
             } else {
-                console.warn('restoreState: state MEETUP_TOPIC_ASSIGNED but either topic or tags was empty');
-                alert('restoreState: state MEETUP_TOPIC_ASSIGNED but either topic or tags was empty');
+                console.warn('restoreState: state IN_MEETUP but either topic or tags was empty');
+                alert('restoreState: state IN_MEETUP but either topic or tags was empty');
             }
-        }
-        else {
+        } else if (Sail.app.user_metadata.state === 'COMPLETED_DAY_1') {
+            $('#day1-complete').show();
+        } else {
             console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
         }
     },
