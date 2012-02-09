@@ -170,7 +170,7 @@ header .hide {
 .organism-table {
     margin-top: 30px;
     width: 510px;
-    height: 500px; /* TODO isn't going to work with 5+*/
+    height: 500px;
     border-collapse: collapse;
 }
 
@@ -188,8 +188,6 @@ header .hide {
     border: 0;
     background: transparent;
 }
-
-
 
 #loading-page .loader-gif {
     position: absolute;
@@ -214,278 +212,29 @@ header .hide {
     text-align: center;
 }
 
-
-
-
-
-
-
-
-
-/*
-
-#student-chosen-organisms {
-	position: absolute;
-	top: 20px;
-	right: 20px;
+#concepts-discussion .evolution-concept-dropdown {
+    margin-top: 40px;
+    width: 510px;
+    height: 45px;
+    font-size: 22px;
 }
 
-#student-chosen-organisms .organism-image {
-	height: 200px;
-	width: 200px;
+#concepts-discussion .concepts-button {
+    margin-top: 20px;
+    width: 510px;
+    height: 45px;
+    font-size: 22px;
+    text-align: left;
 }
 
-#survey-organisms .survey-content-box {
-	margin-top: 20px;
-	text-align: center;
+#concepts-discussion .text-entry-header {
+    margin-top: 60px;
+    margin-bottom: -10px;
 }
 
-#survey-organisms .survey-content-table {
-	margin-left: auto;
-	margin-right: auto;	
-	margin-top: 30px;	
-	border: 1px solid black;
-	border-collapse: collapse;
-	text-align: center;	
-}
-
-#survey-organisms .survey-content-table th {
-	width: 260px;
-	border-left: 1px solid black;
-	border-bottom: 1px solid black;
-	padding: 10px 0px;
-}
-
-#survey-organisms .survey-content-table td {
-	height: 100px;
-	border-left: 1px solid black;
-}
-
-#survey-organisms .survey-done-text {
-	margin-top: 170px;
-	text-align: center;
-}
-
-#rotation-note-taker .rainforest-choice {
-	margin-top: 35px;
-}
-
-#rotation-note-taker .rainforest-choice-radios {
-	margin-top: 20px;
-	text-align: center;
-}
-
-#rotation-note-taker .rainforest-explanation {
-	margin-top: 25px;
-}
-
-#rotation-note-taker .rainforest-explanation-text-entry {
-	margin-top: 5px;
-	width: 440px;
-	height: 168px;
-	font-size: 24px;
-}
-
-.rotation-link {
-	margin-top: 80px;
-	text-align: center;
-	text-decoration: underline;
-	color: #00A99D;
-}
-
-.iframe {
-	position: absolute;
-	top: 36px;
-	width: 800px;
-	height: 1150px;
-	display: table;
-}
-
-#iframe-close-button {
-	position: absolute;
-	top: 3px;
-	right: 120px;
-	width: 80px;
-	height: 30px;
-	display: table;
-	font-size: 14px;
+#concepts-discussion .text-entry {
+    margin-bottom: 155px;
 }
 
 
-#interview-intro .links {
-	margin-top: 100px;
-	text-align: center;
-	text-decoration: underline;
-	color: #00A99D;
-}
-
-#interview .suggested-questions {
-	position: absolute;
-	top: 0px;
-	left: 50%;			
-	margin-left: -260px;
-	width: 520px;
-	height: 280px;
-	display: table;
-	background-color: #F7F7F7;
-	padding: 20px;
-	font-size: 20px;
-}
-
-#interview .suggested-questions .title {
-	font-size: 24px;
-	margin-bottom: 10px;
-}
-
-#interview .dropdown-content-box {
-	margin-top: 20px;
-	text-align: center;
-}
-
-#interview .dropdown {
-	height: 50px;
-	width: 100px;
-	font-size: 42px;
-}
-
-#interview .interview-content-title {
-	margin-top: 25px;
-}
-
-#interview .interview-content-text-entry {
-	margin-top: 5px;
-	width: 440px;
-	height: 350px;
-	font-size: 24px;
-}
-
-
-#group-notes {
-	position: absolute;
-	left: 50%;			
-	margin-left: -330px;
-	width: 660px;
-	height: 1186px;
-	display: table;
-	background-color: #F7F7F7;
-}
-
-#group-notes .table-wrapper {
-	position: absolute;
-	left: 50%;
-	margin-left: -330px;
-	width: 660px;
-	height: 660px;
-	overflow-y: auto;
-	overflow-x: hidden;
-}
-
-#group-notes .notes-table {
-	width: 634px;
-	border: 1px solid black;
-	border-collapse: collapse;
-	table-layout: fixed;
-}
-
-#group-notes .notes-table th {
-	height: 55px;
-	border-left: 1px solid black;
-	border-bottom: 1px solid black;
-}
-
-#group-notes .table-header-small {
-	width: 165px;
-}
-
-#group-notes .table-header-big {
-	width: 304px;
-}
-
-#group-notes .notes-table td {
-	padding-left: 10px;
-	padding-top: 8px;
-	border-left: 1px solid black;
-	text-align: left;
-	vertical-align: top;
-	font-size: 18px;
-}
-
-#group-notes .divider {
-	margin-top: 665px;
-}
-
-#group-notes .completion-text {
-	margin-top: 10px;
-	margin-left: 20px;
-	height: 52px;
-	vertical-align: middle;
-}
-
-#group-notes .sync-button {
-	margin-left: 80px;
-	width: 354px;
-	height: 52px;
-	font-size: 24px;
-	color: white;
-	background: url('');
-	background-color: #00A99D;
-	border: 1px solid #00A99D;
-}
-
-#group-notes .group-notes-content-box {
-	position: absolute;
-	left: 50%;
-	margin-left: -225px;
-	margin-top: 140px;
-	width: 450px;
-	text-align: center;
-}
-
-
-
-
-
-#final-picks-ranking .final-picks-content-table {
-	margin-left: auto;
-	margin-right: auto;	
-	margin-top: 30px;	
-	border: 1px solid black;
-	border-collapse: collapse;
-	text-align: center;	
-}
-
-#final-picks-ranking .final-picks-content-table th {
-	width: 240px;
-	border-left: 1px solid black;
-	border-bottom: 1px solid black;
-	padding: 10px 0px;
-}
-
-#final-picks-ranking .final-picks-content-table td {
-	height: 90px;
-	border-left: 1px solid black;
-}
-
-#final-picks-ranking .dropdown {
-	height: 50px;
-	width: 100px;
-	font-size: 34px;
-}
-
-#final-picks-ranking .final-picks-done-text {
-	margin-top: 60px;
-	text-align: center;
-}
-
-
-#final-picks-discuss .discussion-content-box {
-	margin-top: 60px;
-}
-
-#final-picks-discuss .discussion-content-text-entry {
-	margin-top: 5px;
-	width: 440px;
-	height: 284px;
-	font-size: 24px;
-}*/
 
