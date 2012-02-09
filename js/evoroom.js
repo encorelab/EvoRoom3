@@ -49,7 +49,8 @@ var EvoRoom = {
                     Sail.app.hidePageElements();
                     // sanity check
                     if (ev.payload.location === "station_a" || ev.payload.location === "station_b"
-                        || ev.payload.location === "station_c" || ev.payload.location === "station_d") {
+                        || ev.payload.location === "station_c" || ev.payload.location === "station_d"
+                        || ev.payload.location === "borneo" ||ev.payload.location === "sumatra") {
                             // store assigned location
                             EvoRoom.assignedLocation = ev.payload.location;
                             // show assigned location in DOM
@@ -200,6 +201,9 @@ var EvoRoom = {
         $('#2mya-instructions').hide();
         $('#2mya-choose-organisms').hide();
         $('#2mya-organism-details').hide();
+        $('#transition').hide();
+        $('#present-day-instructions').hide();
+        $('#present-day-organisms').hide();
 
     },
 
@@ -374,7 +378,6 @@ var EvoRoom = {
 
 /* ====================================== MEETUP =================================== */
 
-
         $('#meetup-instructions .small-button').click(function() {
             Sail.app.hidePageElements();
             $('#meetup').show();
@@ -392,46 +395,80 @@ var EvoRoom = {
 /* ====================================== DAY 2 ==================================== */
 ///////////////////////////////////////////////////////////////////////////////////////
 
-    
-    $('#log-in-success-day2 .big-button').click(function() {
-        // check if barcodeScanner is possible (won't be outside of PhoneGap app)
-        if (window.plugins.barcodeScanner) {
-            // trigger the QR scan screen/module to scan room entry
-            window.plugins.barcodeScanner.scan(Sail.app.barcodeScanRoomLoginSuccess, Sail.app.barcodeScanRoomLoginFailure);
-        } else {
-            // trigger the error handler to get alternative
-            Sail.app.barcodeScanRoomLoginFailure('No scanner, probably desktop browser');
-        }
-    });
-    
-    $('#team-organism-assignment-day2 .small-button').click(function() {
-        Sail.app.hidePageElements();
-        $('#2mya-instructions').show();
-    });
-    
-    $('#2mya-instructions .small-button').click(function() {
-        Sail.app.hidePageElements();
         
-        EvoRoom.setupOrganismTable();
-        $('#2mya-choose-organisms').show();
-    });
-    
-    $('#2mya-choose-organisms .small-button').click(function() {
-        Sail.app.hidePageElements();
-        $('#loading-page').show();
-    });
-    
-    $('#2mya-organism-details .small-button').click(function() {
-        Sail.app.hidePageElements();
+        $('#log-in-success-day2 .big-button').click(function() {
+            // check if barcodeScanner is possible (won't be outside of PhoneGap app)
+            if (window.plugins.barcodeScanner) {
+                // trigger the QR scan screen/module to scan room entry
+                window.plugins.barcodeScanner.scan(Sail.app.barcodeScanRoomLoginSuccess, Sail.app.barcodeScanRoomLoginFailure);
+            } else {
+                // trigger the error handler to get alternative
+                Sail.app.barcodeScanRoomLoginFailure('No scanner, probably desktop browser');
+            }
+        });
         
-        Sail.app.submitOrganismFeatures();
+        $('#team-organism-assignment-day2 .small-button').click(function() {
+            Sail.app.hidePageElements();
+            $('#2mya-instructions').show();
+        });
         
-        // clear text entry field
-        $('#2mya-organism-details .2mya-organism-details-text-entry').val('');
-        $('#2mya-choose-organisms').show();
-    });
-
+        $('#2mya-instructions .small-button').click(function() {
+            Sail.app.hidePageElements();
+            
+            EvoRoom.setupOrganismTable();
+            $('#2mya-choose-organisms').show();
+        });
+        
+        $('#2mya-organism-details .small-button').click(function() {
+            Sail.app.hidePageElements();
+            
+            Sail.app.submitOrganismFeatures();
+            
+            // clear text entry field
+            $('#2mya-organism-details .2mya-organism-details-text-entry').val('');
+            $('#2mya-choose-organisms').show();
+        });
+        
+        $('#2mya-choose-organisms .small-button').click(function() {
+            Sail.app.hidePageElements();
+            
+            Sail.app.submitNotesCompleted();
+            //$('#transition').show();
+            Sail.app.currentLocation = "station_a";
+            $('#present-day-instructions').show();
+        });
     
+        /* ====================================== PRESENT DAY =================================== */
+    
+        $('#present-day-instructions .small-button').click(function() {
+            Sail.app.hidePageElements();
+            
+            Sail.app.setupPresentDayTable();
+            
+            if (Sail.app.currentLocation === "borneo") {
+                $('#present-day-organisms .location').text('Borneo');
+            }
+            else if (Sail.app.currentLocation === "sumatra") {
+                $('#present-day-organisms .location').text('Sumatra');
+            }
+            else {
+                console.log("currentLocation has not been set");
+            }
+            
+            $('#present-day-organisms').show();
+        });
+        
+        $('#present-day-organisms .small-button').click(function() {
+            Sail.app.hidePageElements();
+            
+            Sail.app.submitObservationTabulation();
+            
+            // clear all radio buttons
+            $('input:radio').prop('checked', false);
+            $('#present-day-organisms .radio').button('refresh');
+            
+            $('#loading-page').show();
+        });
     
     },
 
@@ -497,6 +534,21 @@ var EvoRoom = {
         EvoRoom.groupchat.sendEvent(sev);
     },
     
+    submitNotesCompleted: function() {
+        var sev = new Sail.Event('notes_completed', {
+            // empty?
+        });
+        EvoRoom.groupchat.sendEvent(sev);
+    },
+    
+    submitObservationTabulation: function() {
+        var sev = new Sail.Event('observation_tabulation', {
+            team_name:Sail.app.currentTeam,
+            location:Sail.app.currentLocation,
+            organism_presence:"TODO"
+        });
+        EvoRoom.groupchat.sendEvent(sev);
+    },
 
     /****************************************** HELPER FUNCTIONS *************************************/
 
@@ -914,5 +966,12 @@ var EvoRoom = {
             table.append(tr);
         }
     },
+    
+    setupPresentDayTable: function () {
+        var table = $('present-day-organisms-table');
+        var k = 0;
+        var tr;
+        // TODO (start here)
+    }
 
 };
