@@ -53,7 +53,7 @@ StudentStatemachine = proc do
     end
   end
 
-  state :OBSERVING_PAST_PRESENCE do
+  state :OBSERVING_PAST do
     exit do |student|
       if student.observed_all_locations?
         student.metadata.current_task = 'meetup'
@@ -70,8 +70,8 @@ StudentStatemachine = proc do
     on :check_in do
       guard :at_assigned_location?, :failure_message => "the student is at the wrong location"
       transition :to => :WAITING_FOR_MEETUP_TOPIC, :if => proc{|student| student.metadata.current_task == 'meetup'}
-      transition :to => :OBSERVING_PAST_PRESENCE, :if => proc{|student| student.metadata.current_task == 'observe_past_presence'}
-      transition :to => :OBSERVING_PRESENT_PRESENCE, :if => proc{|student| student.metadata.current_task == 'observe_present_presence'}
+      transition :to => :OBSERVING_PAST, :if => proc{|student| student.metadata.current_task == 'observe_past_presence'}
+      transition :to => :OBSERVING_PRESENT, :if => proc{|student| student.metadata.current_task == 'observe_present_presence'}
       transition :to => :BRAINSTORMING, :if => proc{|student| student.metadata.current_task == 'brainstorm'}
     end
     # on :check_in do
@@ -86,13 +86,6 @@ StudentStatemachine = proc do
   
   state :MEETUP do
     on :note, :to => :WAITING_FOR_MEETUP_END, :action => :store_note
-    on :meetup_end, :to => :WAITING_FOR_LOCATION_ASSIGNMENT do
-      action do |student|
-        student.metadata.current_task = "observe_past_presence"        
-        student.increment_rotation!
-        student.assign_next_observation_location!
-      end
-    end
     on :homework_assignment, :to => :OUTSIDE do
       action do |student|
         student.metadata.day_1_completed = true
@@ -125,7 +118,7 @@ StudentStatemachine = proc do
     end
   end
   
-  state :OBSERVING_PRESENT_PRESENCE do
+  state :OBSERVING_PRESENT do
     exit do |student|
       if student.observed_all_locations?
         student.metadata.current_task = 'brainstorm'
