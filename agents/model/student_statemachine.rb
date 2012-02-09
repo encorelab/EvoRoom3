@@ -27,17 +27,20 @@ StudentStatemachine = proc do
   end
 
   state :ORIENTATION do
-    on :start do
-      transition :to => :WAITING_FOR_LOCATION_ASSIGNMENT do
-        guard :in_day_1?
+    on :observations_start do
+      comment "Triggered by the teacher on day 1"
+      transition :to => :WAITING_FOR_LOCATION_ASSIGNMENT, :if => :in_day_1? do
         action do |student|
           student.metadata.current_task = "observe_past_presence"
           student.increment_rotation!
           student.assign_next_observation_location!
         end
       end
-      transition :to => :OBSERVING_PAST_FEATURES do
-        guard :in_day_2?
+    end
+    
+    on :feature_observations_start do
+      comment "Triggered by the teacher on day 2"
+      transition :to => :OBSERVING_PAST_FEATURES, :if => :in_day_2? do
         action do |student|
           student.metadata.current_task = "observe_past_features"
         end
@@ -86,15 +89,19 @@ StudentStatemachine = proc do
   
   state :MEETUP do
     on :note, :to => :WAITING_FOR_MEETUP_END, :action => :store_note
-    on :homework_assignment, :to => :OUTSIDE do
-      action do |student|
-        student.metadata.day_1_completed = true
+    on :homework_assignment do
+      transition :to => :OUTSIDE do
+        comment "Allows the teacher to end the meetup\neven if not all students have submitted notes."
+        action do |student|
+          student.metadata.day_1_completed = true
+        end
       end
     end
   end
   
   state :WAITING_FOR_MEETUP_END do
     on :meetup_end, :to => :WAITING_FOR_LOCATION_ASSIGNMENT do
+      comment "Triggered when the last student in the meetup\nsubmits a note."
       action do |student|
         student.metadata.current_task = "observe_past_presence"        
         student.increment_rotation!
@@ -111,6 +118,7 @@ StudentStatemachine = proc do
   state :OBSERVING_PAST_FEATURES do
     on :organism_features, :action => :store_observation
     on :transition_to_present, :to => :WAITING_FOR_LOCATION_ASSIGNMENT do
+      comment "Note the name change. Also, Michelle will have her\nown event in addition to this to re-trigger animation."
       action do |student|
         student.metadata.current_task = 'observe_present_presence'
         student.assign_next_observation_location!
