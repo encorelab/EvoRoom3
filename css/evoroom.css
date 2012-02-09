@@ -3,7 +3,7 @@
 }
 
 #evoroom {
-	background-image: url('/images/bkgd.png');
+	background-image: url('/images/bkgd_wText.jpg');
 	background-repeat: no-repeat;
 	width: 800px;
 	height: 1186px;
@@ -13,8 +13,11 @@
 }
 
 /* ===================== HEADER STUFF ===================== */
-header .progressbar {
+header {
     height: 40px;
+}
+
+header .progressbar {
     padding-bottom: 5px;
     font-family: 'Droid Sans', sans-serif !important;
     font-size: 12pt !important;
@@ -29,23 +32,24 @@ header .progressbar .indicator {
     margin-top: 2px;
     margin-right: 3px;
     /*border: 1px solid red;*/
-}
-
-header .done {
-    /*background-image: url('/images/arrow2_green.png');*/
-    background-color: #40B34F;
-    background-repeat: no-repeat;
-    background-position:center;
-    color: white;
-}
-
-header .todo {
-    /*background-image: url('/images/arrow2_grey.png');*/
     background-color: #333333;
     background-repeat: no-repeat;
     background-position:center;
     color: #808080;
 }
+
+header .done {
+    /*background-image: url('/images/arrow2_green.png');*/
+    background-color: #40B34F !important;
+    color: white !important;
+}
+
+/*header .todo {
+    background-color: #333333;
+    background-repeat: no-repeat;
+    background-position:center;
+    color: #808080;
+}*/
 
 header .hide {
     display:none;

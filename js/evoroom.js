@@ -23,16 +23,19 @@ var EvoRoom = {
     events: {
         sail: {
             /********************************************* INCOMING EVENTS *******************************************/
-            rotation_start: function(ev) {
+            observations_start: function(ev) {
                 if (ev.payload.rotation) {
                     // show the question assigned to this student
                     if (ev.payload.rotation === 1 || ev.payload.rotation === 2) {
                         EvoRoom.rotation = ev.payload.rotation;
                         console.log("rotation " + EvoRoom.rotation);
-                        
-                        // can't do show and hide here
-                        //Sail.app.hidePageElements();
-                        //$('#observe-organisms-instructions').show();
+
+                        // set the progress indicator to the correct indication
+                        /*if (EvoRoom.rotation === 1) {
+                            //EvoRoom.indicateProgressStage(2);
+                        } else if (EvoRoom.rotation === 2) {
+                            //EvoRoom.indicateProgressStage(4);
+                        }*/
                     }
                     else {
                         alert("Wrong rotation received. Please ask teacher to send again.");
@@ -489,6 +492,7 @@ var EvoRoom = {
                 $('#observe-organisms-instructions').show();
             } else if (sev.payload.to === 'WAITING_FOR_MEETUP_TOPIC') {
                 // something will happen here ;)
+                //EvoRoom.indicateProgressStage(3);
                 console.log('Caught oneoff event stateChangeHandler with to = WAITING_FOR_MEETUP_TOPIC');
                 $('#team-meeting').show();
             } else {
@@ -498,7 +502,10 @@ var EvoRoom = {
         
         // create state change handler if checkin is not in room
         // eventHandlerFunction, eventType, origin (user), payload,
-        if (Sail.app.currentLocation !== 'room') {
+        if (EvoRoom.currentLocation === 'room') {
+            //EvoRoom.indicateProgressStage(1);
+            console.log('sumbitCheckIn for room');
+        } else {
             Sail.app.groupchat.addOneoffEventHandler(stateChangeHandler, 'state_change', Sail.app.session.account.login);
         }
         
@@ -561,31 +568,35 @@ var EvoRoom = {
             else { 
                 $('#log-in-success').show();
             }
-        } else if (Sail.app.user_metadata.state === 'IN_ROOM') {
+        } else if (Sail.app.user_metadata.state === 'ORIENTATION') {
+            //EvoRoom.indicateProgressStage(1);
             // show the wait for teacher thing
             $('#team-assignment').show();
-        } else if (Sail.app.user_metadata.state === 'IN_ROTATION') {
+        } else if (Sail.app.user_metadata.state === 'WAITING_FOR_LOCATION_ASSIGNMENT') {
+            //EvoRoom.indicateProgressStage(2);
             // show the wait for teacher thing
             $('#loading-page').show();
         } else if (Sail.app.user_metadata.state === 'GOING_TO_ASSIGNED_LOCATION') {
             $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedLocation));
+            //EvoRoom.indicateProgressStage(2);
             // show screen to scan in location
             $('#go-to-location').show();
-        } else if (Sail.app.user_metadata.state === 'OBSERVING_IN_ROTATION') {
+        } else if (Sail.app.user_metadata.state === 'OBSERVING_PAST') {
+            //EvoRoom.indicateProgressStage(2);
             $('#observe-organisms-instructions').show();
-        } else if (Sail.app.user_metadata.state === 'ROTATION_COMPLETED') {
-            $('#loading-page').show();
         } else if (Sail.app.user_metadata.state === 'WAITING_FOR_MEETUP_TOPIC') {
+            //EvoRoom.indicateProgressStage(3);
             $('#team-meeting').show();
-        } else if (Sail.app.user_metadata.state === 'IN_MEETUP') {
+        } else if (Sail.app.user_metadata.state === 'MEETUP') {
+            //EvoRoom.indicateProgressStage(3);
             if (Sail.app.user_metadata.topic && Sail.app.user_metadata.tags) {
                 $('#meetup .topic').text(Sail.app.user_metadata.topic);
                 Sail.app.tagsArray = Sail.app.user_metadata.tags;
                 // show the meetup page
                 $('#meetup-instructions').show();
             } else {
-                console.warn('restoreState: state IN_MEETUP but either topic or tags was empty');
-                alert('restoreState: state IN_MEETUP but either topic or tags was empty');
+                console.warn('restoreState: state MEETUP but either topic or tags was empty');
+                alert('restoreState: state MEETUP but either topic or tags was empty');
             }
         } else if (Sail.app.user_metadata.state === 'COMPLETED_DAY_1') {
             $('#day1-complete').show();
@@ -800,6 +811,20 @@ var EvoRoom = {
         } else {
             return "unknown animal";
         }
+    },
+    
+    indicateProgressStage: function(stage) {
+        $('.day1 .indicator').each(function (index) {
+            $(this).removeClass('done');
+        });
+        $('.day1 .indicator').each(function (index) {
+            if (stage === (index +1)) {
+                $(this).addClass('done');
+            } /*else {
+                console.log('index ' +index+ ' stage ' +stage);
+                return false;
+            }*/
+        });
     },
     
     //**************FUNCTIONS TO CREATE AND FILL TABLES************************************************
