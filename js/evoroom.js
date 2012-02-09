@@ -453,10 +453,10 @@ var EvoRoom = {
             
             Sail.app.setupPresentDayTable();
             
-            if (Sail.app.currentLocation === "borneo") {
+            if (Sail.app.currentLocation === "station_a" || Sail.app.currentLocation === "station_b") {
                 $('#present-day-organisms .location').text('Borneo');
             }
-            else if (Sail.app.currentLocation === "sumatra") {
+            else if (Sail.app.currentLocation === "station_c" || Sail.app.currentLocation === "station_d") {
                 $('#present-day-organisms .location').text('Sumatra');
             }
             else {
