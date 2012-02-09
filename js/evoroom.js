@@ -207,6 +207,9 @@ var EvoRoom = {
         $('#transition').hide();
         $('#present-day-instructions').hide();
         $('#present-day-organisms').hide();
+        $('#concepts-instructions').hide();
+        $('#concepts-discussion').hide();
+
 
     },
 
@@ -280,7 +283,6 @@ var EvoRoom = {
             Sail.app.hidePageElements();
             $('#organism-assignment').show();
             //$('#observe-organisms-instructions').show();
-            //$('#meetup-instructions').show();
             //Sail.app.currentLocation = "station_a"; // only for testing... REMOVE
             //Sail.app.rotation = 1;
             // I switch these around for testing purposes... the first one is the 'correct' one
@@ -436,9 +438,12 @@ var EvoRoom = {
             Sail.app.hidePageElements();
             
             Sail.app.submitNotesCompleted();
-            //$('#transition').show();
-            Sail.app.currentLocation = "station_a";
-            $('#present-day-instructions').show();
+            
+            // for testing, first is correct, comment out everything else
+            $('#transition').show();
+            //Sail.app.currentLocation = "station_a";
+            //$('#present-day-instructions').show();
+            //$('#concepts-instructions').show();
         });
     
         /* ====================================== PRESENT DAY =================================== */
@@ -464,7 +469,7 @@ var EvoRoom = {
         $('#present-day-organisms .small-button').click(function() {
             Sail.app.hidePageElements();
             
-            Sail.app.submitObservationTabulation();
+            EvoRoom.submitObservationTabulation();
             
             // clear all radio buttons
             $('input:radio').prop('checked', false);
@@ -472,7 +477,23 @@ var EvoRoom = {
             
             $('#loading-page').show();
         });
-    
+        
+        $('#concepts-instructions .small-button').click(function() {
+            Sail.app.hidePageElements();
+            $('#concepts-discussion').show();
+        });
+        
+        $('#concepts-discussion .small-button').click(function() {
+            EvoRoom.submitConceptDiscussion();
+            alert('Your data has been submitted');
+            
+            Sail.app.hidePageElements();
+            // clear fields, reload the page
+            $('#concepts-discussion .evolution-concept-dropdown').val('');
+            $('#concepts-discussion .concepts-discussion-text-entry').val('');
+            $('#concepts-discussion').show();
+        });
+        
     },
 
     /********************************************* OUTGOING EVENTS *******************************************/
@@ -556,6 +577,18 @@ var EvoRoom = {
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
+    
+    submitConceptDiscussion: function() {
+        var sev = new Sail.Event('concept_discussion', {
+            author:Sail.app.session.account.login,
+            concept:$('select.evolution-concept-dropdown').val(),
+            time:"TODO",
+            organism:"TODO",
+            explanation:$('#concepts-discussion .concepts-discussion-text-entry').val()
+        });
+        EvoRoom.groupchat.sendEvent(sev);
+    },
+
 
     /****************************************** HELPER FUNCTIONS *************************************/
 
@@ -993,9 +1026,9 @@ var EvoRoom = {
     },
     
     setupPresentDayTable: function () {
-        var table = $('present-day-organisms-table');
-        var k = 0;
-        var tr;
+        //var table = $('present-day-organisms-table');
+        //var k = 0;
+        //var tr;
         // TODO (start here)
     }
 
