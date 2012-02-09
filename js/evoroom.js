@@ -437,7 +437,7 @@ var EvoRoom = {
         $('#2mya-choose-organisms .small-button').click(function() {
             Sail.app.hidePageElements();
             
-            Sail.app.submitNotesCompleted();
+            Sail.app.submitNotesCompletion();
             
             // for testing, first is correct, comment out everything else
             $('#transition').show();
@@ -506,18 +506,24 @@ var EvoRoom = {
         
         // one off event handler which is set during the sending of check_in message
         var stateChangeHandler = function (sev) {
-            // catching 
-            if (sev.payload.to === 'OBSERVING_IN_ROTATION') {
-                console.log('Caught oneoff event stateChangeHandler with to = OBSERVING_IN_ROTATION');
-                Sail.app.hidePageElements();
-                $('#observe-organisms-instructions').show();
-            } else if (sev.payload.to === 'WAITING_FOR_MEETUP_TOPIC') {
-                // something will happen here ;)
-                //EvoRoom.indicateProgressStage(3);
-                console.log('Caught oneoff event stateChangeHandler with to = WAITING_FOR_MEETUP_TOPIC');
-                $('#team-meeting').show();
+            if (sev.payload.to) {
+                console.log('Caught oneoff event stateChangeHandler with to = ' + sev.payload.to);
+                
+                if (sev.payload.to === 'OBSERVING_IN_ROTATION') {
+                    Sail.app.hidePageElements();
+                    $('#observe-organisms-instructions').show();
+                } else if (sev.payload.to === 'WAITING_FOR_MEETUP_TOPIC') {
+                    // something will happen here ;)
+                    //EvoRoom.indicateProgressStage(3);
+                    $('#team-meeting').show();
+                } else if (sev.payload.to === 'OBSERVING_PRESENT') {
+                    // this is Day 2 Step 3: Present day!
+                    $('#present-day-instructions').show();
+                } else {
+                    console.warn('Caught state_change event with one-off handler, but nobody seems to care. From: ' +sev.payload.from+ 'To: ' + sev.payload.to);
+                }
             } else {
-                console.warn('Caught state_change event with one-off handler, but nobody seems to care. From: ' +sev.payload.from+ 'To: ' + sev.payload.to);
+                console.warn('Caught oneoff event stateChangeHandler with EMPTY to field');
             }
         };
         
@@ -528,6 +534,7 @@ var EvoRoom = {
             console.log('sumbitCheckIn for room');
         } else {
             Sail.app.groupchat.addOneoffEventHandler(stateChangeHandler, 'state_change', Sail.app.session.account.login);
+            console.log('Set up one-off event handler for state_change in check_in');
         }
         
         Sail.app.groupchat.sendEvent(sev);
@@ -562,8 +569,8 @@ var EvoRoom = {
         EvoRoom.groupchat.sendEvent(sev);
     },
     
-    submitNotesCompleted: function() {
-        var sev = new Sail.Event('notes_completed', {
+    submitNotesCompletion: function() {
+        var sev = new Sail.Event('notes_completion', {
             // empty?
         });
         EvoRoom.groupchat.sendEvent(sev);
@@ -633,6 +640,9 @@ var EvoRoom = {
             }
         } else if (Sail.app.user_metadata.state === 'COMPLETED_DAY_1') {
             $('#day1-complete').show();
+        } else if (Sail.app.user_metadata.state === 'OBSERVING_PRESENT') {
+            // this is Day 2 Step 3: Present day!
+            $('#present-day-instructions').show(); 
         } else {
             console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
         }
