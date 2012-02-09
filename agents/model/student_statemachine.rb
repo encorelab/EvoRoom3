@@ -88,7 +88,7 @@ StudentStatemachine = proc do
   end
   
   state :MEETUP do
-    on :note, :to => :WAITING_FOR_MEETUP_END, :action => :store_note
+    on :note, :to => :WAITING_FOR_GROUP_TO_FINISH_MEETUP, :action => :store_note
     on :homework_assignment do
       transition :to => :OUTSIDE do
         comment "Allows the teacher to end the meetup\neven if not all students have submitted notes."
@@ -99,9 +99,13 @@ StudentStatemachine = proc do
     end
   end
   
-  state :WAITING_FOR_MEETUP_END do
-    on :meetup_end, :to => :WAITING_FOR_LOCATION_ASSIGNMENT do
-      comment "Triggered when the last student in the meetup\nsubmits a note."
+  state :WAITING_FOR_GROUP_TO_FINISH_MEETUP do
+    comment "Triggers 'meetup_end' event if the student is the last one in their group to submit a meetup note."
+    enter do |student|
+      student.meetup_finished! if student.all_group_members_have_submitted_meetup_notes?
+    end
+    on :start_observations, :to => :WAITING_FOR_LOCATION_ASSIGNMENT do
+      comment "Triggered by the teacher after the first meetup."
       action do |student|
         student.metadata.current_task = "observe_past_presence"        
         student.increment_rotation!
