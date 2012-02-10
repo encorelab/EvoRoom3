@@ -84,11 +84,13 @@ var EvoRoom = {
             },
             
             homework_assignment: function(ev) {
-                if (ev.payload) {
+                if (EvoRoom.user_metadata.day === "2" && ev.payload) {
+                    Sail.app.hidePageElements();
+                    $('#day2-complete').show();
+                } else if (ev.payload) {
                     Sail.app.hidePageElements();
                     $('#day1-complete').show();
-                }
-                else {
+                } else {
                     console.log("homework_assignment event received, but payload is incomplete or not for this user");
                 }
             }
@@ -254,9 +256,11 @@ var EvoRoom = {
         $('#log-in-success .big-button').click(function() {
             // check if barcodeScanner is possible (won't be outside of PhoneGap app)
             if (window.plugins.barcodeScanner) {
+                console.log('window.plugins.barcodeScanner available');
                 // trigger the QR scan screen/module to scan room entry
                 window.plugins.barcodeScanner.scan(Sail.app.barcodeScanRoomLoginSuccess, Sail.app.barcodeScanRoomLoginFailure);
             } else {
+                console.log('window.plugins.barcodeScanner NOT available');
                 // trigger the error handler to get alternative
                 Sail.app.barcodeScanRoomLoginFailure('No scanner, probably desktop browser');
             }
@@ -404,9 +408,11 @@ var EvoRoom = {
         $('#log-in-success-day2 .big-button').click(function() {
             // check if barcodeScanner is possible (won't be outside of PhoneGap app)
             if (window.plugins.barcodeScanner) {
+                console.log('window.plugins.barcodeScanner available');
                 // trigger the QR scan screen/module to scan room entry
                 window.plugins.barcodeScanner.scan(Sail.app.barcodeScanRoomLoginSuccess, Sail.app.barcodeScanRoomLoginFailure);
             } else {
+                console.log('window.plugins.barcodeScanner NOT available');
                 // trigger the error handler to get alternative
                 Sail.app.barcodeScanRoomLoginFailure('No scanner, probably desktop browser');
             }
@@ -556,6 +562,8 @@ var EvoRoom = {
                 } else if (sev.payload.to === 'OBSERVING_PRESENT') {
                     // this is Day 2 Step 3: Present day!
                     $('#present-day-instructions').show();
+                } else if (sev.payload.to === 'BRAINSTORMING') {
+                    $('#concepts-instructions').show();
                 } else {
                     console.warn('Caught state_change event with one-off handler, but nobody seems to care. From: ' +sev.payload.from+ 'To: ' + sev.payload.to);
                 }
@@ -680,6 +688,11 @@ var EvoRoom = {
         } else if (Sail.app.user_metadata.state === 'OBSERVING_PRESENT') {
             // this is Day 2 Step 3: Present day!
             $('#present-day-instructions').show(); 
+        } else if (Sail.app.user_metadata.state === 'BRAINSTORMING') {
+            // this is Day 2 Step 4: Concepts aka Brainstorming
+            $('#concepts-instructions').show();
+        } else if (Sail.app.user_metadata.state === 'DONE') {
+            $('#day2-complete').show();
         } else {
             console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
         }
