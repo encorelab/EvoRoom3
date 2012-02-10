@@ -1,0 +1,58 @@
+PATH
+  remote: ../golem_statemachine
+  specs:
+    golem_statemachine (1.1.0.pre)
+      activesupport
+
+GEM
+  specs:
+    activemodel (3.0.7)
+      activesupport (= 3.0.7)
+      builder (~> 2.1.2)
+      i18n (~> 0.5.0)
+    activeresource (3.0.7)
+      activemodel (= 3.0.7)
+      activesupport (= 3.0.7)
+    activesupport (3.0.7)
+    blather (0.4.16)
+      eventmachine (~> 0.12.6)
+      nokogiri (~> 1.4.0)
+    bson (1.2.0)
+    bson_ext (1.2.0)
+    builder (2.1.2)
+    columnize (0.3.1)
+    diff-lcs (1.1.2)
+    eventmachine (0.12.10)
+    i18n (0.5.0)
+    json (1.5.1)
+    linecache (0.43)
+    mongo (1.2.0)
+      bson (>= 1.2.0)
+    nokogiri (1.4.4)
+    rspec (2.8.0)
+      rspec-core (~> 2.8.0)
+      rspec-expectations (~> 2.8.0)
+      rspec-mocks (~> 2.8.0)
+    rspec-core (2.8.0)
+    rspec-expectations (2.8.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.8.0)
+    ruby-debug (0.10.3)
+      columnize (>= 0.1)
+      ruby-debug-base (~> 0.10.3.0)
+    ruby-debug-base (0.10.3)
+      linecache (>= 0.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  activeresource (>= 3.0, < 3.1)
+  activesupport (>= 3.0, < 3.1)
+  blather
+  bson_ext
+  golem_statemachine!
+  json
+  mongo
+  rspec
+  ruby-debug

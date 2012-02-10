@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+	<kind>Admin</kind>
+	<created-at type="datetime">2011-06-28T17:45:46Z</created-at>
+	<updated-at type="datetime">2011-06-28T17:45:46Z</updated-at>
+	<id type="integer">3</id>
+	<display-name>Matt Zukowski</display-name>
+	<metadata>
+		<key>value</key>
+	</metadata>
+	<account>
+		<created-at type="datetime">2011-06-28T17:45:46Z</created-at>
+		<updated-at type="datetime">2011-06-28T17:45:46Z</updated-at>
+		<for-type>User</for-type>
+		<id type="integer">3</id>
+		<for-id type="integer">3</for-id>
+		<allow-passwordless-login type="boolean">false</allow-passwordless-login>
+		<login>mzukowski</login>
+		<encrypted-password>7c0809bcde6bf5327447befb60dbdd25b99f1c82</encrypted-password>
+	</account>
+	<groups type="array">
+		<group>
+			<kind nil="true"/>
+			<name>test1-mzukowski</name>
+			<created-at type="datetime">2011-09-16T21:20:40Z</created-at>
+			<updated-at type="datetime">2011-09-16T21:20:40Z</updated-at>
+			<run-id type="integer">2</run-id>
+			<id type="integer">16</id>
+			<metadata>
+				<key>value</key>
+			</metadata>
+		</group>
+		<group>
+			<kind nil="true"/>
+			<name>evoroom2-test</name>
+			<created-at type="datetime">2011-11-14T20:24:49Z</created-at>
+			<updated-at type="datetime">2012-01-26T22:22:45Z</updated-at>
+			<run-id type="integer">10</run-id>
+			<id type="integer">54</id>
+			<metadata>
+				<key>value</key>
+			</metadata>
+		</group>
+	</groups>
+</user>

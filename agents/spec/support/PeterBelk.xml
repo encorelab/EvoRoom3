@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <kind>Student</kind>
+  <created-at type="datetime">2012-02-03T18:07:46Z</created-at>
+  <updated-at type="datetime">2012-02-03T18:07:46Z</updated-at>
+  <id type="integer">53</id>
+  <display-name>PeterBelk</display-name>
+  <metadata>
+    <key>value</key>
+  </metadata>
+  <account>
+    <created-at type="datetime">2012-02-03T18:07:46Z</created-at>
+    <updated-at type="datetime">2012-02-03T18:07:46Z</updated-at>
+    <for-type>User</for-type>
+    <id type="integer">112</id>
+    <for-id type="integer">53</for-id>
+    <allow-passwordless-login type="boolean">false</allow-passwordless-login>
+    <login>PeterBelk</login>
+    <encrypted-password>a94a8fe5ccb19ba61c4c0873d391e987982fbbd3</encrypted-password>
+  </account>
+  <groups type="array">
+    <group>
+      <kind nil="true"></kind>
+      <name>Darwin</name>
+      <created-at type="datetime">2012-02-08T18:17:37Z</created-at>
+      <updated-at type="datetime">2012-02-08T18:17:37Z</updated-at>
+      <run-id type="integer">10</run-id>
+      <id type="integer">66</id>
+      <metadata>
+        <key>value</key>
+      </metadata>
+    </group>
+  </groups>
+</user>
