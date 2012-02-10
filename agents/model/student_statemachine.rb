@@ -16,12 +16,13 @@ StudentStatemachine = proc do
     student.agent.event!(:state_change, {:from => transition.from.name, :to => transition.to.name, :event => event.name}, :origin => student.username)
   end
 
-  # DAY 1
-
   state :OUTSIDE do
     on :check_in do
+      action lambda{|student,check_in| student.metadata.current_location = check_in[:location]}
       transition :to => :ORIENTATION do
-        guard(:failure_message => "the student must check in at the room entrance first") {|student, loc| loc == "room"}
+        guard(:failure_message => "the student must check in at the room entrance first") do |student,check_in|
+          check_in[:location] == "room"
+        end
       end
     end
   end
@@ -33,7 +34,6 @@ StudentStatemachine = proc do
         action do |student|
           student.metadata.current_task = "observe_past_presence"
           student.increment_rotation!
-          student.assign_next_observation_location!
         end
       end
     end
@@ -49,33 +49,48 @@ StudentStatemachine = proc do
   end
 
   state :WAITING_FOR_LOCATION_ASSIGNMENT do
+    enter { |student|
+      if student.observed_all_locations?
+        if student.metadata.current_task == "observe_past_presence"
+          student.metadata.current_task = 'meetup'
+          student.assign_meetup_location!
+        elsif student.metadata.current_task == "observe_present_presence"
+          student.metadata.current_task = 'brainstorm'
+          student.assign_brainstorm_location!
+        else
+          raise "#{student}'s current_task is invalid! (#{student.metadata.current_task})"
+        end
+      else
+        student.assign_next_observation_location!
+      end
+    }
+    
     on :location_assignment, :to => :GOING_TO_ASSIGNED_LOCATION do
-      action do |student, loc|
-        student.metadata.currently_assigned_location = loc
+      guard do |student,location_assignment|
+        location_assignment[:username] == student.username
+      end
+      action do |student,location_assignment|
+        student.metadata.currently_assigned_location = location_assignment[:location]
       end
     end
   end
 
   state :OBSERVING_PAST do
-    exit do |student|
-      if student.observed_all_locations?
-        student.metadata.current_task = 'meetup'
-        student.assign_meetup_location!
-      else
-        student.assign_next_observation_location!
-      end
-    end
-    
     on :organism_observation, :to => :WAITING_FOR_LOCATION_ASSIGNMENT, :action => :store_observation
   end
   
   state :GOING_TO_ASSIGNED_LOCATION do
     on :check_in do
-      guard :at_assigned_location?, :failure_message => "the student is at the wrong location"
-      transition :to => :WAITING_FOR_MEETUP_TOPIC, :if => proc{|student| student.metadata.current_task == 'meetup'}
-      transition :to => :OBSERVING_PAST, :if => proc{|student| student.metadata.current_task == 'observe_past_presence'}
-      transition :to => :OBSERVING_PRESENT, :if => proc{|student| student.metadata.current_task == 'observe_present_presence'}
-      transition :to => :BRAINSTORMING, :if => proc{|student| student.metadata.current_task == 'brainstorm'}
+      guard :failure_message => "the student is at the wrong location" do |student,check_in|
+        student.metadata.currently_assigned_location == check_in[:location]
+      end
+      action do |student,check_in| 
+        student.metadata.current_location = check_in[:location]
+      end
+      transition :to => :WAITING_FOR_MEETUP_TOPIC, :if => lambda{|student| student.metadata.current_task == 'meetup'}
+      transition :to => :OBSERVING_PAST, :if => lambda{|student| student.metadata.current_task == 'observe_past_presence'}
+      transition :to => :OBSERVING_PRESENT, :if => lambda{|student| student.metadata.current_task == 'observe_present_presence'}
+      transition :to => :BRAINSTORMING, :if => lambda{|student| student.metadata.current_task == 'brainstorm'}
     end
     # on :check_in do
     #   transition :action => proc{|student| student.agent.event!(:at_wrong_location) }
@@ -110,7 +125,6 @@ StudentStatemachine = proc do
         action do |student|
           student.metadata.current_task = "observe_past_presence"        
           student.increment_rotation!
-          student.assign_next_observation_location!
         end
       end
     end
@@ -135,15 +149,6 @@ StudentStatemachine = proc do
   end
   
   state :OBSERVING_PRESENT do
-    exit do |student|
-      if student.observed_all_locations?
-        student.metadata.current_task = 'brainstorm'
-        student.assign_brainstorm_location!
-      else
-        student.assign_next_observation_location!
-      end
-    end
-    
     on :observation_tabulation, :to => :WAITING_FOR_LOCATION_ASSIGNMENT, :action => :store_tabulation
   end
   
