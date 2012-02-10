@@ -974,6 +974,7 @@ var EvoRoom = {
                     
                     // populate the top right corner image
                     $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
+                    $('#student-chosen-organisms .chosen-organism-image').attr('alt', Sail.app.selectedOrganism);
                     $('#student-chosen-organisms').show();
                     $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
                     
