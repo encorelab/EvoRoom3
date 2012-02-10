@@ -462,20 +462,57 @@ var EvoRoom = {
             else {
                 console.log("currentLocation has not been set");
             }
+            // ensure done button is hidden
+            $('#present-day-organisms .small-button').hide();
+            // reset all yes/no button pairs
+            $('#present-day-organisms .presence-choice').each(function (index) {
+                $(this).removeClass('ui-state-highlight');
+                // set yes/no in data-choice attribute of tr
+                $(this).parent().parent().attr('data-choice', "none");
+            });
             
             $('#present-day-organisms').show();
         });
         
         $('#present-day-organisms .small-button').click(function() {
+            // create observation_table object for message observation_tabulation
+            var observation_table = {};
+            $('#present-day-organisms .present-day-organisms-table tr').each(function (index) {
+                observation_table[$(this).attr('data-organism')] = $(this).attr('data-choice');
+            });
+            // hide everything
             Sail.app.hidePageElements();
             
-            EvoRoom.submitObservationTabulation();
+            // send out observation_tabulation
+            EvoRoom.submitObservationTabulation(observation_table);
             
             // clear all radio buttons
-            $('input:radio').prop('checked', false);
-            $('#present-day-organisms .radio').button('refresh');
+            //$('input:radio').prop('checked', false);
+            //$('#present-day-organisms .radio').button('refresh');
             
             $('#loading-page').show();
+        });
+        
+        $('#present-day-organisms .presence-choice').click(function() {
+            // highlight the chosen button
+            $(this).addClass('ui-state-highlight');
+            // set yes/no in data-choice attribute of tr
+            $(this).parent().parent().attr('data-choice', $(this).text());
+            // take highlighting away from other button
+            $(this).siblings().removeClass('ui-state-highlight');
+            // check if done button should be displayed
+            var displayDone = true;
+            $('#present-day-organisms .present-day-organisms-table tr').each(function (index) {
+                // not all data-choice attributes are filled, so don't display done button
+                if ($(this).attr('data-choice') === "none") {
+                    displayDone = false;
+                    return false;
+                }
+            });
+            // show button if all choices are made
+            if (displayDone) {
+                $('#present-day-organisms .small-button').show();
+            }
         });
         
         $('#concepts-instructions .small-button').click(function() {
@@ -576,11 +613,11 @@ var EvoRoom = {
         EvoRoom.groupchat.sendEvent(sev);
     },
     
-    submitObservationTabulation: function() {
+    submitObservationTabulation: function(observations_table) {
         var sev = new Sail.Event('observation_tabulation', {
             team_name:Sail.app.currentTeam,
             location:Sail.app.currentLocation,
-            organism_presence:"TODO"
+            organism_presence:observations_table
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
@@ -1036,10 +1073,19 @@ var EvoRoom = {
     },
     
     setupPresentDayTable: function () {
-        //var table = $('present-day-organisms-table');
-        //var k = 0;
-        //var tr;
-        // TODO (start here)
+        $('#present-day-organisms .present-day-organisms-table tr').each(function (index) {
+            var currentOrganisms = EvoRoom.getCurrentStudentOrganisms();
+            
+            $('.organism-image', this).attr('src', '/images/' + currentOrganisms[index] + '_icon.png');
+            // set organism name in tr element
+            //$(this).data('organism', currentOrganisms[index]);
+            $(this).attr('data-organism', currentOrganisms[index]);
+            
+            // remove any excess row
+            if (index >= currentOrganisms.length) {
+                $(this).remove();
+            }
+        });
     }
-
+    
 };

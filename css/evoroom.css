@@ -240,5 +240,17 @@ header .hide {
     margin-bottom: 155px;
 }
 
+/* ============ present-day-organisms =================== */
 
+#present-day-organisms table {
+    width: 100%;
+    margin-top: 15px;
+}
+
+#present-day-organisms td {
+    margin: 0;
+    padding-left: 20px;
+    border: dotted black 1px;
+}
+/* ============ present-day-organisms =================== */
 
