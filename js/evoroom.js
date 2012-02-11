@@ -80,7 +80,7 @@ var EvoRoom = {
                     $('#meetup-instructions').show();
                 } else {
                     console.warn("Event meetup_start caught and EvoRoom.rotation is: '"+EvoRoom.rotation+"' - should be 1 or 2");
-                }               
+                }
             },
             
             homework_assignment: function(ev) {
@@ -220,6 +220,7 @@ var EvoRoom = {
 
     setupPageLayout: function() {
         // using each() now to iterate over the members and creating div's on the fly
+        $('#team-assignment .members').html('');
         Sail.app.rollcall.request(Sail.app.rollcall.url + "/groups/" + Sail.app.currentTeam + ".json", "GET", {}, function(data) {
             _.each(data.group.members, function(member) {
                 // create a new div object
@@ -774,7 +775,6 @@ var EvoRoom = {
         $('#final-picks-debrief').show();
     },
     
-    
     getCurrentStudentOrganisms: function() {
         return JSON.parse(Sail.app.user_metadata['assigned_organisms']);
     },
@@ -1005,8 +1005,9 @@ var EvoRoom = {
                 });
             }
 
-            // add the image and determine whether to add a new row or cell
+            // add the image, add the text and determine whether to add a new row or cell
             td.append(img);
+            td.append('<div class="small-font">' + Sail.app.formatOrganismString(org) + '</div>');
             
             if (k%2 !== 0) {
                 tr = $('<tr />');
@@ -1085,6 +1086,8 @@ var EvoRoom = {
             }
 
             td.append(img);
+            td.append('<div class="small-font">' + Sail.app.formatOrganismString(org) + '</div>');
+
             
             if (k%2 !== 0) {
                 tr = $('<tr />');
