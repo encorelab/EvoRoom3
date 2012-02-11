@@ -488,19 +488,19 @@ var EvoRoom = {
         
         $('#present-day-organisms .small-button').click(function() {
             // create observation_table object for message observation_tabulation
-            var observation_table = {};
+            var observation_table = [];
             $('#present-day-organisms .present-day-organisms-table tr').each(function (index) {
-                observation_table[$(this).attr('data-organism')] = $(this).attr('data-choice');
+                //observation_table[$(this).attr('data-organism')] = $(this).attr('data-choice');
+                var observation = {};
+                observation['organism'] = $(this).attr('data-organism');
+                observation['is_present'] = $(this).attr('data-choice');
+                observation_table.push(observation);
             });
             // hide everything
             Sail.app.hidePageElements();
             
             // send out observation_tabulation
             EvoRoom.submitObservationTabulation(observation_table);
-            
-            // clear all radio buttons
-            //$('input:radio').prop('checked', false);
-            //$('#present-day-organisms .radio').button('refresh');
             
             $('#loading-page').show();
         });
