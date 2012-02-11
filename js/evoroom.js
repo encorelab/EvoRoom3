@@ -9,13 +9,13 @@ var EvoRoom = {
     currentLocation: null,
     selectedOrganism: null,
     buttonRevealCounter: 0,
-    tagsArray: null, // kill this?
 
+    // TODO fill this
     ancestors: {
         "proboscis_monkey":["ant","civet","fig_wasp","none"],
         "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
         "muellers_gibbon":["civet","fig_wasp","white_fronted_langur","none"]
-        },              // TODO fill this in, using real data, each must end with none_of_the_above, or whatever the png ends up being called 
+        },
 
 
     rollcallURL: '/rollcall',
@@ -598,8 +598,11 @@ var EvoRoom = {
     
     submitNote: function() {
         var sev = new Sail.Event('note', {
+            author:Sail.app.session.account.login,
+            team_name:Sail.app.currentTeam,
+            meetup:Sail.app.rotation,
             note:$('#meetup .meetup-text-entry').val(),
-            tags:Sail.app.tagsArray
+            specialty:"TODO"
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
