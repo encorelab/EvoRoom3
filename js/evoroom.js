@@ -703,19 +703,25 @@ var EvoRoom = {
     
     barcodeScanRoomLoginSuccess: function(result) {
         console.log("Got Barcode: " +result);
-        // send out event check_in
-        Sail.app.currentLocation = result;
-        Sail.app.submitCheckIn();
-        // hide everything
-        Sail.app.hidePageElements();
+        // check if checkin to room
+        if (result === "room") {
+            // send out event check_in
+            Sail.app.currentLocation = result;
+            Sail.app.submitCheckIn();
+            // hide everything
+            Sail.app.hidePageElements();
         
-        // check which day it is
-        if (EvoRoom.user_metadata.day === "2") {
-            $('#team-organism-assignment-day2').show();
-        }
-        else { 
-            // show waiting for teacher page
-            $('#team-assignment').show();
+            // check which day it is
+            if (EvoRoom.user_metadata.day === "2") {
+                $('#team-organism-assignment-day2').show();
+            }
+            else { 
+                // show waiting for teacher page
+                $('#team-assignment').show();
+            }
+        } else {
+            console.log("Expected scan result 'room' but received: '" + result + "'");
+            $('#room-scan-failure').show();
         }
     },
 
