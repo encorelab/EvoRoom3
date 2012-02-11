@@ -252,6 +252,9 @@ var EvoRoom = {
         else { 
             $('#log-in-success').show();
         }
+        
+        // hide the organism in the top right (this hide is only necessary if there's a crash)
+        $('#student-chosen-organisms').hide();
 
         $('#log-in-success .big-button').click(function() {
             // check if barcodeScanner is possible (won't be outside of PhoneGap app)
@@ -285,8 +288,8 @@ var EvoRoom = {
         
         $('#team-assignment .small-button').click(function() {
             Sail.app.hidePageElements();
-            $('#organism-assignment').show();
-            //$('#observe-organisms-instructions').show();
+            //$('#organism-assignment').show();
+            $('#observe-organisms-instructions').show();
             //Sail.app.currentLocation = "station_a";
             //Sail.app.rotation = 1;
             // I switch these around for testing purposes... the first one is the 'correct' one
@@ -1024,11 +1027,13 @@ var EvoRoom = {
         var tr;
         var table;
         var ancestorChosenString = null;
+        var ancestorsObject = $.extend(true, {}, Sail.app.ancestors);
         
         // for the first ancestor table
         if (selector === "partial") {
             $('.ancestor-information-table').html('');
             table = $('.ancestor-information-table');
+            ancestorsObject[animal].pop();
         }
         // for the second ancestor table
         else if (selector === "full") {
@@ -1039,7 +1044,7 @@ var EvoRoom = {
             console.log('error creating ancestor tables - missing selector');
         }
             
-        _.each(Sail.app.ancestors[animal], function(org) {
+        _.each(ancestorsObject[animal], function(org) {
             k++;
             var img = $('<img />');
             img.data('organism', org);
@@ -1077,7 +1082,6 @@ var EvoRoom = {
                 console.log('error binding click in ancestor tables - missing selector');
             }
 
-            // finish the table
             td.append(img);
             
             if (k%2 !== 0) {
@@ -1090,6 +1094,7 @@ var EvoRoom = {
                 table.append(tr);
             }
         });
+        // finish the table
         if (k%2 !== 0) {
             table.append(tr);
         }
