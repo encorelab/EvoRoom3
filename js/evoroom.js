@@ -291,8 +291,8 @@ var EvoRoom = {
         
         $('#team-assignment .small-button').click(function() {
             Sail.app.hidePageElements();
-            //$('#organism-assignment').show();
-            $('#observe-organisms-instructions').show();
+            $('#organism-assignment').show();
+            //$('#observe-organisms-instructions').show();
             //Sail.app.currentLocation = "station_a";
             //Sail.app.rotation = 1;
             // I switch these around for testing purposes... the first one is the 'correct' one
