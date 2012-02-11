@@ -187,7 +187,7 @@ header .hide {
 }
 
 .table-container {
-    height: 500px;
+    height: 700px;
     overflow-y: scroll;
 }
 
@@ -223,16 +223,20 @@ header .hide {
     text-align: center;
 }
 
+#observe-organisms .observe-organism-table {
+    margin-bottom: 170px;
+}
+
 #ancestor-information .ancestor-information-table {
     margin-bottom: 160px;
 }
 
-#ancestor-information .second-content {
-    font-size: 20px;
-}
-
 #choose-ancestor .choose-ancestor-table {
     margin-bottom: 170px;
+}
+
+#ancestor-information .second-content {
+    font-size: 20px;
 }
 
 #concepts-discussion .evolution-concept-dropdown {
