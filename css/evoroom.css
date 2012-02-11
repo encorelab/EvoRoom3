@@ -77,7 +77,7 @@ header .hide {
 	position: absolute;
 	bottom: 0px;
 	left: 50%;
-	margin-left: -280px;				/* always width/2 */
+	margin-left: -260px;				/* always width/2 */
 	width: 520px;
 	height: 780px;
 	display: table;
@@ -92,6 +92,10 @@ header .hide {
 
 .orange {
     color: #FB983B;
+}
+
+.small-font {
+    font-size: 18px;
 }
 
 .faded {
@@ -173,7 +177,7 @@ header .hide {
 
 .organism-table {
     margin-top: 30px;
-    width: 510px;
+    width: 450px;
     height: 500px;
     border-collapse: collapse;
 }
@@ -182,15 +186,18 @@ header .hide {
     border: 1px dotted #949494;
 }
 
+.table-container {
+    height: 500px;
+    overflow-y: scroll;
+}
+
 .organism-boxes {
     text-align: center;
 }
 
-.organism-table-button {
-    width: 240px;
-    height: 200px;
-    border: 0;
-    background: transparent;
+.organism-image {
+    width: 180px;
+    height:180px;
 }
 
 #loading-page .loader-gif {
