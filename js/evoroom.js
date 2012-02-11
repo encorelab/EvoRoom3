@@ -7,15 +7,33 @@ var EvoRoom = {
     currentTeam: null,
     assignedLocation: null,
     currentLocation: null,
+    currentTime: null,
     selectedOrganism: null,
     buttonRevealCounter: 0,
 
-    // TODO fill this
+    // TODO fill this with real data
     ancestors: {
-        "proboscis_monkey":["ant","civet","fig_wasp","none"],
-        "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
-        "muellers_gibbon":["civet","fig_wasp","white_fronted_langur","none"]
+        "200_mya": {
+            "proboscis_monkey":["ant","civet","fig_wasp","none"],
+            "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
+            "muellers_gibbon":["civet","fig_wasp","white_fronted_langur","none"]
         },
+        "150_mya": {
+            "proboscis_monkey":["fig_wasp","fig_wasp","fig_wasp","none"],
+            "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
+            "muellers_gibbon":["civet","civet","civet","none"]
+        },
+        "100_mya": {
+            "proboscis_monkey":["fig_wasp","fig_wasp","fig_wasp","none"],
+            "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
+            "muellers_gibbon":["civet","civet","civet","none"]
+        },
+        "50_mya": {
+            "proboscis_monkey":["fig_wasp","fig_wasp","fig_wasp","none"],
+            "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
+            "muellers_gibbon":["civet","civet","civet","none"]
+        }
+    },
 
 
     rollcallURL: '/rollcall',
@@ -42,7 +60,7 @@ var EvoRoom = {
                     }
                 }
                 else {
-                    console.log("rotation_start event received, but payload is incomplete or not for this user");
+                    console.log("observations_start event received, but payload is incomplete or not for this user");
                 }
             },
             
@@ -196,6 +214,7 @@ var EvoRoom = {
         $('#observe-organisms-instructions').hide();
         $('#observe-organisms').hide();
         $('#is-organism-present').hide();
+        $('#is-organism-present .small-button').hide();
         $('#ancestor-information').hide();
         $('#ancestor-information-details').hide();
         $('#choose-ancestor').hide();
@@ -354,6 +373,10 @@ var EvoRoom = {
             $('#loading-page').show();
         });
         
+        $('#is-organism-present .radio').click(function() {
+            $('#is-organism-present .small-button').show();
+        });
+        
         $('#is-organism-present .small-button').click(function() {
             Sail.app.hidePageElements();
 
@@ -400,12 +423,17 @@ var EvoRoom = {
         });
         
         $('#meetup .small-button').click(function() {
-            Sail.app.hidePageElements();
-            Sail.app.submitNote();
-            
-            // clear text in preparation for rotation 2
-            $('#meetup .meetup-text-entry').val('');
-            $('#loading-page').show();
+            if ($('#meetup .meetup-text-entry').val() === '') {
+                alert('Please enter your answer in the text box below');
+            }
+            else {
+                Sail.app.hidePageElements();
+                Sail.app.submitNote();
+                
+                // clear text in preparation for rotation 2
+                $('#meetup .meetup-text-entry').val('');
+                $('#loading-page').show();
+            }
         });
 ///////////////////////////////////////////////////////////////////////////////////////
 /* ====================================== DAY 2 ==================================== */
@@ -782,15 +810,19 @@ var EvoRoom = {
     calculateYear: function() {
         if (Sail.app.rotation === 1) {
             if (Sail.app.currentLocation === "station_a") {
+                Sail.app.currentYear = "200_mya";
                 return "200 mya";
             }
             else if (Sail.app.currentLocation === "station_b") {
+                Sail.app.currentYear = "150_mya";
                 return "150 mya";
             }
             else if (Sail.app.currentLocation === "station_c") {
+                Sail.app.currentYear = "100_mya";
                 return "100 mya";
             }
             else if (Sail.app.currentLocation === "station_d") {
+                Sail.app.currentYear = "50_mya";
                 return "50 mya";
             }
             else {
@@ -800,15 +832,19 @@ var EvoRoom = {
         }
         else if (Sail.app.rotation === 2) {
             if (Sail.app.currentLocation === "station_a") {
+                Sail.app.currentYear = "25_mya";
                 return "25 mya";
             }
             else if (Sail.app.currentLocation === "station_b") {
+                Sail.app.currentYear = "10_mya";
                 return "10 mya";
             }
             else if (Sail.app.currentLocation === "station_c") {
+                Sail.app.currentYear = "5_mya";
                 return "5 mya";
             }
             else if (Sail.app.currentLocation === "station_d") {
+                Sail.app.currentYear = "2_mya";
                 return "2 mya";
             }
             else {
@@ -915,6 +951,8 @@ var EvoRoom = {
             return "Titan arum";
         } else if (organismString === "white_fronted_langur") {
             return "White fronted langur";
+        } else if (organismString === "none") {
+            return "None of the above";
         } else {
             return "unknown animal";
         }
@@ -1030,13 +1068,15 @@ var EvoRoom = {
         var tr;
         var table;
         var ancestorChosenString = null;
-        var ancestorsObject = $.extend(true, {}, Sail.app.ancestors);
+        var yearString = Sail.app.currentYear;
+        var ancestorsYearObject = $.extend(true, {}, Sail.app.ancestors);
+
         
         // for the first ancestor table
         if (selector === "partial") {
             $('.ancestor-information-table').html('');
             table = $('.ancestor-information-table');
-            ancestorsObject[animal].pop();
+            ancestorsYearObject[yearString][animal].pop();
         }
         // for the second ancestor table
         else if (selector === "full") {
@@ -1047,7 +1087,7 @@ var EvoRoom = {
             console.log('error creating ancestor tables - missing selector');
         }
             
-        _.each(ancestorsObject[animal], function(org) {
+        _.each(ancestorsYearObject[yearString][animal], function(org) {
             k++;
             var img = $('<img />');
             img.data('organism', org);
