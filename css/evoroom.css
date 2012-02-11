@@ -76,8 +76,8 @@ header .hide {
 .full-text-box {
 	position: absolute;
 	bottom: 0px;
-	left: 50%;			
-	margin-left: -260px;				/* always width/2 */
+	left: 50%;
+	margin-left: -280px;				/* always width/2 */
 	width: 520px;
 	height: 780px;
 	display: table;
@@ -202,18 +202,30 @@ header .hide {
 
 #student-chosen-organisms {
     position: absolute;
-    top: 15px;
-    right: 50px;
+    top: 30px;
+    right: 30px;
 }
 
 #student-chosen-organisms .chosen-organism-image {
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
 }
 
 #is-organism-present .organism-choice-box {
     margin-top: 100px;
     text-align: center;
+}
+
+#ancestor-information .ancestor-information-table {
+    margin-bottom: 160px;
+}
+
+#ancestor-information .second-content {
+    font-size: 20px;
+}
+
+#choose-ancestor .choose-ancestor-table {
+    margin-bottom: 170px;
 }
 
 #concepts-discussion .evolution-concept-dropdown {
