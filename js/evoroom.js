@@ -852,15 +852,13 @@ var EvoRoom = {
         if (organismString === "ant") {
             return "Ant";
         } else if (organismString === "blue_headed_pitta") {
-            return "Blue headed pitta";
+            return "Blue-headed pitta";
         } else if (organismString === "bornean_orangutan") {
             return "Bornean orangutan";
         } else if (organismString === "borneo_porcupine") {
             return "Borneo porcupine";
         } else if (organismString === "civet") {
             return "Civet";
-        } else if (organismString === "clouded_leopard") {
-            return "Clouded leopard";
         } else if (organismString === "common_porcupine") {
             return "Common porcupine";
         } else if (organismString === "fig_tree") {
@@ -873,6 +871,8 @@ var EvoRoom = {
             return "Garnet pitta";
         } else if (organismString === "ginger") {
             return "Ginger";
+        } else if (organismString === "great_argus_pheasant") {
+            return "Great argus pheasant";
         } else if (organismString === "helmeted_hornbill") {
             return "Helmeted hornbill";
         } else if (organismString === "jambu_tree") {
@@ -881,16 +881,14 @@ var EvoRoom = {
             return "Leopard cat";
         } else if (organismString === "malabar_grey_hornbill") {
             return "Malabar grey hornbill";
+        } else if (organismString === "malayan_tapir") {
+            return "Malayan tapir";
         } else if (organismString === "meggaris_tree") {
             return "Meggaris tree";
         } else if (organismString === "mitered_leaf_monkey") {
             return "Mitered leaf monkey";
         } else if (organismString === "muellers_gibbon") {
             return "Mueller's gibbon";
-        } else if (organismString === "pangolin") {
-            return "Pangolin";
-        } else if (organismString === "pheasant") {
-            return "Pheasant";
         } else if (organismString === "pitcher_plant") {
             return "Pitcher plant";
         } else if (organismString === "proboscis_monkey") {
@@ -903,14 +901,18 @@ var EvoRoom = {
             return "Sumatran orangutan";
         } else if (organismString === "sumatran_rhinoceros") {
             return "Sumatran rhinoceros";
-        } else if (organismString === "sumatran_striped rabbit") {
+        } else if (organismString === "sumatran_striped_rabbit") {
             return "Sumatran striped rabbit";
         } else if (organismString === "sumatran_tiger") {
             return "Sumatran tiger ";
+        } else if (organismString === "sunda_clouded_leopard") {
+            return "Sunda clouded leopard";
         } else if (organismString === "sunda_pangolin") {
             return "Sunda pangolin";
         } else if (organismString === "termite") {
             return "Termite";
+        } else if (organismString === "tetrastigma") {
+            return "Tetrastigma";
         } else if (organismString === "titan_arum") {
             return "Titan arum";
         } else if (organismString === "white_fronted_langur") {
