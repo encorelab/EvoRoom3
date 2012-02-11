@@ -71,20 +71,20 @@ var EvoRoom = {
                 }
             },
                        
-            topic_assignment: function(ev) {
-                if (ev.payload.topic && ev.payload.tags && ev.payload.username === Sail.app.session.account.login) {
-                    Sail.app.hidePageElements();
-                    $('#meetup .topic').text(ev.payload.topic);
-                    Sail.app.tagsArray = ev.payload.tags;
+            meetup_start: function(ev) {
+                Sail.app.hidePageElements();
+                // distinguish between meetups by looking at rotation
+                if (EvoRoom.rotation === 1 || EvoRoom.rotation === 2) {
+                    // write topic 1 or 2 in HTML
+                    $('#meetup .topic').text(Sail.app.user_metadata['meetup_'+EvoRoom.rotation+'_topic']);
                     $('#meetup-instructions').show();
-                }
-                else {
-                    console.log("topic_assignment event received, but payload is incomplete or not for this user");
-                }
+                } else {
+                    console.warn("Event meetup_start caught and EvoRoom.rotation is: '"+EvoRoom.rotation+"' - should be 1 or 2");
+                }               
             },
             
             homework_assignment: function(ev) {
-                if (EvoRoom.user_metadata.day === "2" && ev.payload) {
+                if (Sail.app.user_metadata.day === "2" && ev.payload) {
                     Sail.app.hidePageElements();
                     $('#day2-complete').show();
                 } else if (ev.payload) {
@@ -108,7 +108,7 @@ var EvoRoom = {
         connected: function(ev) {
             Sail.app.rollcall.request(Sail.app.rollcall.url + "/users/"+Sail.app.session.account.login+".json", "GET", {}, function(data) {
                 EvoRoom.currentTeam = data.user.groups[0].name;
-                EvoRoom.user_metadata = data.user.metadata;
+                Sail.app.user_metadata = data.user.metadata;
                 
                 // try to fill rotation from metadata
                 EvoRoom.rotation = parseInt(data.user.metadata.current_rotation, 10);
@@ -123,11 +123,14 @@ var EvoRoom = {
         },
 
         unauthenticated: function(ev) {
-            EvoRoom.user_metadata = null;
+            Sail.app.user_metadata = null;
             EvoRoom.rotation = null;
             EvoRoom.currentTeam = null;
             EvoRoom.assignedLocation = null;
             EvoRoom.currentLocation = null;
+            EvoRoom.selectedOrganism = null;
+            EvoRoom.buttonRevealCounter = 0;
+            
             
             EvoRoom.hidePageElements();
             
@@ -211,7 +214,7 @@ var EvoRoom = {
         $('#present-day-organisms').hide();
         $('#concepts-instructions').hide();
         $('#concepts-discussion').hide();
-
+        $('#day2-complete').hide();
 
     },
 
@@ -246,7 +249,7 @@ var EvoRoom = {
         $('.jquery-radios').buttonset();
         
         // check which day it is
-        if (EvoRoom.user_metadata.day === "2") {
+        if (Sail.app.user_metadata.day === "2") {
             $('#log-in-success-day2').show();
         }
         else { 
@@ -270,7 +273,7 @@ var EvoRoom = {
         $('#room-scan-failure .big-button').click(function() {
             // hide everything
             Sail.app.hidePageElements();
-            if (EvoRoom.user_metadata.day === "2") {
+            if (Sail.app.user_metadata.day === "2") {
                 $('#team-organism-assignment-day2').show();
             }
             else { 
@@ -602,7 +605,7 @@ var EvoRoom = {
             team_name:Sail.app.currentTeam,
             meetup:Sail.app.rotation,
             note:$('#meetup .meetup-text-entry').val(),
-            specialty:"TODO"
+            specialty:Sail.app.user_metadata.specialty
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
@@ -650,7 +653,7 @@ var EvoRoom = {
     restoreState: function() {
         Sail.app.hidePageElements();
         if (!Sail.app.user_metadata.state || Sail.app.user_metadata.state === 'LOGGED_IN') {
-            if (EvoRoom.user_metadata.day === "2") {
+            if (Sail.app.user_metadata.day === "2") {
                 $('#log-in-success-day2').show();
             }
             else { 
@@ -676,15 +679,14 @@ var EvoRoom = {
             //EvoRoom.indicateProgressStage(3);
             $('#team-meeting').show();
         } else if (Sail.app.user_metadata.state === 'MEETUP') {
-            //EvoRoom.indicateProgressStage(3);
-            if (Sail.app.user_metadata.topic && Sail.app.user_metadata.tags) {
-                $('#meetup .topic').text(Sail.app.user_metadata.topic);
-                Sail.app.tagsArray = Sail.app.user_metadata.tags;
-                // show the meetup page
+            //EvoRoom.indicateProgressStage(3);           
+            // distinguish between meetups by looking at rotation
+            if (EvoRoom.rotation === 1 || EvoRoom.rotation === 2) {
+                // write topic 1 or 2 in HTML
+                $('#meetup .topic').text(Sail.app.user_metadata['meetup_'+EvoRoom.rotation+'_topic']);
                 $('#meetup-instructions').show();
             } else {
-                console.warn('restoreState: state MEETUP but either topic or tags was empty');
-                alert('restoreState: state MEETUP but either topic or tags was empty');
+                console.warn("Restore state MEETUP and EvoRoom.rotation is: '"+EvoRoom.rotation+"' - should be 1 or 2");
             }
         } else if (Sail.app.user_metadata.state === 'COMPLETED_DAY_1') {
             $('#day1-complete').show();
@@ -712,7 +714,7 @@ var EvoRoom = {
             Sail.app.submitCheckIn();
             
             // check which day it is
-            if (EvoRoom.user_metadata.day === "2") {
+            if (Sail.app.user_metadata.day === "2") {
                 $('#team-organism-assignment-day2').show();
             }
             else { 
@@ -937,7 +939,7 @@ var EvoRoom = {
         var tr;
         Sail.app.buttonRevealCounter = 0;
         
-        if (EvoRoom.user_metadata.day === "2") {
+        if (Sail.app.user_metadata.day === "2") {
             table = $('.2mya-table');
         }
         else { 
@@ -958,7 +960,7 @@ var EvoRoom = {
             td.addClass('box'+k);
             
             // check what day it is and build the table based on that
-            if (EvoRoom.user_metadata.day === "2") {
+            if (Sail.app.user_metadata.day === "2") {
                 img.click(function() { 
                     Sail.app.hidePageElements();
                     Sail.app.selectedOrganism = $(this).data('organism');
