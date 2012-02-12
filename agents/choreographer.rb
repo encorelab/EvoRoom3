@@ -19,8 +19,8 @@ class Choreographer < Sail::Agent
   
   def validate_student(stu)
     required_metadata = [
-      'meetup_1_topic',
-      'meetup_2_topic',
+      #'meetup_1_topic',
+      #'meetup_2_topic',
       'assigned_organisms',
       'speciality'
     ]
