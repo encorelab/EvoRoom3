@@ -290,6 +290,28 @@ header .hide {
     margin-left: -320px;
     width: 640px;
     height: 500px;
-    background-color: #6E6E6E;
+    background-color: black;
+    opacity: 0.8;
+    color: white;
+    font-size: 30px;
 }
 
+.column1 {
+    position: absolute;
+    top: 50px;
+    left: 40px;
+}
+
+.column2 {
+    position: absolute;
+    top: 50px;
+    right: 30px;
+}
+
+.pop-up.small-button {
+    margin-bottom: -30px;
+}
+
+.pop-up-checkbox {
+    margin: 15px;
+}

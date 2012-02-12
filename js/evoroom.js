@@ -623,7 +623,7 @@ var EvoRoom = {
             }
         });
 
-        // register on-click listeners for room QR code scanning error resolution               // ARMIN, I've added the day 2 thing here, but it's different than the others... but I think it's right
+        // register on-click listeners for room QR code scanning error resolution               // ARMIN, I've added the day 2 thing here, it's different than the others... but I think it's right
         $('#room-scan-failure .big-button').click(function() {
             // hide everything
             Sail.app.hidePageElements();
@@ -899,13 +899,20 @@ var EvoRoom = {
             $('#concepts-discussion').show();
         });
 
-        // START HERE
         $('#concepts-discussion .time-period-pop-up-button').click(function() {
             $('#time-period-pop-up').show();
         });
+        
+        $('#concepts-discussion .organism-pop-up-button').click(function() {
+            $('#organism-pop-up').show();
+        });
 
-        $('#concepts-discussion .small-button').click(function() {
+        $('#time-period-pop-up .small-button').click(function() {
             $('#time-period-pop-up').hide();
+        });
+        
+        $('#organism-pop-up .small-button').click(function() {
+            $('#organism-pop-up').hide();
         });
 
         $('#concepts-discussion .small-button').click(function() {
@@ -916,6 +923,10 @@ var EvoRoom = {
             // clear fields, reload the page
             $('#concepts-discussion .evolution-concept-dropdown').val('');
             $('#concepts-discussion .concepts-discussion-text-entry').val('');
+            
+            $('#time-period-pop-up .time-period-form :checkbox:checked').prop('checked', false);
+            $('#organism-pop-up .organism-form').prop('checked', false);
+
             $('#concepts-discussion').show();
         });
 
@@ -1019,8 +1030,8 @@ var EvoRoom = {
         var sev = new Sail.Event('concept_discussion', {
             author:Sail.app.session.account.login,
             concept:$('select.evolution-concept-dropdown').val(),
-            time:"TODO",
-            organism:"TODO",
+            time:$('#time-period-pop-up .time-period-form :checkbox:checked').map(function(){return $(this).val();}).toArray(),
+            organism:$('#organism-pop-up .organism-form :checkbox:checked').map(function(){return $(this).val();}).toArray(),
             explanation:$('#concepts-discussion .concepts-discussion-text-entry').val()
         });
         EvoRoom.groupchat.sendEvent(sev);
