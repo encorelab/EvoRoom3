@@ -1,4 +1,4 @@
-$: << "sail.rb/lib"
+x$: << "sail.rb/lib"
 require 'sail/daemon'
 
 require 'event_logger'
