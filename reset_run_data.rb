@@ -23,7 +23,7 @@ RUNS.each do |run|
   mongo.collection(:notes).remove()
   mongo.collection(:meetups).remove()
 
-  keep_metadata_keys = ["assigned_organisms", "speciality", "key"]
+  keep_metadata_keys = ["assigned_organisms", "speciality", "assigned_backup", "key"]
 
   Rollcall::Base.user = "rollcall"
   Rollcall::Base.password = "rollcall!"
