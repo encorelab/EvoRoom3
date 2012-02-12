@@ -813,7 +813,7 @@ var EvoRoom = {
     },
     
     getCurrentStudentOrganisms: function() {
-        return JSON.parse(Sail.app.user_metadata['assigned_organisms']);
+        return JSON.parse(Sail.app.user_metadata.assigned_organisms);
     },
     
     calculateYear: function() {
