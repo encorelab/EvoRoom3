@@ -3,6 +3,7 @@
 }
 
 #evoroom {
+  background-color: #12120C;
 	background-image: url('/images/bkgd_wText.jpg');
 	background-repeat: no-repeat;
 	width: 800px;
@@ -205,6 +206,11 @@ header .hide {
     top: 400px;
     left: 50%;
     margin-left: -30px;
+}
+
+#connecting,
+#loading-page {
+  color: white;
 }
 
 #student-chosen-organisms {

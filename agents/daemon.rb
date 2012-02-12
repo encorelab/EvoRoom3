@@ -1,13 +1,10 @@
-x$: << "sail.rb/lib"
+$: << File.dirname(__FILE__)+"/sail.rb/lib"
+$: << File.dirname(__FILE__)
 require 'sail/daemon'
 
-require 'event_logger'
-require 'location_tracker'
-require 'choreographer'
-
 AGENT_PASSWORD = "9186ebc4790dfba833826e13c42c885f6f847274" # s3agent!
-RUN = "michelle-feb-2012-A"
-DB = "michelle-feb-2012-A"
+
+RUNS = ['a','b','c','d'].collect{|alph| "michelle-feb-2012-#{alph}"}
 
 @daemon = Sail::Daemon.spawn(
   :name => "evoroom",
@@ -16,16 +13,17 @@ DB = "michelle-feb-2012-A"
 )
 
 @daemon.load_config("../config.json")
+ENV['ROLLCALL_URL'] = @daemon.config[:rollcall][:url]
 
-# A run 1
-@daemon << EventLogger.new(:room => RUN, :password => AGENT_PASSWORD, :database => DB)
-@daemon << LocationTracker.new(:room => RUN, :password => AGENT_PASSWORD, :database => DB)
-@daemon << Choreographer.new(:room => RUN, :password => AGENT_PASSWORD, :database => DB)
+require 'event_logger'
+require 'location_tracker'
+require 'choreographer'
 
-# A run 2
-#@daemon << Archivist.new(:room => "evoroom-a2", :password => AGENT_PASSWORD, :database => 'evoroom')
-#@daemon << Notetaker.new(:room => "evoroom-a2", :password => AGENT_PASSWORD, :database => 'evoboard')
+RUNS.each do |run|
+  @daemon << EventLogger.new(:room => run, :password => AGENT_PASSWORD, :database => run)
+  @daemon << LocationTracker.new(:room => run, :password => AGENT_PASSWORD, :database => run)
+  @daemon << Choreographer.new(:room => run, :password => AGENT_PASSWORD, :database => run)
+end
 
 
 @daemon.start
-#@daemon.start_interactive

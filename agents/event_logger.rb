@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'blather/client/dsl'
-require 'json'
 require 'mongo'
 
 $: << 'sail.rb/lib'

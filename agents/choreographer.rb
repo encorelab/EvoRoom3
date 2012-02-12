@@ -3,7 +3,7 @@ require 'blather/client/dsl'
 require 'json'
 require 'mongo'
 
-$: << 'sail.rb/lib'
+$: << File.dirname(__FILE__)+'/sail.rb/lib'
 require 'sail/agent'
 
 require 'model/student'
@@ -22,7 +22,7 @@ class Choreographer < Sail::Agent
       #'meetup_1_topic',
       #'meetup_2_topic',
       'assigned_organisms',
-      'speciality'
+      'specialty'
     ]
     
     required_metadata.each do |key|
