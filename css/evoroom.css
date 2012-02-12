@@ -283,3 +283,13 @@ header .hide {
 }
 /* ============ present-day-organisms =================== */
 
+.pop-up {
+    position: absolute;
+    top: 160px;
+    left: 50%;
+    margin-left: -320px;
+    width: 640px;
+    height: 500px;
+    background-color: #6E6E6E;
+}
+
