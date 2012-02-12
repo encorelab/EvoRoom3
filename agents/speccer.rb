@@ -31,45 +31,35 @@ class Speccer < Sail::Agent
     end
   end
   
-  
   class Step
-    attr_accessor :block, :steps, :children, :kind, :level
-    def initialize(kind, &block)
-      self.block = block if block
-      self.steps = []
-      self.children = []
-      self.kind = kind.to_s
-    end
-    def call
-      debugger
-      if block
-        block.call(proc{children.each{|c| c.call}})
-      end
-      steps.each{|s| s.call}
-    end
-    def inspect
-      if block
-        "#{kind.inspect}(\n#{"  "*level}#{steps.inspect}"
-      else
-        "#{kind.inspect} #{steps.inspect}"
-      end
-    end
-  end
-  
-  def start_sequence
-    @sequence_root = Step.new(:root)
-    @sequence_root.level = 0
-    @cur = @sequence_root
-    @seq = []
-  end
-  
-  def end_sequence
+    attr_accessor :rest, :head, :nested
     
+    def initialize
+      self.rest = []
+    end
+    
+    def call
+      head.call(nested) if head
+      rest.each{|lamb| lamb.call}
+    end
   end
   
-  def run_sequence
+  # [ev, wait, expect_student, ev, wait, expect_student, on, wait, ev, wait]
+  
+  # [wait [wait [expect_student, on, ], expect_student, ev], ev]
+  
+  # 
+  
+  
+  def sequence
+    @root = Step.new
+    @root.head = lambda{}
+    @cur = @root
+    
+    yield
+    
     begin
-      @sequence_root.call
+      @root.call
     rescue => e
       EM.stop
       raise e
@@ -77,73 +67,53 @@ class Speccer < Sail::Agent
   end
   
   def ev(event_type, data, opts = {})
-    s = Step.new("ev #{event_type}")
-    s.steps <<
-      lambda{
-        scoped_data = data.respond_to?(:call) ? data.call : data
-        log "ev: #{event_type} (#{scoped_data.inspect})"
-        event!(event_type, scoped_data, opts)
-      }
-    @seq << s
+    @cur.rest << lambda{
+      scoped_data = data.respond_to?(:call) ? data.call : data
+      log "ev: #{event_type} (#{scoped_data.inspect})"
+      event!(event_type, scoped_data, opts)
+    }
   end
   
   def wait(state)
-    s = Step.new("wait #{state}")
-    steps = @seq
-    s.block =
-      lambda{|nested|
-        onetime_event(:state_change) do |stanza,data|
-          data['payload']['to'].should == state
-          #EM.stop if data['payload']['to'] != state
-          log "state: #{state}"
+    @cur.head = lambda{|nested|
+      onetime_event(:state_change) do |stanza,data|
+        data['payload']['to'].should == state
+        #EM.stop if data['payload']['to'] != state
+        log "state: #{state}"
         
-          nested.call
-        end
-        steps
-      }
-    @seq = []
-    s.level = @cur.level + 1
-    @cur.steps << s
+        nested.call
+      end
+    }
+    s = Step.new
+    @cur.nested = s
     @cur = s
   end
   
   def on(event_type)
-    s = Step.new("on #{event_type}")
-    s.steps <<
-      lambda{
-        onetime_event(event_type) do |stanza,data|
-          log "on: #{event_type} (#{data.inspect})"
-          yield stanza,data
-        end
-      }
-    @seq << s
+    @cur.rest << lambda{
+      onetime_event(event_type) do |stanza,data|
+        log "on: #{event_type} (#{data.inspect})"
+        yield stanza,data
+      end
+    }
   end
   
   def expect
-    s = Step.new(:expect)
-    s.steps <<
-      lambda{
-        yield
-      }
-    @seq << s
+    @cur.rest << lambda{
+      yield
+    }
   end
   
   def expect_student(&block)
-    s = Step.new(:expect_student)
-    s.steps <<
-      lambda{
-        student = chor.lookup_student(config[:nickname])
-        student.instance_eval(&block)
-      }
-    @seq << s
+    @cur.rest << lambda{
+      student = chor.lookup_student(config[:nickname])
+      student.instance_eval(&block)
+    }
   end
   
   def finish
-    s = Step.new(:finish)
-    s.steps <<
-      lambda{
-        EM.stop
-      }
-    @seq << s
+    @cur.rest << lambda{
+      EM.stop
+    }
   end
 end

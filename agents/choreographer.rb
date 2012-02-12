@@ -17,6 +17,54 @@ class Choreographer < Sail::Agent
     @students = {} # cache of Choreographer::Student objects
   end
   
+  def validate_student(stu)
+    required_metadata = [
+      'meetup_1_topic',
+      'meetup_2_topic',
+      'assigned_organisms',
+      'speciality'
+    ]
+    
+    required_metadata.each do |key|
+      if stu.metadata.send("#{key}?".to_sym).nil? || stu.metadata.send("#{key}".to_sym).blank?
+        raise "#{stu} is missing #{key.inspect}! Cannot continue :("
+      end
+    end
+    
+    begin
+      orgs = JSON.parse(stu.metadata.assigned_organisms)
+    rescue JSON::ParserError => e
+      raise "Couldn't parse #{stu}'s assigned organisms -- invalid JSON!  #{e}"
+    end
+    
+    if orgs.empty?
+      raise "#{stu} does not have any animals assigned."
+    end
+    
+    if stu.groups.length < 1
+      raise "#{self} doesn't appear to be in a team! Cannot continue :("
+    elsif stu.groups.length > 1
+      raise "#{self} belongs to more than one group! Cannot continue :("
+    end
+  end
+  
+  def validate_agent
+    stu_sm_events = Student.new(:metadata => {}).statemachine.events.values.collect{|ev| ev.name.to_sym}
+    agent_events = self.registered_events.collect{|ev| ev[:type].to_sym}
+    
+    unless (stu_sm_events - agent_events).empty?
+      # FIXME: why doesn't log output anything here? might be some IO + EM issue
+      puts
+      puts "WARNING: Events in Student statemachine not handled by the agent"
+      puts " - " + (stu_sm_events - agent_events).join("\n - ")
+    end
+  end
+  
+  def spawn!
+    super
+    validate_agent
+  end
+  
   def behaviour
     when_ready do
       @mongo = Mongo::Connection.new.db(config[:database])
@@ -32,19 +80,16 @@ class Choreographer < Sail::Agent
     end
     
     someone_joined_room do |stanza|
-      stu = lookup_student(Util.extract_login(stanza.from), true)
+      stu = lookup_student(Util.extract_login(stanza.from), true) unless
+        stanza.from == agent_jid_in_room
       
       if stu
+        validate_student(stu)
+        
         stu.save if stu.dirty?
         log "#{stu} joined #{config[:room]}"
       end
     end
-    
-    # presence(:from => Regexp.new("^"+Blather::JID.new(room_jid).to_s+".*"), :type => nil) do |stanza|
-    #   rx = Regexp.new("^"+Blather::JID.new(room_jid).to_s+".*")
-    #   from = stanza.from
-    #   log "#{rx} =~ #{from} --> #{from =~ rx}"
-    # end
     
     event :test_student_method? do |stanza, data|
       username = data['payload']['username']
@@ -67,11 +112,49 @@ class Choreographer < Sail::Agent
     
     event :check_in? do |stanza, data|
       username = data['origin']
+      lookup_student(username).check_in!(data['payload'].symbolize_keys)
+    end
+    event :observations_start? do |stanza, data|
+      @students.each do |username, stu|
+        stu.observations_start!
+      end
+    end
+    event :location_assignment? do |stanza, data|
+      username = data['payload']['username']
       location = data['payload']['location']
-      
-      lookup_student(username).check_in!(location)
+      lookup_student(username).location_assignment!(data['payload'].symbolize_keys)
+    end
+    event :organism_observation? do |stanza, data|
+      username = data['origin']
+      location = data['payload']['location']
+      lookup_student(username).organism_observation!(data['payload'].symbolize_keys)
+    end
+    event :meetup_start? do |stanza, data|
+      @students.each do |username, stu|
+        stu.meetup_start!
+      end
+    end
+    event :note? do |stanza, data|
+      username = data['origin']
+      location = data['payload']['location']
+      lookup_student(username).note!(data['payload'].symbolize_keys)
     end
     
+    # 
+    # meetup_start
+    # organism_features
+    # transition_to_present
+    # organism_observation
+    # location_assignment
+    # feature_observations_start
+    # observation_tabulation
+    # check_in
+    # homework_assignment
+    # note
+    # concept_discussion
+    # observations_start
+    # 
+
     # event :organisms_assignment? do |stanza, data|
     #   username = data['payload']['username']
     #   organisms = [ data['payload']['first_organism'], data['payload']['second_organism'] ]
@@ -96,20 +179,6 @@ class Choreographer < Sail::Agent
       }
       
       lookup_student(username).organism_present!(presence)
-    end
-    
-    event :location_assignment? do |stanza, data|
-      username = data['payload']['username']
-      location = data['payload']['go_to_location']
-      
-      lookup_student(username).location_assignment!(location)
-    end
-    
-    event :task_assignment? do |stanza, data|
-      username = data['payload']['username']
-      task = data['payload']['task']
-      
-      lookup_student(username).task_assignment!(task)
     end
     
     event :rainforest_guess_submitted? do |stanza, data|
@@ -284,4 +353,6 @@ class Choreographer < Sail::Agent
     stu.agent = self
     return stu
   end
+  
+  
 end

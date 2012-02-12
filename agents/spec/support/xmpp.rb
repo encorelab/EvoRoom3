@@ -1,62 +1,42 @@
-TEST_DB = "EvoRoom3-test"
 AGENT_PASSWORD = "9186ebc4790dfba833826e13c42c885f6f847274" # s3agent!
-RUN = "michelle-feb-2012-rspec"
+RUN = "michelle-feb-2012-a-test"
+TEST_DB = "michelle-feb-2012-a-test"
+
+XMPP_HOST = 'glint'
+XMPP_PORT = 5222
+SAIL_CONFIG = {:rollcall => {:url => "http://localhost:3000"}}
 
 require File.dirname(__FILE__)+'/event_expectations'
 
 shared_context :xmpp do
   before(:each) do
     # stub out ARes requests to avoid hitting Rollcall
-    mzukowski_xml = IO.read(File.dirname(__FILE__)+'/mzukowski.xml')
-    peterbelk_xml = IO.read(File.dirname(__FILE__)+'/PeterBelk.xml')
+    json = {}
+    Dir.glob(File.dirname(__FILE__)+'/*.json').each do |file|
+      json[file] = IO.read(file)
+    end
     
     ActiveResource::HttpMock.respond_to do |mock|
-      mock.get "/users/mzukowski.xml", {}, mzukowski_xml
-      mock.put "/users/3.xml"
-      
-      mock.get "/users/PeterBelk.xml", {}, peterbelk_xml
-      mock.put "/users/53.xml"
+      json.each do |file,data|
+        user_id = JSON.parse(data)['id']
+        mock.get "/users/#{File.basename(file)}", {}, data
+        mock.put "/users/#{user_id}.json"
+      end
+      mock.get "/users/Matt%20Zukowski.json", {}, nil, 404
     end
     
-    Student.format = :xml
-    Student.site = "http://rollcall.proto.encorelab.org"
-    
-    
-    # use TEST_DB in mongo instead of real DB
-    conn = Mongo::Connection.new
-    conn.drop_database(TEST_DB)
-    test_mongo = conn.db(TEST_DB)
-    
-    # retrieve a @student for use in tests
-    @student = Student.find('mzukowski')
-  
-    @student.stub(:mongo) do
-      test_mongo
-    end
+    Student.format = :json
+    Student.site = SAIL_CONFIG[:rollcall][:url]
 
     # real xmpp agent!
-    @chor = Choreographer.new(:room => RUN, :password => AGENT_PASSWORD, :database => TEST_DB)
-    
     @spec = Speccer.new(:room => RUN, :password => AGENT_PASSWORD, :database => TEST_DB)
     
-    @chor.config[:host] = 'proto.encorelab.org'
-    @chor.config[:port] = 5222
-    @chor.config[:sail] = {:rollcall => {:url => Student.site}}
+
     
-    @spec.config[:host] = 'proto.encorelab.org'
-    @spec.config[:port] = 5222
+    @spec.config[:host] = XMPP_HOST
+    @spec.config[:port] = XMPP_PORT
     
-    @chor.log_to = File.open(File.dirname(__FILE__)+'/../../logs/Choreographer.log','w')
-    #@spec.log_to = File.open(File.dirname(__FILE__)+'/../../logs/Speccer.log','w')
-    
-    @chor.class_eval do
-      include(EventExpectations)
-    end
-    
-    @chor.catch_event_exceptions = false
-    @spec.catch_event_exceptions = false
-    
-    @spec.chor = @chor
-    @student.agent = @chor
+
+    @spec.log_to = File.open(File.dirname(__FILE__)+'/../../logs/Speccer.log','w')
   end
 end

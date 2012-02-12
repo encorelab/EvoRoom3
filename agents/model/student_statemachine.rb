@@ -17,6 +17,9 @@ StudentStatemachine = proc do
   end
 
   state :OUTSIDE do
+    enter do |student|
+      student.metadata.day = 1 if not student.metadata.day?
+    end
     on :check_in do
       action lambda{|student,check_in| student.metadata.current_location = check_in[:location]}
       transition :to => :ORIENTATION do
@@ -87,7 +90,7 @@ StudentStatemachine = proc do
       action do |student,check_in| 
         student.metadata.current_location = check_in[:location]
       end
-      transition :to => :WAITING_FOR_MEETUP_TOPIC, :if => lambda{|student| student.metadata.current_task == 'meetup'}
+      transition :to => :WAITING_FOR_MEETUP_START, :if => lambda{|student| student.metadata.current_task == 'meetup'}
       transition :to => :OBSERVING_PAST, :if => lambda{|student| student.metadata.current_task == 'observe_past_presence'}
       transition :to => :OBSERVING_PRESENT, :if => lambda{|student| student.metadata.current_task == 'observe_present_presence'}
       transition :to => :BRAINSTORMING, :if => lambda{|student| student.metadata.current_task == 'brainstorm'}
@@ -97,28 +100,32 @@ StudentStatemachine = proc do
     # end
   end
   
-  state :WAITING_FOR_MEETUP_TOPIC do
-    on :topic_assignment, :to => :MEETUP, 
-      :action => :store_meetup_topic
+  state :WAITING_FOR_MEETUP_START do
+    on :meetup_start, :to => :MEETUP, :action => :increment_meetup!
   end
   
   state :MEETUP do
     on :note, :to => :WAITING_FOR_GROUP_TO_FINISH_MEETUP, :action => :store_note
+    on :observations_start, :to => :WAITING_FOR_LOCATION_ASSIGNMENT do
+      transition :to => :WAITING_FOR_LOCATION_ASSIGNMENT do
+        comment "Allows teacher to move on even if not all students are done."
+        action do |student|
+          student.metadata.current_task = "observe_past_presence"        
+          student.increment_rotation!
+        end
+      end
+    end
     on :homework_assignment do
       transition :to => :OUTSIDE do
         comment "Allows the teacher to end the meetup\neven if not all students have submitted notes."
         action do |student|
-          student.metadata.day_1_completed = true
+          student.metadata.day = 2
         end
       end
     end
   end
   
   state :WAITING_FOR_GROUP_TO_FINISH_MEETUP do
-    comment "Triggers 'meetup_end' event if the student is the last one in their group to submit a meetup note."
-    enter do |student|
-      student.meetup_finished! if student.all_group_members_have_submitted_meetup_notes?
-    end
     on :observations_start, :to => :WAITING_FOR_LOCATION_ASSIGNMENT do
       transition :to => :WAITING_FOR_LOCATION_ASSIGNMENT do
         comment "Triggered by the teacher after the first meetup."

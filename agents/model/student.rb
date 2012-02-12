@@ -42,6 +42,10 @@ class Student < Rollcall::User
     groups.first.name
   end
   
+  def assigned_organisms
+    JSON.parse(student.metadata.assigned_organisms)
+  end
+  
   def evoroom_group
     Rollcall::Group.site = Student.site if Rollcall::Group.site.blank?
     Rollcall::Group.find(group_code)
@@ -61,11 +65,11 @@ class Student < Rollcall::User
   end
   
   def in_day_1?
-    return !self.metadata.day_1_completed? || self.metadata.day_1_completed == false
+    return !self.metadata.day? || self.metadata.day.to_i == 1
   end
   
   def in_day_2?
-    return self.metadata.day_1_completed? && self.metadata.day_1_completed == true
+    return self.metadata.day? && self.metadata.day.to_i == 2
   end
   
   def at_assigned_location?(loc)
@@ -74,11 +78,6 @@ class Student < Rollcall::User
   
   def going_to?(what)
     self.metadata.going_to == what
-  end
-  
-  def store_meetup_topic(data)
-    data[:timestamp] ||= Time.now
-    mongo[:meetups].save(data)
   end
   
   def store_observation(observation)
@@ -99,10 +98,18 @@ class Student < Rollcall::User
   end
   
   def increment_rotation!
-    if self.metadata.respond_to?(:current_rotation) && self.metadata.current_rotation
+    if self.metadata.current_rotation? && self.metadata.current_rotation
       self.metadata.current_rotation = self.metadata.current_rotation.to_i + 1
     else
       self.metadata.current_rotation = 1
+    end
+  end
+  
+  def increment_meetup!
+    if self.metadata.current_meetup? && self.metadata.current_meetup
+      self.metadata.current_meetup = self.metadata.current_meetup.to_i + 1
+    else
+      self.metadata.current_meetup = 1
     end
   end
   
@@ -120,15 +127,36 @@ class Student < Rollcall::User
     )
   end
   
-  def assign_meeting_location!
+  def assign_meetup_location!
     # TODO: everyone in the group has to go to the same location
-    student.metadata.going_to = 'meetup'
+    meetups = mongo.collection(:meetups).find({"team" => self.team_name}).to_a
+    if meetups.length > 1
+      raise "Why are there multiple meetups for team #{self.team_name}? Something is *@&!@^%'ed!"
+    elsif meetups.length == 0
+      selected_loc = current_locations[rand(current_locations.length)]
+      
+      meetup = {
+        "team" => self.team_name, 
+        "started" => Time.now,
+        "location" => selected_loc
+      }
+    else
+      meetup = meetups.first
+      
+      mongo.collection(:meetups).save(meetup)
+      
+      selected_loc = meetup["location"]
+    end
+    
     agent.event!(:location_assignment,
-      :location => current_locations[rand(current_locations.length)],
+      :location => selected_loc,
       :username => self.username
     )
   end
   
+  def team_name
+    groups.first.name
+  end
   
   define_statemachine(&StudentStatemachine)
 end

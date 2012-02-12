@@ -11,8 +11,25 @@ require 'spec/support/xmpp'
 describe Choreographer do
   include_context :xmpp
   
+  before do
+    @chor = Choreographer.new(:room => RUN, :password => AGENT_PASSWORD, :database => TEST_DB)
+    @chor.config[:host] = XMPP_HOST
+    @chor.config[:port] = XMPP_PORT
+    @chor.config[:sail] = SAIL_CONFIG
+    @chor.log_to = File.open(File.dirname(__FILE__)+'/../logs/Choreographer.log','w')
+    
+    @chor.class_eval do
+      include(EventExpectations)
+    end
+    
+    @chor.catch_event_exceptions = false
+    @spec.catch_event_exceptions = false
+    
+    @spec.chor = @chor
+  end
+  
   it "should go through day 1 as per sequence diagram" do
-    @spec.config[:nickname] = "PeterBelk"
+    @spec.config[:nickname] = "bobby"
     
     @spec.class_eval do
       def behaviour
@@ -20,11 +37,11 @@ describe Choreographer do
         
         someone_joined_room do |stanza|
           if Sail::Agent::Util.extract_login(stanza.from) == "Choreographer"
-            start_chain
+            sequence do
               ev(:check_in, {:location => "room"})
-              wait 'ORIENTATION'
+              wait('ORIENTATION')
               expect_student{ self.state.should == :ORIENTATION }
-              ev(:observations_start, {})
+              ev(:observations_start, {}, {:origin => 'ateacher'})
               wait('WAITING_FOR_LOCATION_ASSIGNMENT')
               expect_student{ self.current_locations.length == 4 }
               
@@ -44,10 +61,58 @@ describe Choreographer do
               wait('GOING_TO_ASSIGNED_LOCATION')
               expect_student{ self.metadata.current_task.should == 'meetup'}
               ev(:check_in, lambda{{:location => @assigned_location}})
-              wait('WAITING_FOR_MEETUP_TOPIC')
+              wait('WAITING_FOR_MEETUP_START')
+              
+              ev(:meetup_start, {}, {:origin => 'ateacher'})
+              wait("MEETUP")
+              
+              ev(:note, {
+                "author" => "JoeMcStudent",
+                "team_name" => "Darwin",
+                "meetup" => "1",
+                "note" => "Blah blah blah...",
+                "specialty" => "primates"
+              })
+              
+              wait("WAITING_FOR_GROUP_TO_FINISH_MEETUP")
+              ev(:observations_start, {}, {:origin => 'ateacher'})
+              wait('WAITING_FOR_LOCATION_ASSIGNMENT')
+              expect_student{ self.current_locations.length == 4 }
+              
+              # ROTATION II
+              4.times do
+                on(:location_assignment){|stanza,data| @assigned_location = data['payload']['location'] }
+                wait('GOING_TO_ASSIGNED_LOCATION')
+                ev(:check_in, lambda{{:location => @assigned_location}})
+                wait('OBSERVING_PAST')
+                ev(:organism_observation, 
+                  lambda{{"location" => @assigned_location, "team_name" => "Darwin","assigned_organism" => "fig_tree","observed_organism" => "fig_tree","time" => "200 mya"}})
+                wait('WAITING_FOR_LOCATION_ASSIGNMENT')
+              end
+              
+               # MEETUP II
+                on(:location_assignment){|stanza,data| @assigned_location = data['payload']['location'] }
+                wait('GOING_TO_ASSIGNED_LOCATION')
+                expect_student{ self.metadata.current_task.should == 'meetup'}
+                ev(:check_in, lambda{{:location => @assigned_location}})
+                wait('WAITING_FOR_MEETUP_START')
+
+                ev(:meetup_start, {}, {:origin => 'ateacher'})
+                wait("MEETUP")
+
+                ev(:note, {
+                  "author" => "JoeMcStudent",
+                  "team_name" => "Darwin",
+                  "meetup" => "1",
+                  "note" => "Blah blah blah...",
+                  "specialty" => "primates"
+                })
+
+                wait("WAITING_FOR_GROUP_TO_FINISH_MEETUP")
+                ev(:homework_assignment, {}, {:origin => 'ateacher'})
               
               finish
-            end_chain
+            end
           end
         end
         
