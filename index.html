@@ -132,12 +132,12 @@
             </div>
             <br />
             <div>Organism assignment:</div>
-            <div class="assigned-organism-1 orange indent"></div>
-            <div class="assigned-organism-2 orange indent"></div>
-            <div class="assigned-organism-3 orange indent"></div>
-            <div class="assigned-organism-4 orange indent"></div>
-            <div class="assigned-organism-5 orange indent"></div>
-            <div class="assigned-organism-6 orange indent"></div>
+            <div class="assigned-organism-1 organism-clear orange indent"></div>
+            <div class="assigned-organism-2 organism-clear orange indent"></div>
+            <div class="assigned-organism-3 organism-clear orange indent"></div>
+            <div class="assigned-organism-4 organism-clear orange indent"></div>
+            <div class="assigned-organism-5 organism-clear orange indent"></div>
+            <div class="assigned-organism-6 organism-clear orange indent"></div>
             <br>
             <p>
                 During this exercise, you will be taken back in time to: 200, 150, 100, 50, 25, 10, 5, 2 million years ago (mya). As a team, you will complete a cladogram, by identifying your assigned organism and/or their ancestors at the specified times.
@@ -348,7 +348,6 @@
             <button class="big-button"><b>QR scan</b></button>
         </div>
         
-        <!-- TODO change font size, eliminate the extra copy that doesn't exist on the mockups? If there are 6 orgs, it looks like shit -->
         <div id="team-organism-assignment-day2" class="full-text-box" style="display:none">
             <div class="title"><b>Welcome to the simulation lab</b></div>
             <div class="content">
@@ -365,13 +364,14 @@
             <p>
                 In addition, you will be responsible for observing the following organisms within your team. 
             <p>
-            <div>Organism assignment:</div>
-            <div class="assigned-organism-1 orange indent"></div>
-            <div class="assigned-organism-2 orange indent"></div>
-            <div class="assigned-organism-3 orange indent"></div>
-            <div class="assigned-organism-4 orange indent"></div>
-            <div class="assigned-organism-5 orange indent"></div>
-            <div class="assigned-organism-6 orange indent"></div>
+            <div class="lowest-content">Organism assignment:
+	            <div class="assigned-organism-1 organism-clear orange indent"></div>
+	            <div class="assigned-organism-2 organism-clear orange indent"></div>
+	            <div class="assigned-organism-3 organism-clear orange indent"></div>
+	            <div class="assigned-organism-4 organism-clear orange indent"></div>
+	            <div class="assigned-organism-5 organism-clear orange indent"></div>
+	            <div class="assigned-organism-6 organism-clear orange indent"></div>
+            </div>
 
             <button class="small-button"><b>Next</b></button>
         </div>
@@ -389,10 +389,12 @@
                 <b>Time: </b><span class="orange">2 mya</span>
             </div>
             <div class="content">
-                <b>Instructions: </b>Choose an organism to begin.
+                <b>Instructions: </b>Are these organisms present at this location? Mark yes/no for each.
             </div>
-            <table class="organism-table 2mya-table">
-            </table>
+            <div class="lowest-content">
+	            <table class="organism-table 2mya-table">
+	            </table>
+            </div>
             
             <button class="small-button" style="display:none"><b>Done</b></button>
         </div>
@@ -445,50 +447,70 @@
             <div class="content">
                 <b>Instructions: </b>Choose an organism to begin (this text should be changed, right?)
             </div>
-            <table class="present-day-organisms-table">
-                <tr data-organism="" data-choice="none">
-                    <td><img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" /></td>
-                    <td>
-                        <button class="presence-choice">yes</button>
-                        <button class="presence-choice">no</button>
-                    </td>
-                </tr>
-                <tr data-organism="" data-choice="none">
-                    <td><img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" /></td>
-                    <td>
-                        <button class="presence-choice">yes</button>
-                        <button class="presence-choice">no</button>
-                    </td>
-                </tr>
-                <tr data-organism="" data-choice="none">
-                    <td><img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" /></td>
-                    <td>
-                        <button class="presence-choice">yes</button>
-                        <button class="presence-choice">no</button>
-                    </td>
-                </tr>
-                <tr data-organism="" data-choice="none">
-                    <td><img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" /></td>
-                    <td>
-                        <button class="presence-choice">yes</button>
-                        <button class="presence-choice">no</button>
-                    </td>
-                </tr>
-                <tr data-organism="" data-choice="none">
-                    <td><img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" /></td>
-                    <td>
-                        <button class="presence-choice">yes</button>
-                        <button class="presence-choice">no</button>
-                    </td>
-                </tr>
-                <tr data-organism="" data-choice="none">
-                    <td><img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" /></td>
-                    <td>
-                        <button class="presence-choice">yes</button>
-                        <button class="presence-choice">no</button>
-                    </td>
-                </tr>
-            </table>
+            <div class="table-container lowest-content">
+	            <table class="present-day-organisms-table">
+	                <tr data-organism="" data-choice="none">
+	                    <td>
+	                       <img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" />
+	                       <div class="small-font organism-text"></div>
+	                    </td>
+	                    <td>
+	                        <button class="presence-choice">yes</button>
+	                        <button class="presence-choice">no</button>
+	                    </td>
+	                </tr>
+	                <tr data-organism="" data-choice="none">
+	                    <td>
+	                       <img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" />
+	                        <div class="small-font organism-text"></div>
+	                    </td>
+	                    <td>
+	                        <button class="presence-choice">yes</button>
+	                        <button class="presence-choice">no</button>
+	                    </td>
+	                </tr>
+	                <tr data-organism="" data-choice="none">
+	                    <td>
+	                        <img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" />
+	                        <div class="small-font organism-text"></div>
+	                    </td>
+	                    <td>
+	                        <button class="presence-choice">yes</button>
+	                        <button class="presence-choice">no</button>
+	                    </td>
+	                </tr>
+	                <tr data-organism="" data-choice="none">
+	                    <td>
+	                        <img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" />
+	                        <div class="small-font organism-text"></div>
+	                    </td>
+	                    <td>
+	                        <button class="presence-choice">yes</button>
+	                        <button class="presence-choice">no</button>
+	                    </td>
+	                </tr>
+	                <tr data-organism="" data-choice="none">
+	                    <td>
+	                        <img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" />
+	                        <div class="small-font organism-text"></div>
+	                    </td>
+	                    <td>
+	                        <button class="presence-choice">yes</button>
+	                        <button class="presence-choice">no</button>
+	                    </td>
+	                </tr>
+	                <tr data-organism="" data-choice="none">
+	                    <td>
+	                        <img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" />
+	                        <div class="small-font organism-text"></div>
+	                    </td>
+	                    <td>
+	                        <button class="presence-choice">yes</button>
+	                        <button class="presence-choice">no</button>
+	                    </td>
+	                </tr>
+	            </table>
+            </div>
             
             <button class="small-button" style="display:none"><b>Done</b></button>
         </div>
