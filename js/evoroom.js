@@ -1047,7 +1047,7 @@ var EvoRoom = {
             if (sev.payload.to) {
                 console.log('Caught oneoff event stateChangeHandler with to = ' + sev.payload.to);
 
-                if (sev.payload.to === 'OBSERVING_IN_ROTATION') {
+                if (sev.payload.to === 'OBSERVING_PAST') {
                     Sail.app.hidePageElements();
                     $('#observe-organisms-instructions').show();
                 } else if (sev.payload.to === 'WAITING_FOR_MEETUP_TOPIC') {
