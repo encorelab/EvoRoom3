@@ -22,7 +22,7 @@ class Choreographer < Sail::Agent
       #'meetup_1_topic',
       #'meetup_2_topic',
       'assigned_organisms',
-      'speciality'
+      'specialty'
     ]
     
     required_metadata.each do |key|
