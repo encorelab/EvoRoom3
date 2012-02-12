@@ -1,4 +1,5 @@
 $: << File.dirname(__FILE__)+"/sail.rb/lib"
+$: << File.dirname(__FILE__)
 require 'sail/daemon'
 
 require 'event_logger'
