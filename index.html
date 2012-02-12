@@ -26,65 +26,53 @@
 </head>
 <body>
     <header>
-        <h1>EvoRoom</h1>
+        <div class="progressbar day1 hide">
+            <div class="indicator">1. Orientation</div>
+            <div class="indicator">2. Rotation I</div>
+            <div class="indicator">3. Meetup I</div>
+            <div class="indicator">4. Rotation II</div>
+            <div class="indicator">5. Meetup II</div>
+            <div class="indicator">6. Complete</div>
+        </div>
+        <div class="progressbar day2 hide">
+            <div class="indicator">1. 2 mya</div>
+            <div class="indicator">2. Transition</div>
+            <div class="indicator">3. Present</div>
+            <div class="indicator">4. Concepts</div>
+            <div class="indicator">5. Complete</div>
+        </div>
     </header>
 
     <div id="evoroom">
     
-<!-- ***********************************************SURVEY**************************************************** -->
+<!-- ***********************************************HELPERS**************************************************** -->
+        <!--
+        <div class="banner">
+            <strong class="project">EvoRoom</strong>
+            <br />
+            <strong>Evolution Processes</strong>
+        </div>
+        -->
         
         <div id="loading-page" class="full-text-box" style="display:none">
-            <div class="title"><b>Loading, please wait...</b></div>
+            <div class="title"><b>Please wait...</b></div>
+            <div class="content">Fetching data from server</div>
+            <img class="loader-gif" src="loader.gif" alt="Loader image indicating waiting">
         </div>
         
-        <div id="student-chosen-organisms" style="display:none">
-            <img class="first-organism organism-image" src="/images/ant_icon.png" alt="Ant">
-            <img class="second-organism organism-image" src="/images/civet_icon.png" alt="Civet">
-        </div>
-            
-        <div id="log-in-success" class="full-text-box" style="display:none">
-            <div class="title"><b>Log in successful</b></div>
-            <div>
-                To gain entry into our elite team of rainforest ecologists, you must successfully complete this exercise,
-                demonstrating your knowledge of rainforest ecology, knowledge of your specialist species, problem solving-skills
-                and ability to work in a team-based environment. This exercise consists of 5 steps and will take approximately
-                30 minutes to complete.
-                <br><br>
-                When you are ready to begin, proceed to the simulation lab (in room 204a) and perform a QR scan with this device. 
-            </div>
-            <button class="big-button"><b>QR scan</b></button>
-        </div>
-        
-        <div id="room-scan-failure" class="full-text-box" style="display:none">
-            <div class="title"><b>QR code scanning failed</b></div>
-            <div>
-                QR scan on room entry failed. Either proceed without scanning or try again. 
-            </div>
-            <button class="big-error-resolver-button"><b>Enter room</b></button>
-            <button class="big-button"><b>Scan again</b></button>
-        </div>
-        
-        <div id="wait-for-teacher" class="full-text-box" style="display:none">
-            <div class="title"><b>Listen to teacher</b></div>
-            <div>
-                In order to understand the task at hand, please listen to the teacher and
-                wait until the teacher gives the signal to continue.
-            </div>
+        <div id="team-meeting" class="full-text-box" style="display:none">
+            <div class="title"><b>Please wait for all team members to arrive</b></div>
+            <div class="content">Once all team members have scanned in at the location you will receive additional information to proceed.</div>
+            <img class="loader-gif" src="loader.gif" alt="Loader image indicating waiting">
         </div>
         
         <div id="go-to-location" class="full-text-box" style="display:none">
-            <div class="title"><b>Step 1 complete</b></div>
-            <div>
-                One of these rainforests display the results from an environmental variable you and your group
-                members chose to analyze for a report. Your challenge is to eliminate the rainforests that most
-                likely did NOT result from your variable.
-                <br><br>
-                Gather your group members and go to <span class="current-location orange"></span>.
-                When you have all arrived, perform a QR scan. 
+            <div class="title">
+                <b>Instructions:</b> Go to <span class="current-location orange"></span> and perform a QR scan.
             </div>
             <button class="big-button"><b>QR scan</b></button>
         </div>
-        
+
         <div id="location-scan-failure" class="full-text-box" style="display:none">
             <div class="title"><b>Location QR code scanning failed!</b></div>
             <div>
@@ -96,428 +84,470 @@
             <button class="small-error-resolver-button" data-location="station_d"><b>Station D</b></button>
             <button class="big-button"><b>Scan again</b></button>
         </div>
+
+<!-- ***********************************************ENTRY**************************************************** -->
         
-        <div id="observe-organism" class="full-text-box" style="display:none">
-            <div class="title"><b>Do some observation</b></div>
+        <div id="room-scan-failure" class="full-text-box" style="display:none">
+            <div class="title"><b>QR code scanning failed</b></div>
             <div>
-                This will tell to look for some animals and maybe lead to other dialogs to find
-                ancestor animals and such. 
+                QR scan on room entry failed. Either proceed without scanning or try again. 
             </div>
-            <button class="big-button"><b>Submit observation</b></button>
+            <button class="big-error-resolver-button"><b>Enter room</b></button>
+            <button class="big-button"><b>Scan again</b></button>
         </div>
-    
-<!-- ====================================== COLIN =================================== -->
         
-<!--    
-        <div id="survey-welcome" class="full-text-box" style="display:none">
+        <div id="log-in-success" class="full-text-box" style="display:none">
+            <div class="title"><b>Log in successful</b></div>
+            <p>
+                Congratulations! You are now in the final stages of training in gaining entry to our elite team of rainforest ecologists. 
+            </p>
+            <p>
+                To successfully complete this exercise, you must demonstrate your knowledge of evolutionary concepts, knowledge of your specialist species, problem solving-skills and ability to work in a team-based environment.  
+            </p>
+            <p>
+                This exercise consists of 6 steps and will take approximately 30 minutes to complete. When you are ready to begin, perform a QR scan at the entrance of the simulation lab.  
+            </p>
+            <button class="big-button"><b>QR scan</b></button>
+        </div>
+
+        <div id="team-assignment" class="full-text-box" style="display:none">
             <div class="title"><b>Welcome to the simulation lab</b></div>
-            <div>
-                There are four different versions the Borneo rainforest ecosystem here. Why do they look different?
-                What happened to these systems? As part of today's exercise you will work with the others in this room to
-                figure this out.
-                <br><br>
-                But first, to facilitate the problem-solving process, you are asked to look for these species (shown above)
-                within their speciality, across all four rainforests. This is a divide and conquer strategy for everyone to take
-                stock of the species are in the rainforest ecosystems.
-                <br><br>
-                When you are ready, approach one of the rainforest stations and perform a QR scan.
+            <div class="content">
+                For this exercise, instead of working in your specialty groups (i.e., birds, other mammals, plants & insects, primates), you will be working with people from various specialties as a team. Your team should have at least one expert from each of the specialty groups. 
             </div>
-            <button class="big-button"><b>QR scan</b></button>
+            <br />
+            <div>Team assignment:</div>
+            <div class="team-name orange indent"></div>
+            <br />
+            <div>Team members:</div>
+            <div class="members"></div>
+            
+            <button class="small-button"><b>Next</b></button>
         </div>
         
-        <div id="rainforest-scan-failure" class="full-text-box" style="display:none">
-            <div class="title"><b>Rainforest QR code scanning failed!</b></div>
-            <div>
-                Scanning the QR code of the rainforest failed. Please try again or proceed by pressing the button for the rainforest you are at. 
+        <div id="organism-assignment" class="full-text-box" style="display:none">
+            <div class="title"><b>Welcome to the simulation lab</b></div>
+            <div class="content">
+                In addition, you will be responsible for observing the following organisms within your team. 
             </div>
-            <button class="small-error-resolver-button" data-rainforest="rainforest_a"><b>Rainforest A</b></button>
-            <button class="small-error-resolver-button" data-rainforest="rainforest_b"><b>Rainforest B</b></button>
-            <button class="small-error-resolver-button" data-rainforest="rainforest_c"><b>Rainforest C</b></button>
-            <button class="small-error-resolver-button" data-rainforest="rainforest_d"><b>Rainforest D</b></button>
-            <button class="big-button"><b>Scan again</b></button>
+            <br />
+            <div>Organism assignment:</div>
+            <div class="assigned-organism-1 orange indent"></div>
+            <div class="assigned-organism-2 orange indent"></div>
+            <div class="assigned-organism-3 orange indent"></div>
+            <div class="assigned-organism-4 orange indent"></div>
+            <div class="assigned-organism-5 orange indent"></div>
+            <div class="assigned-organism-6 orange indent"></div>
+            <br>
+            <p>
+                During this exercise, you will be taken back in time to: 200, 150, 100, 50, 25, 10, 5, 2 million years ago (mya). As a team, you will complete a cladogram, by identifying your assigned organism and/or their ancestors at the specified times.
+            </p>
+            <p>
+                You will receive an orientation from your science teacher. After, your teacher will advance everyone to the next step.
+            </p>
+            <p>
+                The orientation will begin shortly.
+            </p>
         </div>
-   
-        <div id="survey-organisms" class="full-text-box" style="display:none">
+        
+<!-- ***********************************************ROTATION**************************************************** -->
+
+        <div id="student-chosen-organisms" style="display:none">
+            <img class="chosen-organism-image" />
+        </div>
+        
+        <div id="observe-organisms-instructions" class="full-text-box" style="display:none">
             <div class="title">
-                <span><b>Location: </b></span>
-                <span class="location"><b></b></span>
+                <b>Instructions: </b>There are four different versions of Southeast Asia set at different times in this room: 200, 150, 100, and 50 mya.
             </div>
-            
-            <div class="survey-content-box">
-                <table class="survey-content-table">
-                    <tr>
-                        <th><b>Organism</b></th>
-                        <th><b>Present?</b></th>
-                    </tr>
-                    <tr>
-                        <td class="first-organism">
-                            <span class="first-organism-name"></span>
-                        </td>
-                        <td class="first-organism-radios jquery-radios">
-                            <input type="radio" name="first-organism-yn" id="first-org-yes" class="radio first-radios" value="true" /><label for="first-org-yes">Yes</label>
-                            <input type="radio" name="first-organism-yn" id="first-org-no" class="radio first-radios" value="false" /><label for="first-org-no">No</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="second-organism">
-                            <span class="second-organism-name"></span>
-                        </td>
-                        <td class="second-organism-radios jquery-radios">
-                            <input type="radio" name="second-organism-yn" id="second-org-yes" class="radio second-radios" value="true" /><label for="second-org-yes">Yes</label>
-                            <input type="radio" name="second-organism-yn" id="second-org-no" class="radio second-radios" value="false" /><label for="second-org-no">No</label>
-                        </td>
-                        
-                </table>
-            </div>
-
-            <div class="survey-done-text next-rainforest" style="display:none">
-                Done? Go to the next rainforest and perform a QR scan.
-                <button class="big-button"><b>QR scan</b></button>
-            </div>
-            <div class="survey-done-text finished" style="display:none">
-                Done? Click next to continue
-                <button class="small-button"><b>Next</b></button>
-            </div>
-
-        </div>
--->
-        
-<!-- *********************************************ROTATION******************************************************* -->       
-<!--       
-        <div id="rotation-intro" class="full-text-box" style="display:none">
-            <div class="title"><b>Step 1 complete</b></div>
-            <div>
-                One of these rainforests display the results from an environmental variable you and your group
-                members chose to analyze for a report. Your challenge is to eliminate the rainforests that most
-                likely did NOT result from your variable.
-                <br><br>
-                Gather your group members and go to <span class="current-rainforest orange"></span>.
-                When you have all arrived, perform a QR scan. 
-            </div>
-            <button class="big-button"><b>QR scan</b></button>
-        </div>
-        
-        <div id="rotation-scan-failure" class="full-text-box" style="display:none">
-            <div class="title"><b>Rainforest QR code scanning failed!</b></div>
-            <div>
-                Scanning the QR code of the rainforest failed. Please try again or proceed by pressing the button for the rainforest you are at. 
-            </div>
-            <button class="small-error-resolver-button" data-rainforest="rainforest_a"><b>Rainforest A</b></button>
-            <button class="small-error-resolver-button" data-rainforest="rainforest_b"><b>Rainforest B</b></button>
-            <button class="small-error-resolver-button" data-rainforest="rainforest_c"><b>Rainforest C</b></button>
-            <button class="small-error-resolver-button" data-rainforest="rainforest_d"><b>Rainforest D</b></button>
-            <button class="big-button"><b>Scan again</b></button>
-        </div>
-
-        <div id="rotation-note-taker" class="full-text-box" style="display:none">
-            <div class="title"><b>Location: </b><span class="current-rainforest"></span></div>
-            <div>
-                Instructions: Your assignment at this location is to be the note-taker. Discuss the
-                following questions with your group members and record your answers below.
-            </div>
-            <div class="rainforest-choice">
-                Could this be your rainforest?
-                <div class="rainforest-choice-radios jquery-radios">
-                    <input type="radio" name="your-rainforest" id="rainforest-choice-yes" class="radio" value="true" /><label for="rainforest-choice-yes">Yes</label>
-                    <input type="radio" name="your-rainforest" id="rainforest-choice-no" class="radio" value="false" /><label for="rainforest-choice-no">No</label>                         
-                </div>
-            </div>
-            <div class="rainforest-explanation">
-                Give a brief explanation for your answer.
-                <textarea class="rainforest-explanation-text-entry"></textarea>
-            </div>
-            <button class="small-button"><b>Done</b></button>
-        </div>
-        
-        <iframe id="field-guide-frame" class="iframe" src="http://utslearningportfolio.oise.utoronto.ca/?q=node/437" style="display:none"></iframe>
-        <iframe id="group-page-frame" class="iframe" src="http://utslearningportfolio.oise.utoronto.ca/?q=node/536" style="display:none"></iframe>
-        <button id="iframe-close-button" style="display:none">Close</button>
-        
-        <div id="rotation-field-guide" style="display:none">
-            <div class="full-text-box">
-                <div class="title"><b>Location: </b><span class="current-rainforest"></span></div>
-                <div>
-                    <b>Instructions:</b> Your assignment at this location is to look up information in your field guide.
-                    Follow the link below to go to the field guide site.
-                </div>
-                <div class="rotation-link">
-                    <div class="field-guide-link">Go to the <b>Field Guide</b></div>
-                </div>
-            </div>
-        </div>
-        
-        <div id="rotation-prediction" style="display:none">
-            <div class="full-text-box">
-                <div class="title"><b>Location: </b><span class="current-rainforest"></span></div>
-                <div>
-                    <b>Instructions:</b> Your assignment at this location is to look up your prediction.
-                    Follow the link below to go to your group's page.
-                </div>
-                <div class="rotation-link">
-                    <div class="group-page-link">Go to your <b>Group's Page</b></div>
-                </div>
-            </div>
-        </div>
-        
-        <div id="rotation-field-guide-and-prediction" style="display:none">
-            <div class="full-text-box">
-                <div class="title"><b>Location: </b><span class="current-rainforest"></span></div>
-                <div>
-                    <b>Instructions:</b> Your assignment at this location is to look up your prediction and/or your field guide. Follow the links below to
-                    access the information. If another group member is also assigned to look up information, one person should look up the Field Guide, and
-                    the other should look up your Group's Page. 
-                </div>
-                <div class="rotation-link">
-                    <div class="field-guide-link">Go to the <b>Field Guide</b></div>
-                    <br><br>
-                    <div class="group-page-link">Go to your <b>Group's Page</b></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="rotation-next-rainforest" class="full-text-box" style="display:none">
-            <div class="title"><b>Step 2 in progress</b></div>
-            <div>
-                Go to <span class="next-rainforest orange"><b></b></span>.
-                When you have all arrived, perform a QR scan.
-            </div>
-            <button class="big-button"><b>QR scan</b></button>
-        </div>
--->
-
-<!-- *********************************************SPEED DATING**************************************************** -->
-<!--
-        <div id="interview-intro" class="full-text-box" style="display:none">
-            <div class="title"><b>Step 2 complete</b></div>
-            <div>
-                Your next task is to locate these researchers (see below) and find out more information about THEIR rainforests.
-                After all, how will you know which rainforest is yours if you don't know how the other rainforests came to be?
-                Maybe you can offer your expertise to help them find their rainforests as well. When you are ready, click on
-                their names to begin.
-            </div>  
-            <div class="links">
-                <div class="first-interviewee">TEMP 1st interviewee</div>
-                <br><br>
-                <div class="second-interviewee">TEMP 2nd interviewee</div>
-            </div>  
-        </div>
-        
-        <div id="interview" style="display:none">
-            <div class="suggested-questions">
-                <div class="title">
-                    <b>Suggested questions:</b>
-                </div>
-                <div>1. What is your variable?</div>
-                <div>2. What speciality are you?</div>
-                <div>3. Which rainforest do you think is related to your variable? Why?</div>
-                <div>4. How confident are you and your group members?</div>
-                <div>5. ...</div>
-            </div>
-
-            <div class="full-text-box">
-                <div class="title"><b>Interview with <span class="interview-choice"></span></b></div>
-                <div>
-                    What is your group's variable?
-                </div>
-                <div class="dropdown-content-box">
-                    <select class="variable-dropdown dropdown">
-                        <option value="undefined">...</option>
-                        <option value="high-rainfall">High rainfall</option>
-                        <option value="low-rainfall">Low rainfall</option>
-                        <option value="high-sunlight">High sunlight</option>
-                        <option value="low-sunlight">Low sunlight</option>
-                        <option value="high-temperature">High temperature</option>
-                        <option value="low-temperature">Low temperature</option>
-                        <option value="logging">Logging</option>
-                        <option value="conservation">Conservation</option>
-                        <option value="earthquake">Earthquake</option>
-                        <option value="tsunami">Tsunami</option>
-                    </select>
-                </div>
-                <div class="interview-content-title">
-                    <b>Notes</b>
-                </div>
-                <textarea class="interview-content-text-entry"></textarea>
-                
-                <button class="small-button"><b>Done</b></button>
-            </div>
-        </div>
-        
-        <div id="group-notes" style="display:none">
-            <div class="table-wrapper">
-                <table class="notes-table">
-                    <tr>
-                        <th class="table-header-small"><b>Researcher</b></th>
-                        <th class="table-header-small"><b>Variable</b></th>
-                        <th class="table-header-big"><b>Notes</b></th>
-                    </tr>
-                    <tr>
-                        <td class="researcher 1"></td>
-                        <td class="variable 1"></td>
-                        <td class="notes 1"></td>
-                    </tr>
-                    <tr>
-                        <td class="researcher 2"></td>
-                        <td class="variable 2"></td>
-                        <td class="notes 2"></td>
-                    </tr>
-                    <tr>
-                        <td class="researcher 3"></td>
-                        <td class="variable 3"></td>
-                        <td class="notes 3"></td>
-                    </tr>
-                    <tr>
-                        <td class="researcher 4"></td>
-                        <td class="variable 4"></td>
-                        <td class="notes 4"></td>
-                    </tr>
-                    <tr>
-                        <td class="researcher 5"></td>
-                        <td class="variable 5"></td>
-                        <td class="notes 5"></td>
-                    </tr>
-                    <tr>
-                        <td class="researcher 6"></td>
-                        <td class="variable 6"></td>
-                        <td class="notes 6"></td>
-                    </tr>
-                </table>
-            </div>
-            
-            <div class="divider"></div>
-
-            <div class="completion-text">
-                <b>Step 3 complete</b>
-                <button class="sync-button"><b>Sync notes with group</b></button>
-            </div>
-            
-            
-            <div class="group-notes-content-box">
-                Discuss amongst group members and rank the rainforests from no. 1 to 4, with no. 1 as the environment
-                that most likely result from YOUR variable. When you are ready, record your choices.
-            </div> 
-            
-            <button class="small-button"><b>Rank</b></button>       
-        </div>
--->      
-        
-<!-- *********************************************FINAL PICKS**************************************************** -->       
-<!--        
-        <div id="final-picks-ranking" class="full-text-box" style="display:none">
-            <div class="title"><b>Step 4: Rank rainforests</b></div>
-
-            <div class="final-picks-content-box">
-                <table class="final-picks-content-table">
-                    <tr>
-                        <th><b>Rainforests</b></th>
-                        <th><b>Rank</b></th>
-                    </tr>
-                    <tr>
-                        <td>Rainforest A</td>
-                        <td>
-                            <select class="A-dropdown dropdown">
-                                <option value="undefined">...</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Rainforest B</td>
-                        <td>
-                            <select class="B-dropdown dropdown">
-                                <option value="undefined">...</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Rainforest C</td>
-                        <td>
-                            <select class="C-dropdown dropdown">
-                                <option value="undefined">...</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Rainforest D</td>
-                        <td>
-                            <select class="D-dropdown dropdown">
-                                <option value="undefined">...</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            
-            <div class="final-picks-done-text">
-                Done? Click next to continue.
+            <div class="content">
+                When you click &rsquo;Next&rsquo; your list of assigned organisms will appear. Your task is to determine whether your organisms are present at the time periods and if not, whether their ancestral forms are present. 
             </div>
             <button class="small-button"><b>Next</b></button>
         </div>
         
-        <div id="final-picks-discuss" class="full-text-box" style="display:none">
-            <div class="title"><b>Step 4: In progress</b></div>
-            <div>
-                <b>Instructions: </b>Discuss the following question with your group members and provide your answer below.
+        <div id="observe-organisms" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Time: </b><span class="year orange"></span>
             </div>
-            <div class="discussion-content-box question1" style="display:none">
-                <div value="strategy" class="discussion-content-question">What is your strategy in ranking the rainforests? Describe your process.</div>
-                <textarea class="discussion-content-text-entry"></textarea>
+            <div class="content">
+                <b>Instructions: </b>Choose an organism to begin.
             </div>
-            <div value="evidence" class="discussion-content-box question2" style="display:none">
-                <div class="discussion-content-question">Identify at least 3 key pieces of evidence in making your choices.</div>
-                <textarea class="discussion-content-text-entry"></textarea>
-            </div>
-            <div value="additional_info" class="discussion-content-box question3" style="display:none">
-                <div class="discussion-content-question">Identify key insights from your discussion with the other groups members that helped you make your final rankings.</div>
-                <textarea class="discussion-content-text-entry"></textarea>
-            </div>
-            <button class="small-button"><b>Done</b></button> 
+
+            <div class="table-container">
+	            <table class="organism-table observe-organism-table">
+	<!--                 <tr>
+	                    <td class="organism-boxes box1" style="display:none">
+	                        <button type="submit" class="organism-table-button button1">
+	                            <img class="organism1 organism-image">
+	                        </button>
+	                        <div class="organism-table-text text1"></div>
+	                    </td>
+	                    <td class="organism-boxes box2" style="display:none">
+	                        <button type="submit" class="organism-table-button button2">
+	                            <img class="organism2 organism-image">
+	                        </button>
+	                        <div class="organism-table-text text2"></div>
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="organism-boxes box3" style="display:none">
+	                        <button type="submit" class="organism-table-button button3">
+	                            <img class="organism3 organism-image">
+	                        </button>
+	                        <div class="organism-table-text text3"></div>
+	                    </td>
+	                     <td class="organism-boxes box4" style="display:none">
+	                        <button type="submit" class="organism-table-button button4">
+	                            <img class="organism4 organism-image">
+	                        </button>
+	                        <div class="organism-table-text text4"></div>
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="organism-boxes box5" style="display:none">
+	                        <button type="submit" class="organism-table-button button5">
+	                            <img class="organism5 organism-image">
+	                        </button>
+	                        <div class="organism-table-text text5"></div>
+	                    </td>
+	                     <td class="organism-boxes box6" style="display:none">
+	                        <button type="submit" class="organism-table-button button6">
+	                            <img class="organism6 organism-image">
+	                        </button>
+	                        <div class="organism-table-text text6"></div>
+	                    </td>
+	                </tr> -->
+	            </table>
+	        </div>
+
+            <button class="small-button" style="display:none"><b>Done</b></button>
         </div>
         
-        <div id="final-picks-choice" class="full-text-box" style="display:none">
-            <div class="title"><b>Step 4 almost complete</b></div>
-            <div>
-                Go to the rainforest that represents your first choice and perform a QR scan.
+        <div id="is-organism-present" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Time: </b><span class="year orange"></span>
             </div>
+            <div class="content">
+                <b>Organism: </b><span class="chosen-organism"></span>
+            </div>
+            <div class="organism-choice-box jquery-radios">
+                <p>Is the organism present here?<p>
+                <input type="radio" name="org-choice-button" id="org-choice-yes" class="radio yes-no-radios" value="true" /><label for="org-choice-yes">Yes</label>
+                <input type="radio" name="org-choice-button" id="org-choice-no" class="radio yes-no-radios" value="false" /><label for="org-choice-no">No</label>
+            </div>
+
+            <button class="small-button" style="display:none"><b>Done</b></button>
+        </div>
+        
+        <div id="ancestor-information" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Time: </b><span class="year orange"></span>
+            </div>
+            <div class="content">
+                <b>Organism: </b><span class="chosen-organism"></span>
+            </div>
+            <p class="second-content">
+                Which of the following is most likely the organism&rsquo;s ancestor? Click on each organism to read more about it. Click &rsquo;Next&rsquo; when you are ready to answer the question.
+            </p>
+            <table class="organism-table ancestor-information-table">
+            </table>
+
+            <button class="small-button"><b>Next</b></button>
+        </div>
+        
+        <div id="ancestor-information-details" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Time: </b><span class="year orange"></span>
+            </div>
+            <div class="content">
+                <b>Organism: </b><span class="chosen-organism"></span>
+            </div>
+            <br />
+            <div class="ancestor-content">
+                <b>Description: </b><span class="ancestor-description"></span>
+            </div>
+            
+            <button class="small-button"><b>Back</b></button>
+        </div>
+        
+        <div id="choose-ancestor" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Time: </b><span class="year orange"></span>
+            </div>
+            <div class="content">
+                 <b>Organism: </b><span class="chosen-organism"></span>
+            </div>
+            <p>
+                Which of the following is most likely the organism&rsquo;s ancestor or predecessor?
+            </p>
+            <table class="organism-table choose-ancestor-table">
+            </table>
+        </div>
+        
+        
+
+<!-- ***********************************************MEETUP**************************************************** -->
+        
+        <div id="meetup-instructions" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Instructions: </b>
+                <span class="rotation1">You and your team members have just completed a survey of the organisms at 200, 150, 100, and 50 mya. Your task now is to review this information together.</span>
+                
+                <!-- use show/hide in the js based on rotation 1 or 2 TODO?
+                <span class="rotation2">You and your team members have just completed a survey of the organisms at 25, 10, 5, and 2 mya. Your task now is to review this information together.</span> -->
+            </div>
+            
+            <button class="small-button"><b>Done</b></button>
+        </div>
+        
+        <div id="meetup" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Instructions: </b>
+                Review the cladogram at the front of the room and discuss the following question with your team members. Record your answer below.
+            </div>
+            <br/>
+            <div class="topic"></div>
+            
+            <textarea class="meetup-text-entry text-entry"></textarea>
+
+            <button class="small-button"><b>Done</b></button>
+        </div>
+        
+<!-- ***********************************************HOMEWORK ASSIGNMENT**************************************************** -->
+        <div id="day1-complete" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Day 1 complete</b>
+            </div>
+            <p>
+                Your homework is to assign your organisms with possible evolutionary mechanisms at play between the time periods you examined today.
+            </p>
+            <p>
+                Go to your learning portfolio website to complete your homework, there will be more instructions there.
+            </p>
+        </div>
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- **************************************************** DAY 2 *********************************************************** -->
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+<!-- *****************************************************2 MYA************************************************************ -->
+
+
+        <div id="log-in-success-day2" class="full-text-box" style="display:none">
+            <div class="title"><b>Log in successful</b></div>
+            <p>
+                Welcome to day 2 of your training.
+            </p>
+            <p>
+                Today&rsquo;s exercise continues from day 1 and consists of 6 steps. It will take approximately 30 minutes to complete. When you are ready to begin, perform a QR scan at the entrance of the simulation lab.   
+            </p>
+
             <button class="big-button"><b>QR scan</b></button>
         </div>
         
-        <div id="final-picks-scan-failure" class="full-text-box" style="display:none">
-            <div class="title"><b>Rainforest QR code scanning failed!</b></div>
-            <div>
-                Scanning the QR code of the rainforest failed. Please try again or proceed by pressing the button for the rainforest you are at. 
+        <!-- TODO change font size, eliminate the extra copy that doesn't exist on the mockups? If there are 6 orgs, it looks like shit -->
+        <div id="team-organism-assignment-day2" class="full-text-box" style="display:none">
+            <div class="title"><b>Welcome to the simulation lab</b></div>
+            <div class="content">
+                You will be working with the same team and be responsible for observing the same organisms as on day 1.
             </div>
-            <button class="small-error-resolver-button" data-rainforest="rainforest_a"><b>Rainforest A</b></button>
-            <button class="small-error-resolver-button" data-rainforest="rainforest_b"><b>Rainforest B</b></button>
-            <button class="small-error-resolver-button" data-rainforest="rainforest_c"><b>Rainforest C</b></button>
-            <button class="small-error-resolver-button" data-rainforest="rainforest_d"><b>Rainforest D</b></button>
-            <button class="big-button"><b>Scan again</b></button>
+            <p>
+                The room is currently set at 2 million years ago (mya) - the last time period you examined on day 1. As we transition the room to present day, you will finish completing the cladogram with your team.
+                You will also identify the various evolutionary mechanisms observed on both day 1 and 2.
+            </p>
+            
+            <div>Team assignment:</div>
+            <div class="team-name orange indent"></div>
+            
+            <p>
+                In addition, you will be responsible for observing the following organisms within your team. 
+            <p>
+            <div>Organism assignment:</div>
+            <div class="assigned-organism-1 orange indent"></div>
+            <div class="assigned-organism-2 orange indent"></div>
+            <div class="assigned-organism-3 orange indent"></div>
+            <div class="assigned-organism-4 orange indent"></div>
+            <div class="assigned-organism-5 orange indent"></div>
+            <div class="assigned-organism-6 orange indent"></div>
+
+            <button class="small-button"><b>Next</b></button>
         </div>
         
-        <div id="final-picks-debrief" class="full-text-box" style="display:none">
-            <div class="title"><b>Step 4 complete</b></div>
-            <div>
-                Please wait here for your group debrief.
+        <div id="2mya-instructions" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Instructions: </b>Your task is to review the information for each of your assigned organisms from day 1 and your homework in relation to your organism at 2 mya. You may need to consult your team members to complete this task.
+            </div>
+
+            <button class="small-button"><b>Next</b></button>
+        </div>
+        
+        <div id="2mya-choose-organisms" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Time: </b><span class="orange">2 mya</span>
+            </div>
+            <div class="content">
+                <b>Instructions: </b>Choose an organism to begin.
+            </div>
+            <table class="organism-table 2mya-table">
+            </table>
+            
+            <button class="small-button" style="display:none"><b>Done</b></button>
+        </div>
+        
+        <div id="2mya-organism-details" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Time: </b><span class="orange">2 mya</span>
+            </div>
+            <div class="content">
+                <b>Organism: </b><span class="organism"></span>
+            </div>
+            <p>
+                Describe the organism&rsquo;s main features and the main evolutionary mechanism(s) behind each feature.
+            </p>
+            
+            <textarea class="2mya-organism-details-text-entry text-entry"></textarea>
+
+            <button class="small-button"><b>Done</b></button>
+        </div>
+        
+<!-- *****************************************************TRANSITION************************************************************ -->
+        
+        <div id="transition" class="full-text-box" style="display:none">
+            <div class="title">
+                Your science teacher will lead you through the simulation lab&rsquo;s transition from 2 mya to present day. Once it is complete, your teacher will advance everyone to the next step. 
+            </div>
+            <div class="content">
+                The transition will begin shortly.
             </div>
         </div>
--->           
-    </div>
+        
+        
+<!-- *****************************************************PRESENT DAY*********************************************************** -->
 
+        <div id="present-day-instructions" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Instructions: </b>There are two different versions of rainforests in Southeast Asia set at present day: Borneo and Sumatra.
+            </div>
+            <div class="content">
+                Once you click &rsquo;Next&rsquo; your list of assigned organisms will appear. Your task is to determine whether your organisms are present at each of the rainforest.
+            </div>
+
+            <button class="small-button"><b>Next</b></button>
+        </div>
+        
+        <div id="present-day-organisms" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Location: </b><span class="location orange"></span>
+            </div>
+            <div class="content">
+                <b>Instructions: </b>Choose an organism to begin (this text should be changed, right?)
+            </div>
+            <table class="present-day-organisms-table">
+                <tr data-organism="" data-choice="none">
+                    <td><img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" /></td>
+                    <td>
+                        <button class="presence-choice">yes</button>
+                        <button class="presence-choice">no</button>
+                    </td>
+                </tr>
+                <tr data-organism="" data-choice="none">
+                    <td><img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" /></td>
+                    <td>
+                        <button class="presence-choice">yes</button>
+                        <button class="presence-choice">no</button>
+                    </td>
+                </tr>
+                <tr data-organism="" data-choice="none">
+                    <td><img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" /></td>
+                    <td>
+                        <button class="presence-choice">yes</button>
+                        <button class="presence-choice">no</button>
+                    </td>
+                </tr>
+                <tr data-organism="" data-choice="none">
+                    <td><img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" /></td>
+                    <td>
+                        <button class="presence-choice">yes</button>
+                        <button class="presence-choice">no</button>
+                    </td>
+                </tr>
+                <tr data-organism="" data-choice="none">
+                    <td><img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" /></td>
+                    <td>
+                        <button class="presence-choice">yes</button>
+                        <button class="presence-choice">no</button>
+                    </td>
+                </tr>
+                <tr data-organism="" data-choice="none">
+                    <td><img class="organism-image" src="/images/none_icon.png" alt="Place holder icon if animal icon is missing" /></td>
+                    <td>
+                        <button class="presence-choice">yes</button>
+                        <button class="presence-choice">no</button>
+                    </td>
+                </tr>
+            </table>
+            
+            <button class="small-button" style="display:none"><b>Done</b></button>
+        </div>
+        
+<!-- *****************************************************CONCEPTS aka BRAINSTORMING *********************************************************** -->
+
+        <div id="concepts-instructions" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Instructions: </b>Your task is to brainstorm with your team members and identify the evolutionary mechanisms observed on both day 1 and 2. 
+            </div>
+
+            <button class="small-button"><b>Next</b></button>
+        </div>
+        
+        <div id="concepts-discussion" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Instructions: </b>Discuss the following question amongst your team members. Record the answers that pertain to your assigned organisms. Please be specific (e.g., add a separtate note for each time period).
+            </div>
+            <div class="content">
+                Based on your observations, homework, and team discussions, what evolutionary forces do you think are at play at the different time periods, as well as in Borneo and Sumatra? 
+            </div>
+
+            <select class="evolution-concept-dropdown">
+               <option value="no-value">Choose an evolution concept</option>
+               <option value="high-rainfall">Adaption</option>
+               <option value="bottleneck">Bottleneck</option>
+               <option value="coevolution">Coevolution</option>
+               <option value="founder-effect">Founder effect</option>
+               <option value="gene-flow">Gene flow</option>
+               <option value="natural-selection">Natural selection</option>
+               <option value="reproductive-isolation">Reproductive isolation</option>
+               <option value="sexual-selection">Sexual selection</option>
+               <option value="other">Other</option>
+            </select>
+            
+            <button class="time-period-pop-up concepts-button">Choose the time period(s) involved</button>
+            
+            <button class="organism-pop-up concepts-button">Choose the organism(s) involved</button>
+            
+            <div class="text-entry-header">Please explain what you think happened. Please provide evidence.</div>
+            <textarea class="concepts-discussion-text-entry text-entry"></textarea>
+            
+            <button class="small-button"><b>Done</b></button>
+        </div>
+        
+        <!-- ***********************************************HOMEWORK ASSIGNMENT**************************************************** -->
+        <div id="day2-complete" class="full-text-box" style="display:none">
+            <div class="title">
+                <b>Day 2 complete</b>
+            </div>
+            <p>
+                Your homework is to write a reflection on what you examined today and on day 1.
+            </p>
+            <p>
+                Go to your learning portfolio website to complete your homework, there will be more instructions there.
+            </p>
+        </div>
+        
+    </div>
 
 </body>
 </html>
