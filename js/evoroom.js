@@ -165,7 +165,7 @@ var EvoRoom = {
         }
 
         Sail.modules
-        .load('Rollcall.Authenticator', {mode: 'picker', askForRun: true, curnit: 'EvoRoom', userFilter: function(u) {return true; /*u.kind == "Student"*/}})
+        .load('Rollcall.Authenticator', {mode: 'picker', askForRun: true, curnit: 'EvoRoom3', userFilter: function(u) {return true; /*u.kind == "Student"*/}})
         .load('Strophe.AutoConnector')
         .load('AuthStatusWidget')
         .thenRun(function () {
