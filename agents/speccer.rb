@@ -3,7 +3,7 @@ require 'blather/client/dsl'
 require 'json'
 require 'mongo'
 
-$: << 'sail.rb/lib'
+$: << File.dirname(__FILE__)+'/sail.rb/lib'
 require 'sail/agent'
 
 require 'model/student'
