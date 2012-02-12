@@ -296,26 +296,43 @@ header .hide {
     margin-left: -320px;
     width: 640px;
     height: 500px;
+    padding-top: 50px;
     background-color: black;
     opacity: 0.8;
     color: white;
     font-size: 30px;
 }
 
-.column1 {
+#organism-pop-up.pop-up {
+    top: 20px;
+    margin-left: -400px;
+    padding-top: 30px;
+    width: 800px;
+    height: 1040px;
+}
+
+#time-period-pop-up .column1 {
     position: absolute;
-    top: 50px;
     left: 40px;
 }
 
-.column2 {
+#time-period-pop-up .column2 {
     position: absolute;
-    top: 50px;
     right: 30px;
 }
 
+#organism-pop-up .column1 {
+    position: absolute;
+    left: 20px;
+}
+
+#organism-pop-up .column2 {
+    position: absolute;
+    right: 80px;
+}
+
 .pop-up.small-button {
-    margin-bottom: -30px;
+    bottom: 60px;
 }
 
 .pop-up-checkbox {

@@ -1346,6 +1346,7 @@ var EvoRoom = {
     },
 
     formatOrganismString: function(organismString) {
+        // organisms
         if (organismString === "ant") {
             return "Ant";
         } else if (organismString === "blue_headed_pitta") {
