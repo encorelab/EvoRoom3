@@ -11,15 +11,15 @@ require 'spec/support/xmpp'
 describe Choreographer do
   include_context :xmpp
   
-  before do
+  before(:each) do
     @chor = Choreographer.new(:room => RUN, :password => AGENT_PASSWORD, :database => TEST_DB)
     @chor.config[:host] = XMPP_HOST
     @chor.config[:port] = XMPP_PORT
     @chor.config[:sail] = SAIL_CONFIG
-    @chor.log_to = File.open(File.dirname(__FILE__)+'/../logs/Choreographer.log','w')
+    @chor.log_to = File.open(File.dirname(__FILE__)+'/../logs/Choreographer-rspec.log','w')
     
     @chor.class_eval do
-      include(EventExpectations)
+      include(SpecHelpers)
     end
     
     @chor.catch_event_exceptions = false
@@ -28,7 +28,7 @@ describe Choreographer do
     @spec.chor = @chor
   end
   
-  it "should go through day 1 as per sequence diagram" do
+  it "should go through DAY 1 as per sequence diagram" do
     @spec.config[:nickname] = "bobby"
     
     @spec.class_eval do
@@ -41,12 +41,14 @@ describe Choreographer do
               ev(:check_in, {:location => "room"})
               wait('ORIENTATION')
               expect_student{ self.state.should == :ORIENTATION }
-              ev(:observations_start, {}, {:origin => 'ateacher'})
+              ev(:observations_start, {:rotation => 1}, {:origin => 'ateacher'})
               wait('WAITING_FOR_LOCATION_ASSIGNMENT')
               expect_student{ self.current_locations.length == 4 }
+              expect_student{ self.observed_locations_in_current_rotation.should == [] }
               
               # ROTATION I
               4.times do
+                expect_student{ self.observed_all_locations?.should == false }
                 on(:location_assignment){|stanza,data| @assigned_location = data['payload']['location'] }
                 wait('GOING_TO_ASSIGNED_LOCATION')
                 ev(:check_in, lambda{{:location => @assigned_location}})
@@ -56,14 +58,24 @@ describe Choreographer do
                 wait('WAITING_FOR_LOCATION_ASSIGNMENT')
               end
               
+              expect_student{ self.observed_all_locations?.should == true }
+              
               # MEETUP I
-              on(:location_assignment){|stanza,data| @assigned_location = data['payload']['location'] }
+              on(:location_assignment){|stanza,data| @assigned_location = data['payload']['location'] }              
               wait('GOING_TO_ASSIGNED_LOCATION')
+              
               expect_student{ self.metadata.current_task.should == 'meetup'}
+              
+              meddle do
+                stu = chor.lookup_student(config[:nickname])
+                stu.stub(:team_is_assembled?).and_return(true)
+              end
+              
               ev(:check_in, lambda{{:location => @assigned_location}})
               wait('WAITING_FOR_MEETUP_START')
               
-              ev(:meetup_start, {}, {:origin => 'ateacher'})
+              #ev(:meetup_start, {}, {:origin => 'choreographer'})
+             
               wait("MEETUP")
               
               ev(:note, {
@@ -90,38 +102,42 @@ describe Choreographer do
                 wait('WAITING_FOR_LOCATION_ASSIGNMENT')
               end
               
-               # MEETUP II
-                on(:location_assignment){|stanza,data| @assigned_location = data['payload']['location'] }
-                wait('GOING_TO_ASSIGNED_LOCATION')
-                expect_student{ self.metadata.current_task.should == 'meetup'}
-                ev(:check_in, lambda{{:location => @assigned_location}})
-                wait('WAITING_FOR_MEETUP_START')
+              # MEETUP II
+              on(:location_assignment){|stanza,data| @assigned_location = data['payload']['location'] }
+              wait('GOING_TO_ASSIGNED_LOCATION')
+              expect_student{ self.metadata.current_task.should == 'meetup'}
+              ev(:check_in, lambda{{:location => @assigned_location}})
+              wait('WAITING_FOR_MEETUP_START')
 
-                ev(:meetup_start, {}, {:origin => 'ateacher'})
-                wait("MEETUP")
+              #ev(:meetup_start, {}, {:origin => 'ateacher'})
+              wait("MEETUP")
 
-                ev(:note, {
-                  "author" => "JoeMcStudent",
-                  "team_name" => "Darwin",
-                  "meetup" => "1",
-                  "note" => "Blah blah blah...",
-                  "specialty" => "primates"
-                })
+              ev(:note, {
+                "author" => "JoeMcStudent",
+                "team_name" => "Darwin",
+                "meetup" => "2",
+                "note" => "Blah blah blah...",
+                "specialty" => "primates"
+              })
 
-                wait("WAITING_FOR_GROUP_TO_FINISH_MEETUP")
-                ev(:homework_assignment, {}, {:origin => 'ateacher'})
+              wait("WAITING_FOR_GROUP_TO_FINISH_MEETUP")
+              ev(:homework_assignment, {}, {:origin => 'ateacher'})
+              
+              wait("OUTSIDE")
+              
+              expect_student do
+                # verify that expected metadata has been set 
+                self.metadata.current_rotation.should === 2
+                self.metadata.state.should === :OUTSIDE
+                self.metadata.currently_assigned_location.blank?.should === false
+                self.metadata.current_location.blank?.should === false
+                self.metadata.day.should === 2
+              end
               
               finish
             end
           end
         end
-        
-        # event :state_change? do |stanza, data|
-        #           case data['payload']['to']
-        #             when 'ORIENTATION'
-        #               
-        #           end 
-        #         end
       end
     end
         

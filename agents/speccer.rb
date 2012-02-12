@@ -98,7 +98,7 @@ class Speccer < Sail::Agent
     }
   end
   
-  def expect
+  def meddle
     @cur.rest << lambda{
       yield
     }

@@ -91,6 +91,7 @@ class Choreographer < Sail::Agent
       end
     end
     
+    # for debugging/testing
     event :test_student_method? do |stanza, data|
       username = data['payload']['username']
       method = data['payload']['method']
@@ -108,6 +109,15 @@ class Choreographer < Sail::Agent
         log "#{method}: #{e}", :ERROR
         raise e
       end
+    end
+    
+    # for debugging/testing
+    event :student_state_override? do |stanza, data|
+      username = data['payload']['username']
+      stu = lookup_student(username)
+      state = data['payload']['state']
+      log "manually setting #{stu}'s state to #{state.inspect}"
+      stu.metadata.state = state.intern
     end
     
     event :check_in? do |stanza, data|
@@ -131,13 +141,18 @@ class Choreographer < Sail::Agent
     end
     event :meetup_start? do |stanza, data|
       @students.each do |username, stu|
-        stu.meetup_start!
+        stu.meetup_start!(data['payload'].symbolize_keys)
       end
     end
     event :note? do |stanza, data|
       username = data['origin']
       location = data['payload']['location']
       lookup_student(username).note!(data['payload'].symbolize_keys)
+    end
+    event :homework_assignment? do |stanza, data|
+      @students.each do |username, stu|
+        stu.homework_assignment!
+      end
     end
     
     # 

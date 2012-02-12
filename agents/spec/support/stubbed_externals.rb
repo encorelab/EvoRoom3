@@ -1,28 +1,19 @@
 TEST_DB = "EvoRoom3-test"
 
-require File.dirname(__FILE__)+'/event_expectations'
+require File.dirname(__FILE__)+'/spec_helpers'
+include SpecHelpers
 
 shared_context :stubbed_externals do
   before(:each) do
-    # stub out ARes requests to avoid hitting Rollcall
-    mzukowski_xml = IO.read(File.dirname(__FILE__)+'/mzukowski.xml')
-    ActiveResource::HttpMock.respond_to do |mock|
-      mock.get "/users/mzukowski.xml", {}, mzukowski_xml
-      mock.put "/users/3.xml"
-    end
+    mock_active_resource
     
-    Student.format = :xml
-    Student.site = "http://rollcall.proto.encorelab.org"
-    
-    
-    # use TEST_DB in mongo instead of real DB
-    conn = Mongo::Connection.new
-    conn.drop_database(TEST_DB)
-    test_mongo = conn.db(TEST_DB)
+    reset_mongo_test_db
     
     # retrieve a @student for use in tests
-    @student = Student.find('mzukowski')
+    @student = Student.find('bobby')
   
+    conn = Mongo::Connection.new
+    test_mongo = conn.db(TEST_DB)
     @student.stub(:mongo) do
       test_mongo
     end
@@ -31,7 +22,7 @@ shared_context :stubbed_externals do
     agent = mock(:agent)
     agent.stub(:log)
     agent.class_eval do
-      include(EventExpectations)
+      include(SpecHelpers)
     end
     #agent.stub(:event!)
     @student.agent = agent

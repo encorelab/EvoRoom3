@@ -101,7 +101,15 @@ StudentStatemachine = proc do
   end
   
   state :WAITING_FOR_MEETUP_START do
-    on :meetup_start, :to => :MEETUP, :action => :increment_meetup!
+    enter do |student|
+      student.announce_meetup_start! if student.team_is_assembled?
+    end
+    on :meetup_start, :to => :MEETUP do
+      guard do |student,meetup_start|
+        meetup_start[:team_name] == student.team_name
+      end
+      action :increment_meetup!
+    end
   end
   
   state :MEETUP do
@@ -137,7 +145,7 @@ StudentStatemachine = proc do
     end
     on :homework_assignment, :to => :OUTSIDE do
       action do |student|
-        student.metadata.day_1_completed = true
+        student.metadata.day = 2
       end
     end
   end

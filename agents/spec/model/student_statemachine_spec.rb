@@ -52,15 +52,15 @@ describe Student do
 
       # ROTATION I
       
-      expect { @student.metadata.currently_assigned_location }.to_not raise_error(NoMethodError)
-      
       Student::LOCATIONS[:day_1].length.should == 4
       @student.current_locations.should == Student::LOCATIONS[:day_1]
       
       @student.current_locations.each do |loc|
         @student.metadata.current_task.should == 'observe_past_presence'
         
-        @student.state.should == :GOING_TO_ASSIGNED_LOCATION
+        @student.state.should == :WAITING_FOR_LOCATION_ASSIGNMENT
+        
+        expect { @student.metadata.currently_assigned_location }.to_not raise_error(NoMethodError)
         
         @student.check_in!(:location => @student.metadata.currently_assigned_location)
         @student.metadata.current_location.should == @student.metadata.currently_assigned_location

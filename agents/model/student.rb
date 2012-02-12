@@ -54,14 +54,15 @@ class Student < Rollcall::User
   delegate :mongo, :to => :agent
   delegate :log, :to => :agent
   
+  def observed_locations_in_current_rotation
+    mongo.collection(:observations).find(
+      :rotation => self.metadata.current_rotation,
+      :username => self.username
+    ).to_a.collect{|obs| obs['location']}
+  end
+  
   def observed_all_locations?
-    current_locations.all? do |loc|
-      mongo.collection(:observations).find(
-        :location => loc, 
-        :rotation => self.metadata.current_rotation,
-        :username => self.username
-      ).count > 0
-    end
+    (current_locations - observed_locations_in_current_rotation).empty?
   end
   
   def in_day_1?
@@ -78,6 +79,28 @@ class Student < Rollcall::User
   
   def going_to?(what)
     self.metadata.going_to == what
+  end
+  
+  def team_members
+    g = Rollcall::Group.find(self.team_name)
+    g.members.collect do |m|
+      # when running under ActiveResource::HttpMock, `element_name` seems to be ignored, so we need to check both possibilities
+      u_id = (m.id? && m.id || m.user? && m.user.id)
+      Student.find(id)
+    end
+  end
+  
+  def team_is_assembled?
+    self.team_members.all? do |m|
+      begin
+        current_location = m.metadata.current_location
+        
+        current_location == self.metadata.current_location &&
+          m.metadata.state == self.metadata.state
+      rescue NoMethodError
+        false
+      end
+    end
   end
   
   def store_observation(observation)
@@ -111,6 +134,10 @@ class Student < Rollcall::User
     else
       self.metadata.current_meetup = 1
     end
+  end
+  
+  def announce_meetup_start!
+    agent.event!(:meetup_start, {:team_name => self.team_name})
   end
   
   def assign_next_observation_location!    

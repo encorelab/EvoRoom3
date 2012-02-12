@@ -1,3 +1,6 @@
+# FOR FAST mongod:
+# mongod --noprealloc --smallfiles --nssize 1
+
 $: << File.dirname(__FILE__)+'/../..'
 $: << File.dirname(__FILE__)+'/../../sail.rb/lib'
 
@@ -65,6 +68,42 @@ describe Student do
     end
   end
   
+  describe '#observed_locations_in_current_rotation' do
+    it "returns only the locations from observations stored for the current rotation" do
+      @student.agent.stub(:event!).with(:stored_observation, an_instance_of(Hash))
+      
+      @student.metadata.current_rotation = 1
+      
+      @student.observed_locations_in_current_rotation.should be_empty
+      
+      obs = {
+        "location" => 'one',
+        "team_name" => "Team Darwin",
+        "assigned_organism" => "fig_tree",
+        "observed_organism" => "fig_tree",
+        "time" => "200 mya"
+      }
+      
+      @student.store_observation(obs)
+      
+      @student.observed_locations_in_current_rotation.should == ['one']
+      
+      obs['location'] = 'two'
+      @student.store_observation(obs)
+      
+      @student.observed_locations_in_current_rotation.should == ['two']
+      
+      @student.metadata.current_rotation = 2
+      
+      @student.observed_locations_in_current_rotation.should be_empty
+      
+      obs['location'] = 'one'
+      @student.store_observation(obs)
+      
+      @student.observed_locations_in_current_rotation.should == ['one']
+    end
+  end
+  
   describe '#observed_all_locations?' do
     it "returns FALSE when all locations is the current rotation have NOT been observed" do
       @student.metadata.current_rotation = 1
@@ -86,7 +125,7 @@ describe Student do
       
       @student.agent.stub(:event!).with(:stored_observation, an_instance_of(Hash))
       
-      @student.current_locations.each do |loc|
+      @student.current_locations.reverse.each do |loc|
         obs = {
           "team_name" => "Team Darwin",
           "assigned_organism" => "fig_tree",
@@ -105,19 +144,41 @@ describe Student do
     end
   end
   
-  describe '#store_meetup_topic' do
-    it "stores the given meetup topic in the expected format" do
+  describe '#team_members' do
+    it "should include only students who are on the student's team" do
+      members = @student.team_members
+    
+      members.should_not be_empty
       
-      data = {
-        "topic" => "What do you...",
-        "tags" => ["fig_tree", "monkey"],
-        "username" => "astudent"
-      }
+      members.each do |m|
+        m.should be_a_kind_of(Student)
+        m.team_name.should == @student.team_name
+      end
+    end
+  end
+  
+  describe '#team_is_assebled' do
+    it "should return true when all team members are at the same location and in the same state" do
+      orig_team_members = @student.team_members
+      @student.stub(:team_members) do
+        orig_team_members.collect do |m|
+          orig_metadata = m.metadata
+          orig_metadata.stub(:current_location){'foo'}
+          orig_metadata.stub(:state){:BAR}
+          m.stub(:metadata) {orig_metadata}
+          m
+        end
+      end
       
-      @student.store_meetup_topic(data)
-      meetup = @student.mongo[:meetups].find_one("topic" => data["topic"])
+      @student.metadata.current_location = 'foo'
+      @student.metadata.state = :BAR
       
-      meetup['tags'].should == data["tags"]
+      @student.team_is_assembled?.should be_true
+      
+      @student.metadata.current_location = 'somewhere_else'
+      @student.metadata.state = :BAR
+      
+      @student.team_is_assembled?.should be_false
     end
   end
 end
