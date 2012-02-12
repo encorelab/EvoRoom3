@@ -16,27 +16,351 @@ var EvoRoom = {
         "araucariaceae":"Araucariaceae is a family of evergreen trees that are usually 60 or more meters. The Araucariaceae are monoecious or dioecious trees comprising two genera and about 30 species of the Southern Hemisphere. The leaves are opposite or spirally arranged and are needlelike to broad. The male or microsporangiate strobili are axillary or terminal, comprising many spirally arranged microsporophylls, each bearing 5-20 linear, pendant microsporangia on the lower surface. The pollen grains lack wings. The female or megasporangiate strobili are generally large and somewhat woody, with numerous spirally disposed ovuliferous scales, each fused with its bract and bearing a single median ovule on the upper surface.",
 
     },
-    // TODO fill this with real data
+
     ancestors: {
         "200_mya": {
-            "proboscis_monkey":["ant","civet","fig_wasp","none"],
-            "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
-            "muellers_gibbon":["civet","fig_wasp","white_fronted_langur","none"]
+            //plants
+            "fig_tree":["lycophyte","cycad","ginkgophyta","none"],
+            "forest_durian":["lycophyte","cycad","ginkgophyta","none"],
+            "ginger":["lycophyte","cycad","ginkgophyta","none"],
+            "jambu_tree":["lycophyte","cycad","ginkgophyta","none"],
+            "meggaris_tree":["lycophyte","cycad","ginkgophyta","none"],
+            "pitcher _plant":["lycophyte","cycad","ginkgophyta","none"],
+            "rafflesia":["lycophyte","cycad","ginkgophyta","none"],
+            "tetrastigma":["lycophyte","cycad","ginkgophyta","none"],
+            "titan_arum":["lycophyte","cycad","ginkgophyta","none"],
+            //insects
+            "ant":["cupedidae","anisopodidae","cicadellidae","none"],
+            "fig_wasp":["cupedidae","anisopodidae","cicadellidae","none"],
+            "termite":["cupedidae","anisopodidae","cicadellidae","none"],
+            //primates
+            "bornean_orangutan":["hadrocodium","theropod","thecodont","none"],
+            "mitered_leaf_monkey":["hadrocodium","theropod","thecodont","none"],
+            "muellers_gibbon":["hadrocodium","theropod","thecodont","none"],
+            "proboscis_monkey":["hadrocodium","theropod","thecodont","none"],
+            "sumatran_orangutan":["hadrocodium","theropod","thecodont","none"],
+            "white_fronted_langur":["hadrocodium","theropod","thecodont","none"],
+            //birds
+            "blue_headed_pitta":["hadrocodium","theropod","thecodont","none"],
+            "garnet_pitta":["hadrocodium","theropod","thecodont","none"],
+            "helmeted _hornbill":["hadrocodium","theropod","thecodont","none"],
+            "malabar_grey_hornbill":["hadrocodium","theropod","thecodont","none"],
+            "great_argus_pheasant":["hadrocodium","theropod","thecodont","none"],
+            "rhinoceros_hornbill":["hadrocodium","theropod","thecodont","none"],
+            //other mammals 1
+            "civet":["hadrocodium","theropod","thecodont","none"],
+            "sunda_clouded_leopard":["hadrocodium","theropod","thecodont","none"],
+            "leopard_cat":["hadrocodium","theropod","thecodont","none"],
+            "sumatran_tiger":["hadrocodium","theropod","thecodont","none","none"],
+            //other mammals 2
+            "borneo_porcupine":["hadrocodium","theropod","thecodont","none"],
+            "common_porcupine":["hadrocodium","theropod","thecodont","none"],
+            "sunda_pangolin":["hadrocodium","theropod","thecodont","none"],
+            "sumatran_striped_rabbit":["hadrocodium","theropod","thecodont","none"],
+            //other mammals 3
+            "malayan_tapir":["hadrocodium","theropod","thecodont","none"],
+            "sumatran_rhinoceros":["hadrocodium","theropod","thecodont","none"]
         },
         "150_mya": {
-            "proboscis_monkey":["fig_wasp","fig_wasp","fig_wasp","none"],
-            "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
-            "muellers_gibbon":["civet","civet","civet","none"]
+            //plants
+            "fig_tree":["araucariaceae","cycad","pinaceae","none"],
+            "forest_durian":["araucariaceae","cycad","pinaceae","none"],
+            "ginger":["araucariaceae","cycad","pinaceae","none"],
+            "jambu_tree":["araucariaceae","cycad","pinaceae","none"],
+            "meggaris_tree":["araucariaceae","cycad","pinaceae","none"],
+            "pitcher _plant":["araucariaceae","cycad","pinaceae","none"],
+            "rafflesia":["araucariaceae","cycad","pinaceae","none"],
+            "tetrastigma":["araucariaceae","cycad","pinaceae","none"],
+            "titan_arum":["araucariaceae","cycad","pinaceae","none"],
+            //insects
+            "ant":["chrysomeloidea","mesokristensenia","styporaphidia","none"],
+            "fig_wasp":["chrysomeloidea","mesokristensenia","styporaphidia","none"],
+            "termite":["chrysomeloidea","mesokristensenia","styporaphidia","none"],
+            //primates
+            "bornean_orangutan":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "mitered_leaf_monkey":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "muellers_gibbon":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "proboscis_monkey":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "sumatran_orangutan":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "white_fronted_langur":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            //birds
+            "blue_headed_pitta":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "garnet_pitta":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "helmeted _hornbill":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "malabar_grey_hornbill":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "great_argus_pheasant":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "rhinoceros_hornbill":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            //other mammals 1
+            "civet":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "sunda_clouded_leopard":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "leopard_cat":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "sumatran_tiger":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            //other mammals 2
+            "borneo_porcupine":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "common_porcupine":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "sunda_pangolin":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "sumatran_striped_rabbit":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            //other mammals 3
+            "malayan_tapir":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+            "sumatran_rhinoceros":["archaeopteryx","crusafonta","yangchuanosaurus","none"]
         },
         "100_mya": {
-            "proboscis_monkey":["fig_wasp","fig_wasp","fig_wasp","none"],
-            "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
-            "muellers_gibbon":["civet","civet","civet","none"]
+            //plants
+            "fig_tree":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+            "forest_durian":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+            "ginger":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+            "jambu_tree":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+            "meggaris_tree":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+            "pitcher _plant":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+            "rafflesia":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+            "tetrastigma":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+            "titan_arum":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+            //insects
+            "ant":["mastotermitidae","early_sphecoid_wasp","empididae","none"],
+            "fig_wasp":["mastotermitidae","early_sphecoid_wasp","empididae","none"],
+            "termite":["mastotermitidae","early_sphecoid_wasp","empididae","none"],
+            //primates
+            "bornean_orangutan":["multituberculata","eomaia","pterosaur","none"],
+            "mitered_leaf_monkey":["multituberculata","eomaia","pterosaur","none"],
+            "muellers_gibbon":["multituberculata","eomaia","pterosaur","none"],
+            "proboscis_monkey":["multituberculata","eomaia","pterosaur","none"],
+            "sumatran_orangutan":["multituberculata","eomaia","pterosaur","none"],
+            "white_fronted_langur":["multituberculata","eomaia","pterosaur","none"],
+            //birds
+            "blue_headed_pitta":["enantiornithes","yanornis","pterosaur","none"],
+            "garnet_pitta":["enantiornithes","yanornis","pterosaur","none"],
+            "helmeted _hornbill":["enantiornithes","yanornis","pterosaur","none"],
+            "malabar_grey_hornbill":["enantiornithes","yanornis","pterosaur","none"],
+            "great_argus_pheasant":["enantiornithes","yanornis","pterosaur","none"],
+            "rhinoceros_hornbill":["enantiornithes","yanornis","pterosaur","none"],
+            //other mammals 1
+            "civet":["multituberculata","eomaia","pterosaur","none"],
+            "sunda_clouded_leopard":["multituberculata","eomaia","pterosaur","none"],
+            "leopard_cat":["multituberculata","eomaia","pterosaur","none"],
+            "sumatran_tiger":["multituberculata","eomaia","pterosaur","none"],
+            //other mammals 2
+            "borneo_porcupine":["multituberculata","eomaia","pterosaur","none"],
+            "common_porcupine":["multituberculata","eomaia","pterosaur","none"],
+            "sunda_pangolin":["multituberculata","eomaia","pterosaur","none"],
+            "sumatran_striped_rabbit":["multituberculata","eomaia","pterosaur","none"],
+            //other mammals 3
+            "malayan_tapir":["multituberculata","eomaia","pterosaur","none"],
+            "sumatran_rhinoceros":["multituberculata","eomaia","pterosaur","none"]
         },
         "50_mya": {
-            "proboscis_monkey":["fig_wasp","fig_wasp","fig_wasp","none"],
-            "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
-            "muellers_gibbon":["civet","civet","civet","none"]
+            //plants
+            "fig_tree":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+            "forest_durian":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+            "ginger":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+            "jambu_tree":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+            "meggaris_tree":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+            "pitcher _plant":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+            "rafflesia":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+            "tetrastigma":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+            "titan_arum":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+            //insects
+            "ant":["chrysomeloidea","mesokristensenia","empididae","none"],
+            "fig_wasp":["chrysomeloidea","mesokristensenia","empididae","none"],
+            "termite":["chrysomeloidea","mesokristensenia","empididae","none"],
+            //primates
+            "bornean_orangutan":["purgatorius","multituberculata","miacid","none"],
+            "mitered_leaf_monkey":["purgatorius","multituberculata","miacid","none"],
+            "muellers_gibbon":["purgatorius","multituberculata","miacid","none"],
+            "proboscis_monkey":["purgatorius","multituberculata","miacid","none"],
+            "sumatran_orangutan":["purgatorius","multituberculata","miacid","none"],
+            "white_fronted_langur":["purgatorius","multituberculata","miacid","none"],
+            //birds
+            "blue_headed_pitta":["passeriform","bucerotidae","phasianidae","none"],
+            "garnet_pitta":["passeriform","bucerotidae","phasianidae","none"],
+            "helmeted _hornbill":["passeriform","bucerotidae","phasianidae","none"],
+            "malabar_grey_hornbill":["passeriform","bucerotidae","phasianidae","none"],
+            "great_argus_pheasant":["passeriform","bucerotidae","phasianidae","none"],
+            "rhinoceros_hornbill":["passeriform","bucerotidae","phasianidae","none"],
+            //other mammals 1
+            "civet":["multituberculata","gomphos_elkema","miacid","none"],
+            "sunda_clouded_leopard":["multituberculata","gomphos_elkema","miacid","none"],
+            "leopard_cat":["multituberculata","gomphos_elkema","miacid","none"],
+            "sumatran_tiger":["multituberculata","gomphos_elkema","miacid","none"],
+            //other mammals 2
+            "borneo_porcupine":["multituberculata","gomphos_elkema","eomanis","none"],
+            "common_porcupine":["multituberculata","gomphos_elkema","eomanis","none"],
+            "sunda_pangolin":["multituberculata","gomphos_elkema","eomanis","none"],
+            "sumatran_striped_rabbit":["multituberculata","gomphos_elkema","eomanis","none"],
+            //other mammals 3
+            "malayan_tapir":["heptodon","perissodactyl","eomanis","none"],
+            "sumatran_rhinoceros":["heptodon","perissodactyl","eomanis","none"]
+        },
+        "25_mya": {
+            //plants
+            "fig_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "forest_durian":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "ginger":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "jambu_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "meggaris_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "pitcher _plant":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "rafflesia":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "tetrastigma":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "titan_arum":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            //insects
+            "ant":["mesokristensenia","styporaphidia","empididae","none"],
+            "fig_wasp":["mesokristensenia","styporaphidia","empididae","none"],
+            "termite":["mesokristensenia","styporaphidia","empididae","none"],
+            //primates
+            "bornean_orangutan":["old_world_monkey","new_world_monkey","purgatorius","none"],
+            "mitered_leaf_monkey":["old_world_monkey","new_world_monkey","purgatorius","none"],
+            "muellers_gibbon":["old_world_monkey","new_world_monkey","purgatorius","none"],
+            "proboscis_monkey":["old_world_monkey","new_world_monkey","purgatorius","none"],
+            "sumatran_orangutan":["old_world_monkey","new_world_monkey","purgatorius","none"],
+            "white_fronted_langur":["old_world_monkey","new_world_monkey","purgatorius","none"],
+            //birds
+            "blue_headed_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+            "garnet_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+            "helmeted _hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+            "malabar_grey_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+            "great_argus_pheasant":["passeriformes","bucerotidae","phasianidae","none"],
+            "rhinoceros_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+            //other mammals 1
+            "civet":["oligocene_rodents","felidae","asiavorator","none"],
+            "sunda_clouded_leopard":["oligocene_rodents","felidae","asiavorator","none"],
+            "leopard_cat":["oligocene_rodents","felidae","asiavorator","none"],
+            "sumatran_tiger":["oligocene_rodents","felidae","asiavorator","none"],
+            //other mammals 2
+            "borneo_porcupine":["common_pangolin","palaeolagus","oligocene_rodents","none"],
+            "common_porcupine":["common_pangolin","palaeolagus","oligocene_rodents","none"],
+            "sunda_pangolin":["common_pangolin","palaeolagus","oligocene_rodents","none"],
+            "sumatran_striped_rabbit":["common_pangolin","palaeolagus","oligocene_rodents","none"],
+            //other mammals 3
+            "malayan_tapir":["first_tapir","perissodactyls","common_pangolin","none"],
+            "sumatran_rhinoceros":["first_tapir","perissodactyls","common_pangolin","none"]
+        },
+        "10_mya": {
+            //plants
+            "fig_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "forest_durian":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "ginger":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "jambu_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "meggaris_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "pitcher _plant":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "rafflesia":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "tetrastigma":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "titan_arum":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            //insects
+            "ant":["mesokristensenia","styporaphidia","empididae","none"],
+            "fig_wasp":["mesokristensenia","styporaphidia","empididae","none"],
+            "termite":["mesokristensenia","styporaphidia","empididae","none"],
+            //primates
+            "bornean_orangutan":["old_world_monkey","dryopithecus","new_world_monkey","none"],
+            "mitered_leaf_monkey":["old_world_monkey","dryopithecus","new_world_monkey","none"],
+            "muellers_gibbon":["old_world_monkey","dryopithecus","new_world_monkey","none"],
+            "proboscis_monkey":["old_world_monkey","dryopithecus","new_world_monkey","none"],
+            "sumatran_orangutan":["old_world_monkey","dryopithecus","new_world_monkey","none"],
+            "white_fronted_langur":["old_world_monkey","dryopithecus","new_world_monkey","none"],
+            //birds
+            "blue_headed_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+            "garnet_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+            "helmeted _hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+            "malabar_grey_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+            "great_argus_pheasant":["passeriformes","bucerotidae","phasianidae","none"],
+            "rhinoceros_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+            //other mammals 1
+            "civet":["viverridae","old_world_porcupine","felidae","none"],
+            "sunda_clouded_leopard":["viverridae","old_world_porcupine","felidae","none"],
+            "leopard_cat":["viverridae","old_world_porcupine","felidae","none"],
+            "sumatran_tiger":["viverridae","old_world_porcupine","felidae","none"],
+            //other mammals 2
+            "borneo_porcupine":["felidae","old_world_porcupine","common_pangolin","none"],
+            "common_porcupine":["felidae","old_world_porcupine","common_pangolin","none"],
+            "sunda_pangolin":["felidae","old_world_porcupine","common_pangolin","none"],
+            "sumatran_striped_rabbit":["felidae","old_world_porcupine","common_pangolin","none"],
+            //other mammals 3
+            "malayan_tapir":["first_tapir","rhinocerotoids","palaeolagus","none"],
+            "sumatran_rhinoceros":["first_tapir","rhinocerotoids","palaeolagus","none"]
+        },
+        "5_mya": {
+            //plants
+            "fig_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "forest_durian":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "ginger":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "jambu_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "meggaris_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "pitcher _plant":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "rafflesia":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "tetrastigma":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "titan_arum":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            //insects
+            "ant":["mesokristensenia","styporaphidia","empididae","none"],
+            "fig_wasp":["mesokristensenia","styporaphidia","empididae","none"],
+            "termite":["mesokristensenia","styporaphidia","empididae","none"],
+            //primates
+            "bornean_orangutan":["propliopithecus","colobinae","new_world_monkey","none"],
+            "mitered_leaf_monkey":["propliopithecus","colobinae","new_world_monkey","none"],
+            "muellers_gibbon":["propliopithecus","colobinae","new_world_monkey","none"],
+            "proboscis_monkey":["propliopithecus","colobinae","new_world_monkey","none"],
+            "sumatran_orangutan":["propliopithecus","colobinae","new_world_monkey","none"],
+            "white_fronted_langur":["propliopithecus","colobinae","new_world_monkey","none"],
+            //birds
+            "blue_headed_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+            "garnet_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+            "helmeted _hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+            "malabar_grey_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+            "great_argus_pheasant":["passeriformes","bucerotidae","phasianidae","none"],
+            "rhinoceros_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+            //other mammals 1
+            "civet":["viverridae","panthera","felidae","none"],
+            "sunda_clouded_leopard":["viverridae","panthera","felidae","none"],
+            "leopard_cat":["viverridae","panthera","felidae","none"],
+            "sumatran_tiger":["viverridae","panthera","felidae","none"],
+            //other mammals 2
+            "borneo_porcupine":["old_world_porcupine","asiavorator","common_pangolin","none"],
+            "common_porcupine":["old_world_porcupine","asiavorator","common_pangolin","none"],
+            "sunda_pangolin":["old_world_porcupine","asiavorator","common_pangolin","none"],
+            "sumatran_striped_rabbit":["old_world_porcupine","asiavorator","common_pangolin","none"],
+            //other mammals 3
+            "malayan_tapir":["first_tapir","rhinocerotoids","palaeolagus","none"],
+            "sumatran_rhinoceros":["first_tapir","rhinocerotoids","palaeolagus","none"]
+        },
+        "2_mya": {
+            //plants
+            "fig_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "forest_durian":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "ginger":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "jambu_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "meggaris_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "pitcher _plant":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "rafflesia":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "tetrastigma":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            "titan_arum":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+            //insects
+            "ant":["mesokristensenia","styporaphidia","empididae","none"],
+            "fig_wasp":["mesokristensenia","styporaphidia","empididae","none"],
+            "termite":["mesokristensenia","styporaphidia","empididae","none"],
+            //primates
+            "bornean_orangutan":["hylobatidae","oranutan","presbytis","none"],
+            "mitered_leaf_monkey":["hylobatidae","oranutan","presbytis","none"],
+            "muellers_gibbon":["hylobatidae","oranutan","presbytis","none"],
+            "proboscis_monkey":["hylobatidae","oranutan","presbytis","none"],
+            "sumatran_orangutan":["hylobatidae","oranutan","presbytis","none"],
+            "white_fronted_langur":["hylobatidae","oranutan","presbytis","none"],
+            //birds
+            "blue_headed_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+            "garnet_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+            "helmeted _hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+            "malabar_grey_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+            "great_argus_pheasant":["passeriformes","bucerotidae","phasianidae","none"],
+            "rhinoceros_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+            //other mammals 1
+            "civet":["viverridae","panthera_palaeosinensis","clouded_leopard","none"],
+            "sunda_clouded_leopard":["viverridae","panthera_palaeosinensis","clouded_leopard","none"],
+            "leopard_cat":["viverridae","panthera_palaeosinensis","clouded_leopard","none"],
+            "sumatran_tiger":["viverridae","panthera_palaeosinensis","clouded_leopard","none"],
+            //other mammals 2
+            "borneo_porcupine":["old_world_porcupine","asiavorator","common_pangolin","none"],
+            "common_porcupine":["old_world_porcupine","asiavorator","common_pangolin","none"],
+            "sunda_pangolin":["old_world_porcupine","asiavorator","common_pangolin","none"],
+            "sumatran_striped_rabbit":["old_world_porcupine","asiavorator","common_pangolin","none"],
+            //other mammals 3
+            "malayan_tapir":["first_tapir","rhinocerotoid","palaeolagus","none"],
+            "sumatran_rhinoceros":["first_tapir","rhinocerotoid","palaeolagus","none"]
         }
     },
 
@@ -55,10 +379,10 @@ var EvoRoom = {
 
                         // set the progress indicator to the correct indication
                         /*if (EvoRoom.rotation === 1) {
-                            //EvoRoom.indicateProgressStage(2);
-                        } else if (EvoRoom.rotation === 2) {
-                            //EvoRoom.indicateProgressStage(4);
-                        }*/
+                        //EvoRoom.indicateProgressStage(2);
+                    } else if (EvoRoom.rotation === 2) {
+                        //EvoRoom.indicateProgressStage(4);
+                    }*/
                     }
                     else {
                         alert("Wrong rotation received. Please ask teacher to send again.");
@@ -68,7 +392,7 @@ var EvoRoom = {
                     console.log("observations_start event received, but payload is incomplete or not for this user");
                 }
             },
-            
+
             location_assignment: function(ev) {
                 if (ev.payload.location && ev.payload.username === Sail.app.session.account.login) {
                     // hide all pages
@@ -76,13 +400,13 @@ var EvoRoom = {
                     // sanity check
                     if (ev.payload.location === "station_a" || ev.payload.location === "station_b"
                         || ev.payload.location === "station_c" || ev.payload.location === "station_d"
-                        || ev.payload.location === "borneo" ||ev.payload.location === "sumatra") {
-                            // store assigned location
-                            EvoRoom.assignedLocation = ev.payload.location;
-                            // show assigned location in DOM
-                            $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedLocation));
-                            // show page
-                            $('#go-to-location').show();
+                            || ev.payload.location === "borneo" ||ev.payload.location === "sumatra") {
+                        // store assigned location
+                        EvoRoom.assignedLocation = ev.payload.location;
+                        // show assigned location in DOM
+                        $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedLocation));
+                        // show page
+                        $('#go-to-location').show();
                     }
                     else {
                         console.error("Error, wrong location " + ev.payload.location + " received. Log in again!");
@@ -93,7 +417,7 @@ var EvoRoom = {
                     console.log("location_assignment event received, but payload is incomplete or not for this user");
                 }
             },
-                       
+
             meetup_start: function(ev) {
                 Sail.app.hidePageElements();
                 // distinguish between meetups by looking at rotation
@@ -105,7 +429,7 @@ var EvoRoom = {
                     console.warn("Event meetup_start caught and EvoRoom.rotation is: '"+EvoRoom.rotation+"' - should be 1 or 2");
                 }
             },
-            
+
             homework_assignment: function(ev) {
                 if (Sail.app.user_metadata.day === "2" && ev.payload) {
                     Sail.app.hidePageElements();
@@ -132,13 +456,13 @@ var EvoRoom = {
             Sail.app.rollcall.request(Sail.app.rollcall.url + "/users/"+Sail.app.session.account.login+".json", "GET", {}, function(data) {
                 EvoRoom.currentTeam = data.user.groups[0].name;
                 Sail.app.user_metadata = data.user.metadata;
-                
+
                 // try to fill rotation from metadata
                 EvoRoom.rotation = parseInt(data.user.metadata.current_rotation, 10);
                 // fill the location variables
                 EvoRoom.currentLocation = Sail.app.user_metadata.currently_assigned_location;
                 EvoRoom.assignedLocation = Sail.app.user_metadata.current_location;
-                
+
                 console.log('metadata assigned');
                 EvoRoom.setupPageLayout();
                 EvoRoom.restoreState(); 
@@ -153,10 +477,10 @@ var EvoRoom = {
             EvoRoom.currentLocation = null;
             EvoRoom.selectedOrganism = null;
             EvoRoom.buttonRevealCounter = 0;
-            
-            
+
+
             EvoRoom.hidePageElements();
-            
+
             Rollcall.Authenticator.requestRun();
         }
     },
@@ -197,13 +521,13 @@ var EvoRoom = {
             Rollcall.Authenticator.requestLogin();
         } else {
             Sail.app.rollcall.fetchSessionForToken(Sail.app.token, function(data) {
-                    Sail.app.session = data.session;
-                    $(Sail.app).trigger('authenticated');
-                },
-                function(error) {
-                    console.warn("Token '"+Sail.app.token+"' is invalid. Will try to re-authenticate...");
-                    Rollcall.Authenticator.unauthenticate();
-                }
+                Sail.app.session = data.session;
+                $(Sail.app).trigger('authenticated');
+            },
+            function(error) {
+                console.warn("Token '"+Sail.app.token+"' is invalid. Will try to re-authenticate...");
+                Rollcall.Authenticator.unauthenticate();
+            }
             );
         }
     },
@@ -227,7 +551,7 @@ var EvoRoom = {
         $('#meetup-instructions').hide();
         $('#meetup').hide();
         $('#day1-complete').hide();
-        
+
         $('#log-in-success-day2').hide();
         $('#team-organism-assignment-day2').hide();
         $('#2mya-instructions').hide();
@@ -261,11 +585,11 @@ var EvoRoom = {
         });
         // set up display of team name on 'team assignment' page for day one and the 'team-organism-assignment-day2' for day 2
         $('.team-name').text(Sail.app.currentTeam);
-        
+
         // set up display of organisms on 'organism assignment' page for day one and the 'team-organism-assignment-day2' for day 2
         var j = 0;
         var organismArray = Sail.app.getCurrentStudentOrganisms();
-        
+
         $('.organism-clear').html('');
         while (j < organismArray.length) {
             j++;
@@ -274,7 +598,7 @@ var EvoRoom = {
         }
 
         $('.jquery-radios').buttonset();
-        
+
         // check which day it is
         if (Sail.app.user_metadata.day === "2") {
             $('#log-in-success-day2').show();
@@ -282,7 +606,7 @@ var EvoRoom = {
         else { 
             $('#log-in-success').show();
         }
-        
+
         // hide the organism in the top right (this hide is only necessary if there's a crash)
         $('#student-chosen-organisms').hide();
 
@@ -298,7 +622,7 @@ var EvoRoom = {
                 Sail.app.barcodeScanRoomLoginFailure('No scanner, probably desktop browser');
             }
         });
-        
+
         // register on-click listeners for room QR code scanning error resolution               // ARMIN, I've added the day 2 thing here, but it's different than the others... but I think it's right
         $('#room-scan-failure .big-button').click(function() {
             // hide everything
@@ -315,7 +639,7 @@ var EvoRoom = {
             // don't need to trigger, just call the function
             Sail.app.barcodeScanRoomLoginSuccess('room');
         });
-        
+
         $('#team-assignment .small-button').click(function() {
             Sail.app.hidePageElements();
             $('#organism-assignment').show();
@@ -324,7 +648,7 @@ var EvoRoom = {
             //Sail.app.rotation = 1;
             // I switch these around for testing purposes... the first one is the 'correct' one
         });
-        
+
         $('#go-to-location .big-button').click(function() {
             // check if barcodeScanner is possible (won't be outside of PhoneGap app)
             if (window.plugins.barcodeScanner) {
@@ -335,7 +659,7 @@ var EvoRoom = {
                 Sail.app.barcodeScanLocationFailure('No scanner, probably desktop browser');
             }
         });
-        
+
         // on-click listeners for rainforest QR scanning error resolution
         $('#location-scan-failure .big-button').click(function() {
             // hide everything
@@ -348,61 +672,61 @@ var EvoRoom = {
             // call success function and hand in location from clicked button
             Sail.app.barcodeScanLocationSuccess($(this).data('location'));
         });
-        
+
         $('#observe-organisms-instructions .small-button').click(function() {
             Sail.app.hidePageElements();
-            
+
             // set up the year on each page that needs it
             $('#observe-organisms .year').text(Sail.app.calculateYear());
             $('#is-organism-present .year').text(Sail.app.calculateYear());
             $('#ancestor-information .year').text(Sail.app.calculateYear());
             $('#ancestor-information-details .year').text(Sail.app.calculateYear());
             $('#choose-ancestor .year').text(Sail.app.calculateYear());
-            
+
             // set up organism table for next screen
             Sail.app.setupOrganismTable();
 
             $('#observe-organisms').show();
         });
-        
-/*        $('#observe-organisms .organism-table-button').click(function() {
-            Sail.app.hidePageElements();
-            
-            $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
-            $('#student-chosen-organisms').show();
-            $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
-            $('#is-organism-present').show();
-        });
-*/        
+
+        /*        $('#observe-organisms .organism-table-button').click(function() {
+        Sail.app.hidePageElements();
+
+        $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
+        $('#student-chosen-organisms').show();
+        $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
+        $('#is-organism-present').show();
+    });
+         */        
         // on-click listeners for rainforest QR scanning error resolution
         $('#observe-organisms .small-button').click(function() {
             Sail.app.hidePageElements();
             $('#loading-page').show();
         });
-        
+
         $('#is-organism-present .radio').click(function() {
             $('#is-organism-present .small-button').show();
         });
-        
+
         $('#is-organism-present .small-button').click(function() {
             Sail.app.hidePageElements();
 
             if ($('#org-choice-yes').is(':checked')) {
                 $('#student-chosen-organisms').hide();
-                
+
                 // both params are the same in this case
                 Sail.app.submitOrganismObservation(Sail.app.selectedOrganism, Sail.app.selectedOrganism);
                 // clear radio buttons
                 $('input:radio').prop('checked', false);
                 $('#is-organism-present .radio').button('refresh');
-                
+
                 $('#observe-organisms').show();
             }
             else {
                 // clear radio buttons
                 $('input:radio').prop('checked', false);
                 $('#is-organism-present .radio').button('refresh');
-                
+
                 //$('#observe-organisms .organism1').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
                 //$('#observe-organisms .text1').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
                 // TODO what is this stuff above... also make the below dynamic
@@ -410,25 +734,25 @@ var EvoRoom = {
                 $('#ancestor-information').show();
             }
         });
-        
+
         $('#ancestor-information .small-button').click(function() {
             Sail.app.hidePageElements();
             Sail.app.setupAncestorTable(Sail.app.selectedOrganism, "full");
             $('#choose-ancestor').show();
         });
-        
+
         $('#ancestor-information-details .small-button').click(function() {
             Sail.app.hidePageElements();
             $('#ancestor-information').show();
         });
 
-/* ====================================== MEETUP =================================== */
+        /* ====================================== MEETUP =================================== */
 
         $('#meetup-instructions .small-button').click(function() {
             Sail.app.hidePageElements();
             $('#meetup').show();
         });
-        
+
         $('#meetup .small-button').click(function() {
             if ($('#meetup .meetup-text-entry').val() === '') {
                 alert('Please enter your answer in the text box below');
@@ -436,17 +760,17 @@ var EvoRoom = {
             else {
                 Sail.app.hidePageElements();
                 Sail.app.submitNote();
-                
+
                 // clear text in preparation for rotation 2
                 $('#meetup .meetup-text-entry').val('');
                 $('#loading-page').show();
             }
         });
 ///////////////////////////////////////////////////////////////////////////////////////
-/* ====================================== DAY 2 ==================================== */
+        /* ====================================== DAY 2 ==================================== */
 ///////////////////////////////////////////////////////////////////////////////////////
 
-        
+
         $('#log-in-success-day2 .big-button').click(function() {
             // check if barcodeScanner is possible (won't be outside of PhoneGap app)
             if (window.plugins.barcodeScanner) {
@@ -459,19 +783,19 @@ var EvoRoom = {
                 Sail.app.barcodeScanRoomLoginFailure('No scanner, probably desktop browser');
             }
         });
-        
+
         $('#team-organism-assignment-day2 .small-button').click(function() {
             Sail.app.hidePageElements();
             $('#2mya-instructions').show();
         });
-        
+
         $('#2mya-instructions .small-button').click(function() {
             Sail.app.hidePageElements();
-            
+
             EvoRoom.setupOrganismTable();
             $('#2mya-choose-organisms').show();
         });
-        
+
         $('#2mya-organism-details .small-button').click(function() {
             if ($('#2mya-organism-details .2mya-organism-details-text-entry').val() === '') {
                 alert('Please enter your answer in the text box below');
@@ -479,35 +803,35 @@ var EvoRoom = {
             else {
                 Sail.app.hidePageElements();
                 Sail.app.submitOrganismFeatures();
-                
+
                 // clear text entry field
                 $('#2mya-organism-details .2mya-organism-details-text-entry').val('');
                 $('#2mya-choose-organisms').show();
-                
+
                 // clear the organism out of the top corner
                 $('#student-chosen-organisms').hide();
             }
         });
-        
+
         $('#2mya-choose-organisms .small-button').click(function() {
             Sail.app.hidePageElements();
-            
+
             Sail.app.submitNotesCompletion();
-            
+
             // for testing, first is correct, comment out everything else
             $('#transition').show();
             //Sail.app.currentLocation = "station_a";
             //$('#present-day-instructions').show();
             //$('#concepts-instructions').show();
         });
-    
+
         /* ====================================== PRESENT DAY =================================== */
-    
+
         $('#present-day-instructions .small-button').click(function() {
             Sail.app.hidePageElements();
-            
+
             Sail.app.setupPresentDayTable();
-            
+
             if (Sail.app.currentLocation === "station_a" || Sail.app.currentLocation === "station_b") {
                 $('#present-day-organisms .location').text('Borneo');
             }
@@ -525,10 +849,10 @@ var EvoRoom = {
                 // set yes/no in data-choice attribute of tr
                 $(this).parent().parent().attr('data-choice', "none");
             });
-            
+
             $('#present-day-organisms').show();
         });
-        
+
         $('#present-day-organisms .small-button').click(function() {
             // create observation_table object for message observation_tabulation
             var observation_table = [];
@@ -541,13 +865,13 @@ var EvoRoom = {
             });
             // hide everything
             Sail.app.hidePageElements();
-            
+
             // send out observation_tabulation
             EvoRoom.submitObservationTabulation(observation_table);
-            
+
             $('#loading-page').show();
         });
-        
+
         $('#present-day-organisms .presence-choice').click(function() {
             // highlight the chosen button
             $(this).addClass('ui-state-highlight');
@@ -569,32 +893,32 @@ var EvoRoom = {
                 $('#present-day-organisms .small-button').show();
             }
         });
-        
+
         $('#concepts-instructions .small-button').click(function() {
             Sail.app.hidePageElements();
             $('#concepts-discussion').show();
         });
-        
+
         // START HERE
         $('#concepts-discussion .time-period-pop-up-button').click(function() {
             $('#time-period-pop-up').show();
         });
-        
+
         $('#concepts-discussion .small-button').click(function() {
             $('#time-period-pop-up').hide();
         });
-        
+
         $('#concepts-discussion .small-button').click(function() {
             EvoRoom.submitConceptDiscussion();
             alert('Your data has been submitted');
-            
+
             Sail.app.hidePageElements();
             // clear fields, reload the page
             $('#concepts-discussion .evolution-concept-dropdown').val('');
             $('#concepts-discussion .concepts-discussion-text-entry').val('');
             $('#concepts-discussion').show();
         });
-        
+
     },
 
     /********************************************* OUTGOING EVENTS *******************************************/
@@ -604,12 +928,12 @@ var EvoRoom = {
             team_name:Sail.app.currentTeam,
             location:Sail.app.currentLocation
         });
-        
+
         // one off event handler which is set during the sending of check_in message
         var stateChangeHandler = function (sev) {
             if (sev.payload.to) {
                 console.log('Caught oneoff event stateChangeHandler with to = ' + sev.payload.to);
-                
+
                 if (sev.payload.to === 'OBSERVING_IN_ROTATION') {
                     Sail.app.hidePageElements();
                     $('#observe-organisms-instructions').show();
@@ -629,7 +953,7 @@ var EvoRoom = {
                 console.warn('Caught oneoff event stateChangeHandler with EMPTY to field');
             }
         };
-        
+
         // create state change handler if checkin is not in room
         // eventHandlerFunction, eventType, origin (user), payload,
         if (EvoRoom.currentLocation === 'room') {
@@ -639,7 +963,7 @@ var EvoRoom = {
             Sail.app.groupchat.addOneoffEventHandler(stateChangeHandler, 'state_change', Sail.app.session.account.login);
             console.log('Set up one-off event handler for state_change in check_in');
         }
-        
+
         Sail.app.groupchat.sendEvent(sev);
     },
 
@@ -653,7 +977,7 @@ var EvoRoom = {
         });
         Sail.app.groupchat.sendEvent(sev);
     },
-    
+
     submitNote: function() {
         var sev = new Sail.Event('note', {
             author:Sail.app.session.account.login,
@@ -664,7 +988,7 @@ var EvoRoom = {
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
-    
+
     submitOrganismFeatures: function() {
         var sev = new Sail.Event('organism_features', {
             team_name:Sail.app.currentTeam,
@@ -674,14 +998,14 @@ var EvoRoom = {
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
-    
+
     submitNotesCompletion: function() {
         var sev = new Sail.Event('notes_completion', {
             // empty?
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
-    
+
     submitObservationTabulation: function(observations_table) {
         var sev = new Sail.Event('observation_tabulation', {
             team_name:Sail.app.currentTeam,
@@ -690,7 +1014,7 @@ var EvoRoom = {
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
-    
+
     submitConceptDiscussion: function() {
         var sev = new Sail.Event('concept_discussion', {
             author:Sail.app.session.account.login,
@@ -757,7 +1081,7 @@ var EvoRoom = {
             console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
         }
     },
-    
+
     barcodeScanRoomLoginSuccess: function(result) {
         console.log("Got Barcode: " +result);
         // hide everything
@@ -767,7 +1091,7 @@ var EvoRoom = {
             // send out event check_in
             Sail.app.currentLocation = result;
             Sail.app.submitCheckIn();
-            
+
             // check which day it is
             if (Sail.app.user_metadata.day === "2") {
                 $('#team-organism-assignment-day2').show();
@@ -814,7 +1138,7 @@ var EvoRoom = {
         Sail.app.hidePageElements();
         $('#location-scan-failure').show();
     },
-    
+
     barcodeScanFinalPicksSuccess: function(result) {
         console.log("Got Barcode: " +result);
         // send out event check_in
@@ -825,11 +1149,11 @@ var EvoRoom = {
         // show waiting page
         $('#final-picks-debrief').show();
     },
-    
+
     getCurrentStudentOrganisms: function() {
-        return JSON.parse(Sail.app.user_metadata['assigned_organisms']);
+        return JSON.parse(Sail.app.user_metadata.assigned_organisms);
     },
-    
+
     calculateYear: function() {
         if (Sail.app.rotation === 1) {
             if (Sail.app.currentLocation === "station_a") {
@@ -880,7 +1204,7 @@ var EvoRoom = {
             return "unknown time";
         }
     },
-    
+
     formatLocationString: function(locationString) {
         if (locationString === "station_a") {
             return "Station A";
@@ -898,7 +1222,7 @@ var EvoRoom = {
             return "unknown rainforest";
         }
     },
-    
+
     formatStringToBoolean: function(radioString) {
         if (radioString === "true") {
             return true;
@@ -906,7 +1230,7 @@ var EvoRoom = {
             return false;
         }
     },
-    
+
     formatOrganismString: function(organismString) {
         if (organismString === "ant") {
             return "Ant";
@@ -982,7 +1306,7 @@ var EvoRoom = {
             return "unknown animal";
         }
     },
-    
+
     indicateProgressStage: function(stage) {
         $('.day1 .indicator').each(function (index) {
             $(this).removeClass('done');
@@ -991,12 +1315,12 @@ var EvoRoom = {
             if (stage === (index +1)) {
                 $(this).addClass('done');
             } /*else {
-                console.log('index ' +index+ ' stage ' +stage);
-                return false;
-            }*/
+            console.log('index ' +index+ ' stage ' +stage);
+            return false;
+        }*/
         });
     },
-    
+
     //**************FUNCTIONS TO CREATE AND FILL TABLES************************************************
 
     setupOrganismTable: function() {
@@ -1004,7 +1328,7 @@ var EvoRoom = {
         var table;
         var tr;
         Sail.app.buttonRevealCounter = 0;
-        
+
         if (Sail.app.user_metadata.day === "2") {
             table = $('.2mya-table');
         }
@@ -1013,7 +1337,7 @@ var EvoRoom = {
             table.html('');
         }
 
-        
+
         _.each(EvoRoom.getCurrentStudentOrganisms(), function(org) {
             k++;
             var img = $('<img />');
@@ -1024,28 +1348,28 @@ var EvoRoom = {
             var td = $('<td />');
             td.addClass('organism-boxes');
             td.addClass('box'+k);
-            
+
             // check what day it is and build the table based on that
             if (Sail.app.user_metadata.day === "2") {
                 img.click(function() { 
                     Sail.app.hidePageElements();
                     Sail.app.selectedOrganism = $(this).data('organism');
-                    
+
                     // populate the top right corner image
                     $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
                     $('#student-chosen-organisms .chosen-organism-image').attr('alt', Sail.app.selectedOrganism);
                     $('#student-chosen-organisms').show();
                     $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
-                    
+
                     // disable the button out after it's clicked, and add to the button reveal counter
                     $(this).addClass('faded');
                     $(this).unbind("click");
-                    
+
                     Sail.app.buttonRevealCounter++;
                     if (Sail.app.buttonRevealCounter >= EvoRoom.getCurrentStudentOrganisms().length) {
                         $('#2mya-choose-organisms .small-button').show();
                     }
-                    
+
                     $('#2mya-organism-details .organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
                     $('#2mya-organism-details').show();
                 });
@@ -1054,13 +1378,13 @@ var EvoRoom = {
                 img.click(function() { 
                     Sail.app.hidePageElements();
                     Sail.app.selectedOrganism = $(this).data('organism');
-                    
+
                     // populate the top right corner image
                     $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
                     $('#student-chosen-organisms .chosen-organism-image').attr('alt', Sail.app.selectedOrganism);
                     $('#student-chosen-organisms').show();
                     $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
-                    
+
                     // disable the button out after it's clicked, and add to the button reveal counter
                     $(this).addClass('faded');
                     $(this).unbind("click");
@@ -1069,7 +1393,7 @@ var EvoRoom = {
                     if (Sail.app.buttonRevealCounter >= EvoRoom.getCurrentStudentOrganisms().length) {
                         $('#observe-organisms .small-button').show();
                     }
-                    
+
                     $('#is-organism-present').show();
                 });
             }
@@ -1077,13 +1401,13 @@ var EvoRoom = {
             // add the image, add the text and determine whether to add a new row or cell
             td.append(img);
             td.append('<div class="small-font">' + Sail.app.formatOrganismString(org) + '</div>');
-            
+
             if (k%2 !== 0) {
                 tr = $('<tr />');
             }
-            
+
             tr.append(td);
-            
+
             if (k%2 === 0) {
                 table.append(tr);
             }
@@ -1093,7 +1417,7 @@ var EvoRoom = {
             table.append(tr);
         }
     },
-    
+
     setupAncestorTable: function(animal, selector) {
         var k = 0;
         var tr;
@@ -1102,7 +1426,7 @@ var EvoRoom = {
         var yearString = Sail.app.currentYear;
         var ancestorsYearObject = $.extend(true, {}, Sail.app.ancestors);
 
-        
+
         // for the first ancestor table
         if (selector === "partial") {
             $('.ancestor-information-table').html('');
@@ -1117,7 +1441,7 @@ var EvoRoom = {
         else {
             console.log('error creating ancestor tables - missing selector');
         }
-            
+
         _.each(ancestorsYearObject[yearString][animal], function(org) {
             k++;
             var img = $('<img />');
@@ -1128,13 +1452,13 @@ var EvoRoom = {
             var td = $('<td />');
             td.addClass('organism-boxes');
             td.addClass('box'+k);
-            
+
             // for the first ancestor table
             if (selector === "partial") {
                 img.click(function() { 
                     ancestorChosenString = $(this).data('organism');
                     Sail.app.hidePageElements();
-                    
+
                     $('#ancestor-information-details .chosen-organism').text(Sail.app.formatOrganismString(ancestorChosenString));
                     $('#ancestor-information-details .ancestor-description').text(Sail.app.formatOrganismString(Sail.app.ancestorsText[ancestorChosenString]));
                     $('#ancestor-information-details').show();
@@ -1145,10 +1469,10 @@ var EvoRoom = {
                 img.click(function() { 
                     ancestorChosenString = $(this).data('organism');
                     Sail.app.hidePageElements();
-                    
+
                     // send event with guessed ancestor and its antecedant
                     Sail.app.submitOrganismObservation(ancestorChosenString, Sail.app.selectedOrganism);
-                    
+
                     $('#observe-organisms').show();
                 });
             }
@@ -1159,13 +1483,13 @@ var EvoRoom = {
             td.append(img);
             td.append('<div class="small-font">' + Sail.app.formatOrganismString(org) + '</div>');
 
-            
+
             if (k%2 !== 0) {
                 tr = $('<tr />');
             }
-            
+
             tr.append(td);
-            
+
             if (k%2 === 0) {
                 table.append(tr);
             }
@@ -1175,25 +1499,24 @@ var EvoRoom = {
             table.append(tr);
         }
     },
-    
+
     setupPresentDayTable: function () {
         $('#present-day-organisms .present-day-organisms-table tr').each(function (index) {
             var currentOrganisms = EvoRoom.getCurrentStudentOrganisms();
-            
+
             $('.organism-image', this).attr('src', '/images/' + currentOrganisms[index] + '_icon.png');
             // set organism name in tr element
             //$(this).data('organism', currentOrganisms[index]);
             $(this).attr('data-organism', currentOrganisms[index]);
-            
-            
+
+
             $('.organism-text', this).text(Sail.app.formatOrganismString(currentOrganisms[index]));
 
-            
+
             // remove any excess row
             if (index >= currentOrganisms.length) {
                 $(this).remove();
             }
         });
     }
-    
 };
