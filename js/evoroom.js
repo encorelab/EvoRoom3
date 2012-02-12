@@ -11,6 +11,11 @@ var EvoRoom = {
     selectedOrganism: null,
     buttonRevealCounter: 0,
 
+    ancestorsText: {
+        "anisopodidae":"Anisopodidae is a small cosmopolitan family of gnat-like flies known as wood gnats or window-gnats with 154 described extant species in 15 genera, and several described fossil taxa. Some species are saprophagous or fungivorous. They are mostly small to medium-sized flies, except the genera Olbiogaster and Lobogaster, which are large with bizarrely spatulate abdomens. Their phylogenetic placement is controversial. They have been proposed to be the sister group to the higher flies, the Brachycera.",
+        "araucariaceae":"Araucariaceae is a family of evergreen trees that are usually 60 or more meters. The Araucariaceae are monoecious or dioecious trees comprising two genera and about 30 species of the Southern Hemisphere. The leaves are opposite or spirally arranged and are needlelike to broad. The male or microsporangiate strobili are axillary or terminal, comprising many spirally arranged microsporophylls, each bearing 5-20 linear, pendant microsporangia on the lower surface. The pollen grains lack wings. The female or megasporangiate strobili are generally large and somewhat woody, with numerous spirally disposed ovuliferous scales, each fused with its bract and bearing a single median ovule on the upper surface.",
+
+    },
     // TODO fill this with real data
     ancestors: {
         "200_mya": {
@@ -570,6 +575,15 @@ var EvoRoom = {
             $('#concepts-discussion').show();
         });
         
+        // START HERE
+        $('#concepts-discussion .time-period-pop-up-button').click(function() {
+            $('#time-period-pop-up').show();
+        });
+        
+        $('#concepts-discussion .small-button').click(function() {
+            $('#time-period-pop-up').hide();
+        });
+        
         $('#concepts-discussion .small-button').click(function() {
             EvoRoom.submitConceptDiscussion();
             alert('Your data has been submitted');
@@ -1122,7 +1136,7 @@ var EvoRoom = {
                     Sail.app.hidePageElements();
                     
                     $('#ancestor-information-details .chosen-organism').text(Sail.app.formatOrganismString(ancestorChosenString));
-                    $('#ancestor-information-details .ancestor-description').text('Where are we going to pull this stuff from?');
+                    $('#ancestor-information-details .ancestor-description').text(Sail.app.formatOrganismString(Sail.app.ancestorsText[ancestorChosenString]));
                     $('#ancestor-information-details').show();
                 });
             }
@@ -1171,10 +1185,9 @@ var EvoRoom = {
             //$(this).data('organism', currentOrganisms[index]);
             $(this).attr('data-organism', currentOrganisms[index]);
             
-            // TODO by Armin
-/*            $(this).attr('organism-text', Sail.app.formatOrganismString(currentOrganisms[index]));
-            $('# .organism-text').text(Sail.app.formatOrganismString(currentOrganisms[index]));
-*/
+            
+            $('.organism-text', this).text(Sail.app.formatOrganismString(currentOrganisms[index]));
+
             
             // remove any excess row
             if (index >= currentOrganisms.length) {
