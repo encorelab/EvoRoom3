@@ -1,6 +1,7 @@
 AGENT_PASSWORD = "9186ebc4790dfba833826e13c42c885f6f847274" # s3agent!
 RUN = "michelle-feb-2012-a-test"
 TEST_DB = "michelle-feb-2012-a-test"
+
 SAIL_CONFIG = {:rollcall => {:url => "http://localhost:3000"}}
 
 module SpecHelpers
