@@ -260,6 +260,8 @@ var EvoRoom = {
         // set up display of organisms on 'organism assignment' page for day one and the 'team-organism-assignment-day2' for day 2
         var j = 0;
         var organismArray = Sail.app.getCurrentStudentOrganisms();
+        
+        $('.organism-clear').html('');
         while (j < organismArray.length) {
             j++;
             $('#organism-assignment .assigned-organism-'+j).text(Sail.app.formatOrganismString(organismArray[j-1]));
@@ -466,13 +468,20 @@ var EvoRoom = {
         });
         
         $('#2mya-organism-details .small-button').click(function() {
-            Sail.app.hidePageElements();
-            
-            Sail.app.submitOrganismFeatures();
-            
-            // clear text entry field
-            $('#2mya-organism-details .2mya-organism-details-text-entry').val('');
-            $('#2mya-choose-organisms').show();
+            if ($('#2mya-organism-details .2mya-organism-details-text-entry').val() === '') {
+                alert('Please enter your answer in the text box below');
+            }
+            else {
+                Sail.app.hidePageElements();
+                Sail.app.submitOrganismFeatures();
+                
+                // clear text entry field
+                $('#2mya-organism-details .2mya-organism-details-text-entry').val('');
+                $('#2mya-choose-organisms').show();
+                
+                // clear the organism out of the top corner
+                $('#student-chosen-organisms').hide();
+            }
         });
         
         $('#2mya-choose-organisms .small-button').click(function() {
@@ -1008,6 +1017,12 @@ var EvoRoom = {
                     Sail.app.hidePageElements();
                     Sail.app.selectedOrganism = $(this).data('organism');
                     
+                    // populate the top right corner image
+                    $('#student-chosen-organisms .chosen-organism-image').attr('src', '/images/' + Sail.app.selectedOrganism + '_icon.png');
+                    $('#student-chosen-organisms .chosen-organism-image').attr('alt', Sail.app.selectedOrganism);
+                    $('#student-chosen-organisms').show();
+                    $('.chosen-organism').text(Sail.app.formatOrganismString(Sail.app.selectedOrganism));
+                    
                     // disable the button out after it's clicked, and add to the button reveal counter
                     $(this).addClass('faded');
                     $(this).unbind("click");
@@ -1155,6 +1170,11 @@ var EvoRoom = {
             // set organism name in tr element
             //$(this).data('organism', currentOrganisms[index]);
             $(this).attr('data-organism', currentOrganisms[index]);
+            
+            // TODO by Armin
+/*            $(this).attr('organism-text', Sail.app.formatOrganismString(currentOrganisms[index]));
+            $('# .organism-text').text(Sail.app.formatOrganismString(currentOrganisms[index]));
+*/
             
             // remove any excess row
             if (index >= currentOrganisms.length) {
