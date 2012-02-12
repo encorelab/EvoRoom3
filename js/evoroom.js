@@ -36,7 +36,6 @@ var EvoRoom = {
         "eomanis":"Eomanis ('primitive ghost') is the earliest known true (and scaled) pangolin from the Middle Eocene of Europe. Fossils collected from the Messel Pit, Germany, indicate that this 50 cm long animal was rather similar to living pangolins. However, unlike modern pangolins, its tail and legs did not bear scales. According to the stomach contents of the excellently preserved Messel specimens, Eomanis’ diet consisted of both insects and plants. Its contemporary was the related, albeit scale-less, anteater-like Eurotamandua.",
         "felidae":"Felidae is the biological family of the cats; a member of this family is called a felid. Felids are the strictest carnivores of the thirteen terrestrial families in the order Carnivora, although the three families of marine mammals comprising the superfamily pinnipedia are as carnivorous as the felids. The most familiar felid is the domestic cat, which first became associated with humans about 10,000 years ago, but the family includes all other wild cats including the big cats. Extant felids belong to one of two subfamilies: Pantherinae (which includes the tiger, the lion, the jaguar, and the leopard), and Felinae (which includes the cougar, the cheetah, the lynxes, the ocelot, and the domestic cat).",
         "first_tapir":"A Tapir is a large browsing mammal, similar in shape to a pig, with a short, prehensile snout. Tapirs inhabit jungle and forest regions of South America, Central America, and Southeast Asia. There are four species of Tapirs: the Brazilian Tapir, the Malayan Tapir, Baird's Tapir and the Mountain Tapir. All four species of tapir are classified as endangered or vulnerable. Their closest relatives are the other odd-toed ungulates, including horses and rhinoceroses.",
-        "galliform":"Galliformes are an order of heavy-bodied ground-feeding domestic or game bird. Extant Galliformes (landfowl) include the Australasian Megapodiidae (megapodes, “brush−turkeys”), which are the sister taxon of the Neotropic Cracidae (guans, chachalacas, and currasows) and the Phasianidae (guineafowl, turkeys, grouse, pheasants, and allies).",
         "ginkgophyta":"Phylum of seed plants represented by one living species, Ginkgo biloba. This species is restricted to China where it may be extinct in the wild. The group was well represented during the Mesozoic with worldwide distribution. They are deciduous trees bearing distinctive fan-shaped leaves. Branches with numerous spur shoots that bear the reproductive structures. Stems with extensive secondary growth producing considerable secondary xylem.",
         "gomphos_elkema":"Gomphos is an extinct genus of early lagomorph from the early Eocene some 55 million years ago of China and Mongolia. The type species is G. elkema.",
         "hadrocodium":"The recent discovery of this 195 million year old fossil has added another member to the early mammal family during this time period. Hadrocodium weighed only two grams and grew to a length of 32 millimetres. It has the large grain and middle ear of modern mammals, traits that suggest these two features may have evolved together.",
@@ -57,7 +56,6 @@ var EvoRoom = {
         "palaeolagus":"Palaeolagus is an extinct genus of lagomorph. Palaeolagus lived in the Oligocene period which was about 33-23 million years ago. The earliest leporids described from the fossil record of North America and Asia date to the upper Eocene some 40 million years ago. Selective pressure ostensibly drove them to become ever faster and better at running and jumping. Other fossil finds from Asia indicate more primitive progenitors of Palaeolagus existed in the lower Eocene; this pushes the likely date of divergence of rabbit-like and rodent-like lagomorphs back to more than 50 million years ago.",
         "panthera":"Panthera is a genus of the family Felidae (cats), which contains four well-known living species: the tiger, the lion, the jaguar, and the leopard. The genus comprises about half of the Pantherinae subfamily, the big cats. The word panther, while technically referring to all members of the genus, is commonly used to specifically designate the black panther." /n
         		"Panthera likely evolved in Asia, but the definite roots of the genus remain unclear. The divergence of the pantherine cats (including the living genera Panthera, Uncia, and Neofelis) from the subfamily Felinae (including all other living cat species) has been ranked between six and ten million years ago. The clouded leopard (Neofelis nebulosa), which was divided in 2007 to distinguish the Bornean clouded leopard (Neofelis diardi), is generally placed at the basis of the Panthera group but is not included in the genus Panthera itself.",
-        "panthera_palaeosinensis":"The oldest remains of a tiger-like cat, called Panthera palaeosinensis, have been found in China and Java. This species lived about 2 million years ago, at the beginning of the Pleistocene, and was smaller than a modern tiger. The earliest fossils of true tigers are known from Java, and are between 1.6 and 1.8 million years old. Distinct fossils from the early and middle Pleistocene were also discovered in deposits from China, and Sumatra.",
         "passeriform":"Sometimes known as perching birds or, less accurately, as songbirds, the passerines form one of the most diverse terrestrial vertebrate orders: with over 5,000 identified species,1 it has roughly twice as many species as the largest of the mammal orders, the Rodentia. It contains over 110 families, the second most of any order of vertebrates (after the Perciformes)." /n
         		"The names 'passerines' and 'Passeriformes' are derived from Passer domesticus, the scientific name of the type species—the House Sparrow—and ultimately from the Latin term passer for Passer sparrows and similar small birds." /n
         		"The evolutionary history of the passerine families and the relationships among them remained rather mysterious until the late 20th century. In many cases, passerine families were grouped together on the basis of morphological similarities which, it is now believed, are the result of convergent evolution, not a close genetic relationship. For example, the 'wrens' of the northern hemisphere, those of Australia, and those of New Zealand look very similar and behave in similar ways, and yet belong to three far-flung branches of the passerine family tree; they are as unrelated as it is possible to be while remaining Passeriformes.",
@@ -417,10 +415,10 @@ var EvoRoom = {
             "great_argus_pheasant":["passeriformes","bucerotidae","phasianidae","none"],
             "rhinoceros_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
             //other mammals 1
-            "civet":["viverridae","panthera_palaeosinensis","clouded_leopard","none"],
-            "sunda_clouded_leopard":["viverridae","panthera_palaeosinensis","clouded_leopard","none"],
-            "leopard_cat":["viverridae","panthera_palaeosinensis","clouded_leopard","none"],
-            "sumatran_tiger":["viverridae","panthera_palaeosinensis","clouded_leopard","none"],
+            "civet":["viverridae","panthera","clouded_leopard","none"],
+            "sunda_clouded_leopard":["viverridae","panthera","clouded_leopard","none"],
+            "leopard_cat":["viverridae","panthera","clouded_leopard","none"],
+            "sumatran_tiger":["viverridae","panthera","clouded_leopard","none"],
             //other mammals 2
             "borneo_porcupine":["old_world_porcupine","asiavorator","common_pangolin","none"],
             "common_porcupine":["old_world_porcupine","asiavorator","common_pangolin","none"],
@@ -1413,8 +1411,6 @@ var EvoRoom = {
             return "Felidae";
         } else if (organismString === "first_tapir") {
             return "First tapir";
-        } else if (organismString === "galliform") {
-            return "Galliformes";
         } else if (organismString === "ginkgophyta") {
             return "Ginkgophyta";
         } else if (organismString === "gomphos_elkema") {
@@ -1449,8 +1445,6 @@ var EvoRoom = {
             return "Palaeolagus";
         } else if (organismString === "panthera") {
             return "Panthera";
-        } else if (organismString === "panthera_palaeosinensis") {
-            return "Panthera palaeosinensis";
         } else if (organismString === "passeriform") {
             return "Passeriformes";
         } else if (organismString === "perissodactyl") {
