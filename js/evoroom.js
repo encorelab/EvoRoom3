@@ -11,27 +11,350 @@ var EvoRoom = {
     selectedOrganism: null,
     buttonRevealCounter: 0,
 
-    // TODO fill this with real data
     ancestors: {
         "200_mya": {
-            "proboscis_monkey":["ant","civet","fig_wasp","none"],
-            "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
-            "muellers_gibbon":["civet","fig_wasp","white_fronted_langur","none"]
+			//plants
+        	"fig_tree":["lycophyte","cycad","ginkgophyta","none"],
+			"forest_durian":["lycophyte","cycad","ginkgophyta","none"],
+			"ginger":["lycophyte","cycad","ginkgophyta","none"],
+			"jambu_tree":["lycophyte","cycad","ginkgophyta","none"],
+			"meggaris_tree":["lycophyte","cycad","ginkgophyta","none"],
+			"pitcher _plant":["lycophyte","cycad","ginkgophyta","none"],
+			"rafflesia":["lycophyte","cycad","ginkgophyta","none"],
+			"tetrastigma":["lycophyte","cycad","ginkgophyta","none"],
+			"titan_arum":["lycophyte","cycad","ginkgophyta","none"],
+			//insects
+			"ant":["cupedidae","anisopodidae","cicadellidae","none"],
+			"fig_wasp":["cupedidae","anisopodidae","cicadellidae","none"],
+			"termite":["cupedidae","anisopodidae","cicadellidae","none"],
+			//primates
+			"bornean_orangutan":["hadrocodium","theropod","thecodont","none"],
+			"mitered_leaf_monkey":["hadrocodium","theropod","thecodont","none"],
+			"muellers_gibbon":["hadrocodium","theropod","thecodont","none"],
+			"proboscis_monkey":["hadrocodium","theropod","thecodont","none"],
+			"sumatran_orangutan":["hadrocodium","theropod","thecodont","none"],
+			"white_fronted_langur":["hadrocodium","theropod","thecodont","none"],
+			//birds
+			"blue_headed_pitta":["hadrocodium","theropod","thecodont","none"],
+			"garnet_pitta":["hadrocodium","theropod","thecodont","none"],
+			"helmeted _hornbill":["hadrocodium","theropod","thecodont","none"],
+			"malabar_grey_hornbill":["hadrocodium","theropod","thecodont","none"],
+			"great_argus_pheasant":["hadrocodium","theropod","thecodont","none"],
+			"rhinoceros_hornbill":["hadrocodium","theropod","thecodont","none"],
+			//other mammals 1
+			"civet":["hadrocodium","theropod","thecodont","none"],
+			"sunda_clouded_leopard":["hadrocodium","theropod","thecodont","none"],
+			"leopard_cat":["hadrocodium","theropod","thecodont","none"],
+			"sumatran_tiger":["hadrocodium","theropod","thecodont","none","none"],
+			//other mammals 2
+			"borneo_porcupine":["hadrocodium","theropod","thecodont","none"],
+			"common_porcupine":["hadrocodium","theropod","thecodont","none"],
+			"sunda_pangolin":["hadrocodium","theropod","thecodont","none"],
+			"sumatran_striped_rabbit":["hadrocodium","theropod","thecodont","none"],
+			//other mammals 3
+			"malayan_tapir":["hadrocodium","theropod","thecodont","none"],
+			"sumatran_rhinoceros":["hadrocodium","theropod","thecodont","none"]
         },
         "150_mya": {
-            "proboscis_monkey":["fig_wasp","fig_wasp","fig_wasp","none"],
-            "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
-            "muellers_gibbon":["civet","civet","civet","none"]
+			//plants
+        	"fig_tree":["araucariaceae","cycad","pinaceae","none"],
+			"forest_durian":["araucariaceae","cycad","pinaceae","none"],
+			"ginger":["araucariaceae","cycad","pinaceae","none"],
+			"jambu_tree":["araucariaceae","cycad","pinaceae","none"],
+			"meggaris_tree":["araucariaceae","cycad","pinaceae","none"],
+			"pitcher _plant":["araucariaceae","cycad","pinaceae","none"],
+			"rafflesia":["araucariaceae","cycad","pinaceae","none"],
+			"tetrastigma":["araucariaceae","cycad","pinaceae","none"],
+			"titan_arum":["araucariaceae","cycad","pinaceae","none"],
+			//insects
+			"ant":["chrysomeloidea","mesokristensenia","styporaphidia","none"],
+			"fig_wasp":["chrysomeloidea","mesokristensenia","styporaphidia","none"],
+			"termite":["chrysomeloidea","mesokristensenia","styporaphidia","none"],
+			//primates
+			"bornean_orangutan":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"mitered_leaf_monkey":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"muellers_gibbon":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"proboscis_monkey":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"sumatran_orangutan":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"white_fronted_langur":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			//birds
+			"blue_headed_pitta":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"garnet_pitta":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"helmeted _hornbill":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"malabar_grey_hornbill":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"great_argus_pheasant":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"rhinoceros_hornbill":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			//other mammals 1
+			"civet":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"sunda_clouded_leopard":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"leopard_cat":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"sumatran_tiger":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			//other mammals 2
+			"borneo_porcupine":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"common_porcupine":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"sunda_pangolin":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"sumatran_striped_rabbit":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			//other mammals 3
+			"malayan_tapir":["archaeopteryx","crusafonta","yangchuanosaurus","none"],
+			"sumatran_rhinoceros":["archaeopteryx","crusafonta","yangchuanosaurus","none"]
         },
         "100_mya": {
-            "proboscis_monkey":["fig_wasp","fig_wasp","fig_wasp","none"],
-            "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
-            "muellers_gibbon":["civet","civet","civet","none"]
+			//plants
+        	"fig_tree":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+			"forest_durian":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+			"ginger":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+			"jambu_tree":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+			"meggaris_tree":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+			"pitcher _plant":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+			"rafflesia":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+			"tetrastigma":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+			"titan_arum":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica","none"],
+			//insects
+			"ant":["mastotermitidae","early_sphecoid_wasp","empididae","none"],
+			"fig_wasp":["mastotermitidae","early_sphecoid_wasp","empididae","none"],
+			"termite":["mastotermitidae","early_sphecoid_wasp","empididae","none"],
+			//primates
+			"bornean_orangutan":["multituberculata","eomaia","pterosaur","none"],
+			"mitered_leaf_monkey":["multituberculata","eomaia","pterosaur","none"],
+			"muellers_gibbon":["multituberculata","eomaia","pterosaur","none"],
+			"proboscis_monkey":["multituberculata","eomaia","pterosaur","none"],
+			"sumatran_orangutan":["multituberculata","eomaia","pterosaur","none"],
+			"white_fronted_langur":["multituberculata","eomaia","pterosaur","none"],
+			//birds
+			"blue_headed_pitta":["enantiornithes","yanornis","pterosaur","none"],
+			"garnet_pitta":["enantiornithes","yanornis","pterosaur","none"],
+			"helmeted _hornbill":["enantiornithes","yanornis","pterosaur","none"],
+			"malabar_grey_hornbill":["enantiornithes","yanornis","pterosaur","none"],
+			"great_argus_pheasant":["enantiornithes","yanornis","pterosaur","none"],
+			"rhinoceros_hornbill":["enantiornithes","yanornis","pterosaur","none"],
+			//other mammals 1
+			"civet":["multituberculata","eomaia","pterosaur","none"],
+			"sunda_clouded_leopard":["multituberculata","eomaia","pterosaur","none"],
+			"leopard_cat":["multituberculata","eomaia","pterosaur","none"],
+			"sumatran_tiger":["multituberculata","eomaia","pterosaur","none"],
+			//other mammals 2
+			"borneo_porcupine":["multituberculata","eomaia","pterosaur","none"],
+			"common_porcupine":["multituberculata","eomaia","pterosaur","none"],
+			"sunda_pangolin":["multituberculata","eomaia","pterosaur","none"],
+			"sumatran_striped_rabbit":["multituberculata","eomaia","pterosaur","none"],
+			//other mammals 3
+			"malayan_tapir":["multituberculata","eomaia","pterosaur","none"],
+			"sumatran_rhinoceros":["multituberculata","eomaia","pterosaur","none"]
         },
         "50_mya": {
-            "proboscis_monkey":["fig_wasp","fig_wasp","fig_wasp","none"],
-            "white_fronted_langur":["white_fronted_langur","white_fronted_langur","white_fronted_langur","none"],
-            "muellers_gibbon":["civet","civet","civet","none"]
+			//plants
+        	"fig_tree":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+			"forest_durian":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+			"ginger":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+			"jambu_tree":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+			"meggaris_tree":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+			"pitcher _plant":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+			"rafflesia":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+			"tetrastigma":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+			"titan_arum":["lycophyte","pinaceae","cycadeoidea_marylandica","none"],
+			//insects
+			"ant":["chrysomeloidea","mesokristensenia","empididae","none"],
+			"fig_wasp":["chrysomeloidea","mesokristensenia","empididae","none"],
+			"termite":["chrysomeloidea","mesokristensenia","empididae","none"],
+			//primates
+			"bornean_orangutan":["purgatorius","multituberculata","miacid","none"],
+			"mitered_leaf_monkey":["purgatorius","multituberculata","miacid","none"],
+			"muellers_gibbon":["purgatorius","multituberculata","miacid","none"],
+			"proboscis_monkey":["purgatorius","multituberculata","miacid","none"],
+			"sumatran_orangutan":["purgatorius","multituberculata","miacid","none"],
+			"white_fronted_langur":["purgatorius","multituberculata","miacid","none"],
+			//birds
+			"blue_headed_pitta":["passeriform","bucerotidae","phasianidae","none"],
+			"garnet_pitta":["passeriform","bucerotidae","phasianidae","none"],
+			"helmeted _hornbill":["passeriform","bucerotidae","phasianidae","none"],
+			"malabar_grey_hornbill":["passeriform","bucerotidae","phasianidae","none"],
+			"great_argus_pheasant":["passeriform","bucerotidae","phasianidae","none"],
+			"rhinoceros_hornbill":["passeriform","bucerotidae","phasianidae","none"],
+			//other mammals 1
+			"civet":["multituberculata","gomphos_elkema","miacid","none"],
+			"sunda_clouded_leopard":["multituberculata","gomphos_elkema","miacid","none"],
+			"leopard_cat":["multituberculata","gomphos_elkema","miacid","none"],
+			"sumatran_tiger":["multituberculata","gomphos_elkema","miacid","none"],
+			//other mammals 2
+			"borneo_porcupine":["multituberculata","gomphos_elkema","eomanis","none"],
+			"common_porcupine":["multituberculata","gomphos_elkema","eomanis","none"],
+			"sunda_pangolin":["multituberculata","gomphos_elkema","eomanis","none"],
+			"sumatran_striped_rabbit":["multituberculata","gomphos_elkema","eomanis","none"],
+			//other mammals 3
+			"malayan_tapir":["heptodon","perissodactyl","eomanis","none"],
+			"sumatran_rhinoceros":["heptodon","perissodactyl","eomanis","none"]
+        }
+        "25_mya": {
+			//plants
+        	"fig_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"forest_durian":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"ginger":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"jambu_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"meggaris_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"pitcher _plant":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"rafflesia":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"tetrastigma":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"titan_arum":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			//insects
+			"ant":["mesokristensenia","styporaphidia","empididae","none"],
+			"fig_wasp":["mesokristensenia","styporaphidia","empididae","none"],
+			"termite":["mesokristensenia","styporaphidia","empididae","none"],
+			//primates
+			"bornean_orangutan":["old_world_monkey","new_world_monkey","purgatorius","none"],
+			"mitered_leaf_monkey":["old_world_monkey","new_world_monkey","purgatorius","none"],
+			"muellers_gibbon":["old_world_monkey","new_world_monkey","purgatorius","none"],
+			"proboscis_monkey":["old_world_monkey","new_world_monkey","purgatorius","none"],
+			"sumatran_orangutan":["old_world_monkey","new_world_monkey","purgatorius","none"],
+			"white_fronted_langur":["old_world_monkey","new_world_monkey","purgatorius","none"],
+			//birds
+			"blue_headed_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+			"garnet_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+			"helmeted _hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+			"malabar_grey_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+			"great_argus_pheasant":["passeriformes","bucerotidae","phasianidae","none"],
+			"rhinoceros_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+			//other mammals 1
+			"civet":["oligocene_rodents","felidae","asiavorator","none"],
+			"sunda_clouded_leopard":["oligocene_rodents","felidae","asiavorator","none"],
+			"leopard_cat":["oligocene_rodents","felidae","asiavorator","none"],
+			"sumatran_tiger":["oligocene_rodents","felidae","asiavorator","none"],
+			//other mammals 2
+			"borneo_porcupine":["common_pangolin","palaeolagus","oligocene_rodents","none"],
+			"common_porcupine":["common_pangolin","palaeolagus","oligocene_rodents","none"],
+			"sunda_pangolin":["common_pangolin","palaeolagus","oligocene_rodents","none"],
+			"sumatran_striped_rabbit":["common_pangolin","palaeolagus","oligocene_rodents","none"],
+			//other mammals 3
+			"malayan_tapir":["first_tapir","perissodactyls","common_pangolin","none"],
+			"sumatran_rhinoceros":["first_tapir","perissodactyls","common_pangolin","none"]
+        }
+        "10_mya": {
+			//plants
+        	"fig_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"forest_durian":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"ginger":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"jambu_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"meggaris_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"pitcher _plant":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"rafflesia":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"tetrastigma":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"titan_arum":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			//insects
+			"ant":["mesokristensenia","styporaphidia","empididae","none"],
+			"fig_wasp":["mesokristensenia","styporaphidia","empididae","none"],
+			"termite":["mesokristensenia","styporaphidia","empididae","none"],
+			//primates
+			"bornean_orangutan":["old_world_monkey","dryopithecus","new_world_monkey","none"],
+			"mitered_leaf_monkey":["old_world_monkey","dryopithecus","new_world_monkey","none"],
+			"muellers_gibbon":["old_world_monkey","dryopithecus","new_world_monkey","none"],
+			"proboscis_monkey":["old_world_monkey","dryopithecus","new_world_monkey","none"],
+			"sumatran_orangutan":["old_world_monkey","dryopithecus","new_world_monkey","none"],
+			"white_fronted_langur":["old_world_monkey","dryopithecus","new_world_monkey","none"],
+			//birds
+			"blue_headed_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+			"garnet_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+			"helmeted _hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+			"malabar_grey_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+			"great_argus_pheasant":["passeriformes","bucerotidae","phasianidae","none"],
+			"rhinoceros_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+			//other mammals 1
+			"civet":["viverridae","old_world_porcupine","felidae","none"],
+			"sunda_clouded_leopard":["viverridae","old_world_porcupine","felidae","none"],
+			"leopard_cat":["viverridae","old_world_porcupine","felidae","none"],
+			"sumatran_tiger":["viverridae","old_world_porcupine","felidae","none"],
+			//other mammals 2
+			"borneo_porcupine":["felidae","old_world_porcupine","common_pangolin","none"],
+			"common_porcupine":["felidae","old_world_porcupine","common_pangolin","none"],
+			"sunda_pangolin":["felidae","old_world_porcupine","common_pangolin","none"],
+			"sumatran_striped_rabbit":["felidae","old_world_porcupine","common_pangolin","none"],
+			//other mammals 3
+			"malayan_tapir":["first_tapir","rhinocerotoids","palaeolagus","none"],
+			"sumatran_rhinoceros":["first_tapir","rhinocerotoids","palaeolagus","none"]
+        }
+        "5_mya": {
+			//plants
+        	"fig_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"forest_durian":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"ginger":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"jambu_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"meggaris_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"pitcher _plant":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"rafflesia":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"tetrastigma":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"titan_arum":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			//insects
+			"ant":["mesokristensenia","styporaphidia","empididae","none"],
+			"fig_wasp":["mesokristensenia","styporaphidia","empididae","none"],
+			"termite":["mesokristensenia","styporaphidia","empididae","none"],
+			//primates
+			"bornean_orangutan":["propliopithecus","colobinae","new_world_monkey","none"],
+			"mitered_leaf_monkey":["propliopithecus","colobinae","new_world_monkey","none"],
+			"muellers_gibbon":["propliopithecus","colobinae","new_world_monkey","none"],
+			"proboscis_monkey":["propliopithecus","colobinae","new_world_monkey","none"],
+			"sumatran_orangutan":["propliopithecus","colobinae","new_world_monkey","none"],
+			"white_fronted_langur":["propliopithecus","colobinae","new_world_monkey","none"],
+			//birds
+			"blue_headed_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+			"garnet_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+			"helmeted _hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+			"malabar_grey_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+			"great_argus_pheasant":["passeriformes","bucerotidae","phasianidae","none"],
+			"rhinoceros_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+			//other mammals 1
+			"civet":["viverridae","panthera","felidae","none"],
+			"sunda_clouded_leopard":["viverridae","panthera","felidae","none"],
+			"leopard_cat":["viverridae","panthera","felidae","none"],
+			"sumatran_tiger":["viverridae","panthera","felidae","none"],
+			//other mammals 2
+			"borneo_porcupine":["old_world_porcupine","asiavorator","common_pangolin","none"],
+			"common_porcupine":["old_world_porcupine","asiavorator","common_pangolin","none"],
+			"sunda_pangolin":["old_world_porcupine","asiavorator","common_pangolin","none"],
+			"sumatran_striped_rabbit":["old_world_porcupine","asiavorator","common_pangolin","none"],
+			//other mammals 3
+			"malayan_tapir":["first_tapir","rhinocerotoids","palaeolagus","none"],
+			"sumatran_rhinoceros":["first_tapir","rhinocerotoids","palaeolagus","none"]
+        }
+        "2_mya": {
+			//plants
+        	"fig_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"forest_durian":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"ginger":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"jambu_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"meggaris_tree":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"pitcher _plant":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"rafflesia":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"tetrastigma":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			"titan_arum":["cycadeoidea_marylandica","ginkgophyta","williamsonia","none"],
+			//insects
+			"ant":["mesokristensenia","styporaphidia","empididae","none"],
+			"fig_wasp":["mesokristensenia","styporaphidia","empididae","none"],
+			"termite":["mesokristensenia","styporaphidia","empididae","none"],
+			//primates
+			"bornean_orangutan":["hylobatidae","oranutan","presbytis","none"],
+			"mitered_leaf_monkey":["hylobatidae","oranutan","presbytis","none"],
+			"muellers_gibbon":["hylobatidae","oranutan","presbytis","none"],
+			"proboscis_monkey":["hylobatidae","oranutan","presbytis","none"],
+			"sumatran_orangutan":["hylobatidae","oranutan","presbytis","none"],
+			"white_fronted_langur":["hylobatidae","oranutan","presbytis","none"],
+			//birds
+			"blue_headed_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+			"garnet_pitta":["passeriformes","bucerotidae","phasianidae","none"],
+			"helmeted _hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+			"malabar_grey_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+			"great_argus_pheasant":["passeriformes","bucerotidae","phasianidae","none"],
+			"rhinoceros_hornbill":["passeriformes","bucerotidae","phasianidae","none"],
+			//other mammals 1
+			"civet":["viverridae","panthera_palaeosinensis","clouded_leopard","none"],
+			"sunda_clouded_leopard":["viverridae","panthera_palaeosinensis","clouded_leopard","none"],
+			"leopard_cat":["viverridae","panthera_palaeosinensis","clouded_leopard","none"],
+			"sumatran_tiger":["viverridae","panthera_palaeosinensis","clouded_leopard","none"],
+			//other mammals 2
+			"borneo_porcupine":["old_world_porcupine","asiavorator","common_pangolin","none"],
+			"common_porcupine":["old_world_porcupine","asiavorator","common_pangolin","none"],
+			"sunda_pangolin":["old_world_porcupine","asiavorator","common_pangolin","none"],
+			"sumatran_striped_rabbit":["old_world_porcupine","asiavorator","common_pangolin","none"],
+			//other mammals 3
+			"malayan_tapir":["first_tapir","rhinocerotoid","palaeolagus","none"],
+			"sumatran_rhinoceros":["first_tapir","rhinocerotoid","palaeolagus","none"]
         }
     },
 
