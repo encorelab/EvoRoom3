@@ -1,0 +1,47 @@
+* {
+ font-family: inherit;  /* we can get rid of this after pulling in Matt's new stuff */
+}
+
+body {
+  background-color: #12120C;
+  background-image: url('/images/bkgd.png');
+  background-repeat: repeat;
+  font-family: 'Droid Sans', sans-serif !important;
+}
+
+
+.teacher-dashboard div.step > * {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.teacher-dashboard div.step {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: rgba(0,0,0,0.3);
+  padding-right: 50px;
+  padding-left: 50px;
+}
+
+.teacher-dashboard div.step:nth-child(even) {
+  background-color: rgba(0,0,0,0.6);
+}
+
+.teacher-dashboard div.step > h2 {
+  color: white;
+  font-weight: bold;
+  width: 15ex;
+  margin-left: 10px;
+  margin-top: 12px;
+}
+
+.teacher-dashboard div.step > div.buttons {
+  line-height: 50px;
+}
+
+.teacher-dashboard div.step > div.info {
+}
+
+.teacher-button-done {
+  opacity: 0.6;
+}

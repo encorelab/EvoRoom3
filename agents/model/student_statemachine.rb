@@ -4,11 +4,11 @@ StudentStatemachine = proc do
   initial_state :OUTSIDE
 
   state_attribute_writer (proc do |student, new_state|
-    student.metadata.state = new_state
+    student.metadata.state = new_state.to_s
   end)
 
   state_attribute_reader (proc do |student|
-    student.metadata.state? && student.metadata.state
+    student.metadata.state? && student.metadata.state.to_sym
   end)
 
   on_all_transitions do |student, event, transition, *args|
