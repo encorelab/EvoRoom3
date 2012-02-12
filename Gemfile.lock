@@ -1,10 +1,5 @@
-PATH
-  remote: ../golem_statemachine
-  specs:
-    golem_statemachine (1.1.0.pre)
-      activesupport
-
 GEM
+  remote: http://rubygems.org/
   specs:
     activemodel (3.0.7)
       activesupport (= 3.0.7)
@@ -23,6 +18,8 @@ GEM
     columnize (0.3.1)
     diff-lcs (1.1.2)
     eventmachine (0.12.10)
+    golem_statemachine (1.1.0.pre)
+      activesupport
     i18n (0.5.0)
     json (1.5.1)
     linecache (0.43)
@@ -51,7 +48,7 @@ DEPENDENCIES
   activesupport (>= 3.0, < 3.1)
   blather
   bson_ext
-  golem_statemachine!
+  golem_statemachine (= 1.1.0.pre)
   json
   mongo
   rspec
