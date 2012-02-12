@@ -128,6 +128,7 @@ describe Choreographer do
               expect_student do
                 # verify that expected metadata has been set 
                 self.metadata.current_rotation.should === 2
+                self.metadata.current_meetup.should === 2
                 self.metadata.state.should === :OUTSIDE
                 self.metadata.currently_assigned_location.blank?.should === false
                 self.metadata.current_location.blank?.should === false
