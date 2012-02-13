@@ -89,7 +89,7 @@ class Student < Rollcall::User
       if u_id == self.id
         nil
       else
-        Rollcall::User.find(id)
+        Rollcall::User.find(u_id)
       end
     end
     my_members -= [nil]
