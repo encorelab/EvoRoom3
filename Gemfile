@@ -7,6 +7,6 @@ gem 'bson_ext'
 gem 'blather'
 gem 'json'
 gem 'pidly'
-gem 'golem_statemachine', '1.1.0.pre'
+gem 'golem_statemachine', '1.1.0.pre2'
 
 gem 'ruby-debug'
