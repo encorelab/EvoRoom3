@@ -825,10 +825,9 @@ var EvoRoom = {
         });
 
         $('#is-organism-present .small-button').click(function() {
-            Sail.app.hidePageElements();
+            
 
             if ($('#org-choice-yes').is(':checked')) {
-
                 // both params are the same in this case
                 Sail.app.submitOrganismObservation(Sail.app.selectedOrganism, Sail.app.selectedOrganism);
                 // clear radio buttons
@@ -836,6 +835,7 @@ var EvoRoom = {
                 $('#is-organism-present .radio').button('refresh');
 
                 //Sail.app.buttonRevealCounter++;
+                Sail.app.hidePageElements();
                 $('#student-chosen-organisms').hide();
                 $('#observe-organisms').show();
             }
@@ -845,6 +845,7 @@ var EvoRoom = {
                 $('#is-organism-present .radio').button('refresh');
 
                 Sail.app.setupAncestorTable(Sail.app.selectedOrganism, "partial");
+                Sail.app.hidePageElements();
                 //Sail.app.buttonRevealCounter++;
                 $('#ancestor-information').show();
             }

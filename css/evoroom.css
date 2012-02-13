@@ -188,7 +188,7 @@ header .hide {
 }
 
 .table-container {
-    height: 720px;
+    height: 700px;
     margin-bottom: 155px;
     overflow-y: scroll;
 }
@@ -230,7 +230,7 @@ header .hide {
 }
 
 #ancestor-information .ancestor-information-table {
-    margin-bottom: 160px;
+    margin-bottom: 170px;
 }
 
 #choose-ancestor .choose-ancestor-table {
