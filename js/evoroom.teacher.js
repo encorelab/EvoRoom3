@@ -5,6 +5,8 @@ var EvoRoom = window.EvoRoom || {};
 EvoRoom.Teacher = {
     rollcallURL: '/rollcall',
     
+    currentRotation: 0,
+    
     init: function() {
         Sail.app.rollcall = new Rollcall.Client(Sail.app.rollcallURL);
         
@@ -62,17 +64,57 @@ EvoRoom.Teacher = {
             
             observations_start: function(sev) {
                 if (sev.payload.rotation === 1) {
-                    $('.step-1-2 button.start_rotation_1').addClass('teacher-button-done');
+                    EvoRoom.Teacher.currentRotation = 1;
+                    $('.step-1-2 button.start_rotation_1')
+                        .addClass('teacher-button-done')                    
+                        .attr('disabled','disabled');
+                        
+                    $('.indicator.step-1-2').addClass('done')
+                        .prevAll().addClass('done')
                 } else {
-                     $('.step-1-4 button.start_rotation_2').addClass('teacher-button-done');
+                    EvoRoom.Teacher.currentRotation = 2;
+                    $('.step-1-4 button.start_rotation_2')
+                        .addClass('teacher-button-done')                    
+                        .attr('disabled','disabled');
+                    $('.indicator.step-1-4').addClass('done')
+                        .prevAll().addClass('done')
                 }
             },
             
             homework_assigned: function(sev) {
                 if (sev.payload.day === 1) {
-                    $('.step-1-6 button.assign_homework_1').addClass('teacher-button-done');
-                } else {
+                    $('.step-1-6 button.assign_homework_1')
+                        .addClass('teacher-button-done')                    
+                        .attr('disabled','disabled');
+                    $('.indicator.step-1-6').addClass('done')
+                        .prevAll().addClass('done')
+                } //else {
                      // TODO
+                //}
+            },
+            
+            state_change: function(sev) {
+                marker = EvoRoom.Teacher.studentMarker(sev.origin)
+                switch (sev.payload.to) {
+                    case "ORIENTATION":
+                        $('.step-1-1 .students').append(marker)
+                        break;
+                    case "OBSERVING_PAST":
+                        if (EvoRoom.Teacher.currentRotation == 1)
+                            $('.step-1-2 .students').append(marker)
+                        else if (EvoRoom.Teacher.currentRotation == 2)
+                            $('.step-1-4 .students').append(marker)
+                        break;
+                    case "WAITING_FOR_MEETUP_START":
+                        if (EvoRoom.Teacher.currentRotation == 1)
+                            $('.step-1-3 .students').append(marker)
+                        else
+                            $('.step-1-5 .students').append(marker)
+                        break;
+                    case "OUTSIDE":
+                        if (EvoRoom.Teacher.currentRotation == 2)
+                            $('.step-1-6 .students').append(marker)
+                        break;
                 }
             }
         }
@@ -125,5 +167,22 @@ EvoRoom.Teacher = {
             var sev = new Sail.Event('homework_assigned', {day: 1});
             Sail.app.groupchat.sendEvent(sev);
         });
+    },
+    
+    studentMarker: function(username) {
+        var marker = $('#'+username);
+        
+        if (marker.length < 1) {
+            marker = $("<span class='student' id='"+username+"'>"+username+"</span>");
+        }
+        
+        var userUpdate = function(data) {
+            debugger;
+            data;
+        };
+        Sail.app.rollcall.request('/users/'+username+'.json', 'GET', {}, userUpdate);
+        
+        
+        return marker;
     }
 };
