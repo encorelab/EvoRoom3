@@ -14,7 +14,7 @@
     "created_at": "2012-02-12T03:01:06Z",
     "updated_at": "2012-02-12T03:01:16Z",
     "metadata": {
-        "speciality": "birds",
+        "specialty": "birds",
         "meetup_1_topic": "leanne's stuff",
         "meetup_2_topic": "leanne's other stuff",
         "assigned_organisms": "[\"proboscis_monkey\", \"muellers_gibbon\",\"white_fronted_langur\"]"

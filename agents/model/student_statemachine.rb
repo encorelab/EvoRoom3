@@ -79,7 +79,8 @@ StudentStatemachine = proc do
   end
 
   state :OBSERVING_PAST do
-    on :organism_observation, :to => :WAITING_FOR_LOCATION_ASSIGNMENT, :action => :store_observation
+    on :organism_observation, :action => :store_observation
+    on :organism_observations_done, :to => :WAITING_FOR_LOCATION_ASSIGNMENT
   end
   
   state :GOING_TO_ASSIGNED_LOCATION do

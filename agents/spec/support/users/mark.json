@@ -14,7 +14,7 @@
     "created_at": "2012-02-12T03:00:48Z",
     "updated_at": "2012-02-12T03:00:48Z",
     "metadata": {
-        "speciality": "other_mammals",
+        "specialty": "other_mammals",
         "meetup_1_topic": "mark's stuff",
         "meetup_2_topic": "mark's other stuff",
         "assigned_organisms": "[\"muellers_gibbon\"]"
