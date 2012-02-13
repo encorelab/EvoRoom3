@@ -54,7 +54,14 @@ describe Choreographer do
                 ev(:check_in, lambda{{:location => @assigned_location}})
                 wait('OBSERVING_PAST')
                 ev(:organism_observation, 
-                  lambda{{"location" => @assigned_location, "team_name" => "Darwin","assigned_organism" => "fig_tree","observed_organism" => "fig_tree","time" => "200 mya"}})
+                  lambda{{"location" => @assigned_location, "team_name" => "Darwin","assigned_organism" => "fig_tree","observed_organism" => "first","time" => "200 mya"}})
+                wait('OBSERVING_PAST')
+                ev(:organism_observation, 
+                  lambda{{"location" => @assigned_location, "team_name" => "Darwin","assigned_organism" => "fig_tree","observed_organism" => "second","time" => "200 mya"}})
+                wait('OBSERVING_PAST')
+                
+                ev(:organism_observations_done, {})
+                
                 wait('WAITING_FOR_LOCATION_ASSIGNMENT')
               end
               
@@ -97,8 +104,15 @@ describe Choreographer do
                 wait('GOING_TO_ASSIGNED_LOCATION')
                 ev(:check_in, lambda{{:location => @assigned_location}})
                 wait('OBSERVING_PAST')
+                
                 ev(:organism_observation, 
                   lambda{{"location" => @assigned_location, "team_name" => "Darwin","assigned_organism" => "fig_tree","observed_organism" => "fig_tree","time" => "200 mya"}})
+                wait('OBSERVING_PAST')
+                ev(:organism_observation, 
+                  lambda{{"location" => @assigned_location, "team_name" => "Darwin","assigned_organism" => "fig_tree","observed_organism" => "monkey","time" => "200 mya"}})
+                wait('OBSERVING_PAST')
+                ev(:organism_observations_done, {})
+                
                 wait('WAITING_FOR_LOCATION_ASSIGNMENT')
               end
               

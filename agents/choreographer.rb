@@ -139,6 +139,10 @@ class Choreographer < Sail::Agent
       location = data['payload']['location']
       lookup_student(username).organism_observation!(data['payload'].symbolize_keys)
     end
+    event :organism_observations_done? do |stanza, data|
+      username = data['origin']
+      lookup_student(username).organism_observations_done!
+    end
     event :meetup_start? do |stanza, data|
       @students.each do |username, stu|
         stu.meetup_start!(data['payload'].symbolize_keys)
