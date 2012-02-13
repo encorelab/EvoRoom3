@@ -126,14 +126,14 @@ class Student < Rollcall::User
     observation[:timestamp] = Time.now
     mongo.collection(:observations).save(observation)
     
-    observation["payload"]["_id"] = observation["payload"]["_id"]["$oid"]
+    observation[:_id] = observation[:_id].to_s
     agent.event!(:stored_observation, observation)
   end
   
   def store_note(note)
     log "Storing  observation: #{note.inspect}"
     mongo.collection(:notes).save(note)
-    note["payload"]["_id"] = note["payload"]["_id"]["$oid"]
+    note[:_id] = note[:_id].to_s
     agent.event!(:stored_note, note)
   end
   
