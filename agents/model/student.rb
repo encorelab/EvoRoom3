@@ -93,7 +93,7 @@ class Student < Rollcall::User
       end
     end
     my_members -= [nil]
-    log "Got team members for #{self} (#{self.team_name}): #{my_members.collect{|m| m.accout.login}.inspect}"
+    log "Got team members for #{self} (#{self.team_name}): #{my_members.collect{|m| m.account.login}.inspect}"
     my_members
   end
   
