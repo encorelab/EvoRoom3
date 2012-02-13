@@ -99,13 +99,23 @@ class Student < Rollcall::User
   
   def team_is_assembled?
     log "Checking if #{self}'s members are assembled..."
-    self.team_members.all? do |m|
+    mems = self.team_members
+    all_membernames = mems.collect{|m| m.account.login}
+    ass_membernames = self.team_members.select do |m|
       begin
-        m.metadata.current_location == self.metadata.current_location &&
-          m.metadata.state == self.metadata.state
+        m.metadata.current_location == self.metadata.current_location# &&
+          #m.metadata.state == self.metadata.state
       rescue NoMethodError
         false
       end
+    end.collect{|m| m.account.login}
+    
+    if (all_membernames - ass_membernames).empty?
+      log "All of team #{self.team_name} is assembled!"
+      return true
+    else
+      log "Still waiting for #{(all_membernames - ass_membernames).inspect} to assemble :("
+      return false
     end
   end
   
