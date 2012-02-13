@@ -44,7 +44,7 @@ var EvoRoom = {
         "mesokristensenia":"Mesokristensenia is an extinct genus of moth in the family Mesokristenseniidae. It existed in what is now China during the middle Jurassic period. Currently, three species are known. They were discovered in the Middle Jurassic Jiulongshan Formation, Daohugou beds (in Inner Mongolia). The new family could represent the sister group of the Micropterigidae. Mesokristensenia differs from all extant Lepidoptera, but one genus, Agathiphaga (Agathiphagidae), in retaining four median veins in the forewing.",
         "miacid":"Miacids (Miacidae) were primitive carnivores which lived during the late Paleocene and Eocene epochs about 62 to 33 million years ago. Miacids existed for approximately 29 million years. \n Miacids are thought to have evolved into today's modern carnivorous mammals of the order Carnivora. They were small carnivores, superficially marten-like or civet-like with long, little bodies and long tails. Some species were arboreal while others lived on the ground. They probably fed on invertebrates, lizards, birds, and smaller mammals like shrews and opossums. Their teeth and skulls show that the miacids were less developed than modern carnivorans. They had carnivoran-type carnassials but lacked fully ossified auditory bullae (rounded protrusions).",
         "multituberculata":"The Multituberculata were a group of rodent-like mammals that existed for approximately one hundred and twenty million years, the longest fossil history of any mammal lineage, but were eventually outcompeted by rodents, becoming extinct during the early Oligocene. At least 200 species are known, ranging from mouse-sized to beaver-sized. These species occupied a diversity of ecological niches, ranging from burrow-dwelling to squirrel-like arborealism. Multituberculates are usually placed outside either of the two main groups of living mammals (Theria, including placentals and marsupials, and Monotremata) but some cladistic analyses put them closer to Theria than to monotremes.",
-        "new_world_monkey":"New World monkeys are the five families of primates that are found in Central and South America: Callitrichidae, Cebidae, Aotidae, Pitheciidae, and Atelidae. The five families are ranked together as the Platyrrhini parvorder and the Ceboidea superfamily, which are essentially synonymous since Ceboidea is the only living platyrrhine superfamily. They differ from other groupings of monkeys and primates, such as the Old World monkeys and the apes. New World monkeys differ slightly from Old World monkeys in several aspects. The most prominent phenotype distinction is the nose, which is the feature used most commonly to distinguish between the two groups. The scientific name for the New World monkeys, Platyrrhini, means 'flat nosed'. The noses of New World monkeys are flatter than the narrow noses of the Old World monkeys, and have side-facing nostrils. New World monkeys are the only monkeys with prehensile tails—in comparison with the shorter, non-grasping tails of the anthropoids of the Old World.",
+        "new_world_monkey":"New World monkeys are the five families of primates that are found in Central and South America: Callitrichidae, Cebidae, Aotidae, Pitheciidae, and Atelidae. The five families are ranked together as the Platyrrhini parvorder and the Ceboidea superfamily, which are essentially synonymous since Ceboidea is the only living platyrrhine superfamily. They differ from other groupings of monkeys and primates, such as the Old World monkeys and the apes. New World monkeys differ slightly from Old World monkeys in several aspects. The most prominent phenotype distinction is the nose, which is the feature used most commonly to distinguish between the two groups. The scientific name for the New World monkeys, Platyrrhini, means 'flat nosed'. The noses of New World monkeys are flatter than the narrow noses of the Old World monkeys, and have side-facing nostrils. New World monkeys are the only monkeys with prehensile tails-in comparison with the shorter, non-grasping tails of the anthropoids of the Old World.",
         "old_world_monkey":"The Old World monkeys or Cercopithecidae are a group of primates, falling in the superfamily Cercopithecoidea in the clade Catarrhini. The Old World monkeys are native to Africa and Asia today, inhabiting a range of environments from tropical rain forest to savanna, shrubland and mountainous terrain, and are also known from Europe in the fossil record. However, a (possibly introduced) free-roaming group of monkeys still survives in Gibraltar (Europe) to this day. Old World monkeys include many of the most familiar species of nonhuman primates, such as baboons and macaques.",
         "old_world_porcupine":"The Old World porcupines, or Hystricidae, are large terrestrial rodents, distinguished by the spiny covering from which they take their name. They range over the south of Europe, most of Africa, India, and the Maritime Southeast Asia as far east as Borneo. Although both the Old World and New World porcupine families belong to the Hystricognathi branch of the vast order Rodentia, they are quite different and are not closely related.",
         "oligocene_rodent":"The caviomorph rodents (e.g. Porcupines, capybaras, chinchillas, and a wide assortment of smaller forms), was the only group of rodents in South America until the Plio-Pleistocene.",
@@ -826,7 +826,6 @@ var EvoRoom = {
 
         $('#is-organism-present .small-button').click(function() {
             Sail.app.hidePageElements();
-            $('#student-chosen-organisms').hide();
 
             if ($('#org-choice-yes').is(':checked')) {
 
@@ -836,23 +835,28 @@ var EvoRoom = {
                 $('input:radio').prop('checked', false);
                 $('#is-organism-present .radio').button('refresh');
 
+                //Sail.app.buttonRevealCounter++;
+                $('#student-chosen-organisms').hide();
                 $('#observe-organisms').show();
             }
-            else {
+            else if ($('#org-choice-no').is(':checked')) {
                 // clear radio buttons
                 $('input:radio').prop('checked', false);
                 $('#is-organism-present .radio').button('refresh');
 
-                //$('#observe-organisms .organism1').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
-                //$('#observe-organisms .text1').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
-                // TODO what is this stuff above... also make the below dynamic
                 Sail.app.setupAncestorTable(Sail.app.selectedOrganism, "partial");
+                //Sail.app.buttonRevealCounter++;
                 $('#ancestor-information').show();
+            }
+            else {
+                console.log('Radio buttons arent working like theyre supposed to');
+                alert('There was an error with the button selection. Please reselect the button');
             }
         });
 
         $('#ancestor-information .small-button').click(function() {
             Sail.app.hidePageElements();
+            $('#student-chosen-organisms').hide();
             Sail.app.setupAncestorTable(Sail.app.selectedOrganism, "full");
             $('#choose-ancestor').show();
         });
