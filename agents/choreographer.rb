@@ -126,7 +126,11 @@ class Choreographer < Sail::Agent
     end
     event :observations_start? do |stanza, data|
       @students.each do |username, stu|
-        stu.observations_start!
+        begin
+          stu.observations_start!
+        rescue => e
+          log "#{stu}: exception while handling 'observations_start' event: #{e}", :ERROR
+        end
       end
     end
     event :location_assignment? do |stanza, data|
@@ -145,7 +149,11 @@ class Choreographer < Sail::Agent
     end
     event :meetup_start? do |stanza, data|
       @students.each do |username, stu|
-        stu.meetup_start!(data['payload'].symbolize_keys)
+        begin
+          stu.meetup_start!(data['payload'].symbolize_keys)
+        rescue => e
+          log "#{stu}: exception while handling 'meetup_start' event: #{e}", :ERROR
+        end
       end
     end
     event :note? do |stanza, data|
@@ -155,7 +163,11 @@ class Choreographer < Sail::Agent
     end
     event :homework_assignment? do |stanza, data|
       @students.each do |username, stu|
-        stu.homework_assignment!
+        begin
+          stu.homework_assignment!
+        rescue => e
+          log "#{stu}: exception while handling 'homework_assignment' event: #{e}", :ERROR
+        end
       end
     end
   end
