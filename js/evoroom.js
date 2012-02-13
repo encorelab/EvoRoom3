@@ -96,7 +96,7 @@ var EvoRoom = {
             //birds
             "blue_headed_pitta":["hadrocodium","theropod","thecodont","none"],
             "garnet_pitta":["hadrocodium","theropod","thecodont","none"],
-            "helmeted _hornbill":["hadrocodium","theropod","thecodont","none"],
+            "helmeted_hornbill":["hadrocodium","theropod","thecodont","none"],
             "malabar_grey_hornbill":["hadrocodium","theropod","thecodont","none"],
             "great_argus_pheasant":["hadrocodium","theropod","thecodont","none"],
             "rhinoceros_hornbill":["hadrocodium","theropod","thecodont","none"],
@@ -562,9 +562,9 @@ var EvoRoom = {
                 // try to fill rotation from metadata
                 EvoRoom.rotation = parseInt(data.user.metadata.current_rotation, 10);
                 // fill the location variables
-                EvoRoom.currentLocation = Sail.app.user_metadata.currently_assigned_location;
-                EvoRoom.assignedLocation = Sail.app.user_metadata.current_location;
-
+                EvoRoom.assignedLocation = Sail.app.user_metadata.currently_assigned_location;
+                EvoRoom.currentLocation = Sail.app.user_metadata.current_location;
+                
                 console.log('metadata assigned');
                 EvoRoom.setupPageLayout();
                 EvoRoom.restoreState(); 
@@ -785,7 +785,6 @@ var EvoRoom = {
             $('#ancestor-information-details .year').text(Sail.app.calculateYear());
             $('#choose-ancestor .year').text(Sail.app.calculateYear());
 
-            Sail.app.submitOrganismObservationsDone();
             
             // set up organism table for next screen
             Sail.app.setupOrganismTable();
@@ -805,6 +804,7 @@ var EvoRoom = {
         // on-click listeners for rainforest QR scanning error resolution
         $('#observe-organisms .small-button').click(function() {
             Sail.app.hidePageElements();
+            Sail.app.submitOrganismObservationsDone();
             $('#loading-page').show();
         });
 
