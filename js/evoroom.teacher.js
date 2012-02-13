@@ -177,10 +177,9 @@ EvoRoom.Teacher = {
         }
         
         var userUpdate = function(data) {
-            debugger;
-            data;
+            marker.addClass('team-'+data.user.groups[0].name)
         };
-        Sail.app.rollcall.request('/users/'+username+'.json', 'GET', {}, userUpdate);
+        Sail.app.rollcall.request(Sail.app.rollcall.url+'/users/'+username+'.json', 'GET', {}, userUpdate);
         
         
         return marker;
