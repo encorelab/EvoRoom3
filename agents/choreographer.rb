@@ -27,25 +27,32 @@ class Choreographer < Sail::Agent
     
     required_metadata.each do |key|
       if stu.metadata.send("#{key}?".to_sym).nil? || stu.metadata.send("#{key}".to_sym).blank?
-        raise "#{stu} is missing #{key.inspect}! Cannot continue :("
+        log "#{stu} is missing #{key.inspect}! Cannot continue :(", :FATAL
+        return false
       end
     end
     
     begin
       orgs = JSON.parse(stu.metadata.assigned_organisms)
+      
+      if orgs.empty?
+        log "#{stu} does not have any animals assigned.", :FATAL
+        return false
+      end
     rescue JSON::ParserError => e
-      raise "Couldn't parse #{stu}'s assigned organisms -- invalid JSON!  #{e}"
-    end
-    
-    if orgs.empty?
-      raise "#{stu} does not have any animals assigned."
+      log "Couldn't parse #{stu}'s assigned organisms -- invalid JSON!  #{e}", :FATAL
+      return false
     end
     
     if stu.groups.length < 1
-      raise "#{self} doesn't appear to be in a team! Cannot continue :("
+      log "#{self} doesn't appear to be in a team! Cannot continue :(", :FATAL
+      return false
     elsif stu.groups.length > 1
-      raise "#{self} belongs to more than one group! Cannot continue :("
+      log "#{self} belongs to more than one group! Cannot continue :(", :FATAL
+      return false
     end
+    
+    return true
   end
   
   def validate_agent
@@ -84,7 +91,9 @@ class Choreographer < Sail::Agent
         stanza.from == agent_jid_in_room
       
       if stu
-        validate_student(stu)
+        unless validate_student(stu)
+          log "#{stu} failed validation!", :FATAL
+        end
         
         stu.save if stu.dirty?
         log "#{stu} joined #{config[:room]}"
@@ -126,7 +135,11 @@ class Choreographer < Sail::Agent
     end
     event :observations_start? do |stanza, data|
       @students.each do |username, stu|
-        stu.observations_start!
+        begin
+          stu.observations_start!
+        rescue => e
+          log "#{stu}: exception while handling 'observations_start' event: #{e}", :ERROR
+        end
       end
     end
     event :location_assignment? do |stanza, data|
@@ -145,7 +158,11 @@ class Choreographer < Sail::Agent
     end
     event :meetup_start? do |stanza, data|
       @students.each do |username, stu|
-        stu.meetup_start!(data['payload'].symbolize_keys)
+        begin
+          stu.meetup_start!(data['payload'].symbolize_keys)
+        rescue => e
+          log "#{stu}: exception while handling 'meetup_start' event: #{e}", :ERROR
+        end
       end
     end
     event :note? do |stanza, data|
@@ -155,7 +172,11 @@ class Choreographer < Sail::Agent
     end
     event :homework_assignment? do |stanza, data|
       @students.each do |username, stu|
-        stu.homework_assignment!
+        begin
+          stu.homework_assignment!
+        rescue => e
+          log "#{stu}: exception while handling 'homework_assignment' event: #{e}", :ERROR
+        end
       end
     end
   end

@@ -101,14 +101,19 @@ class Student < Rollcall::User
     log "Checking if #{self}'s members are assembled..."
     mems = self.team_members
     all_membernames = mems.collect{|m| m.account.login}
+    all_membercrap = []
     ass_membernames = self.team_members.select do |m|
       begin
-        m.metadata.current_location == self.metadata.current_location# &&
-          #m.metadata.state == self.metadata.state
+        # FIXME: so ugly it burns the eyes
+        all_membercrap << {:username => m.account.login, :location => m.metadata.current_location, :state => m.metadata.state}
+        m.metadata.current_location == self.metadata.current_location &&
+          m.metadata.state == self.metadata.state
       rescue NoMethodError
         false
       end
     end.collect{|m| m.account.login}
+    
+    log "#{self}.team_is_assembled?: "+all_membercrap.collect{|crap| crap[:username].inspect + "["+crap[:state].to_s+"] is at " + crap[:location]}.join("; ")
     
     if (all_membernames - ass_membernames).empty?
       log "All of team #{self.team_name} is assembled!"
