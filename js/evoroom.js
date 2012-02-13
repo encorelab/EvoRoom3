@@ -78,7 +78,7 @@ var EvoRoom = {
             "ginger":["lycophyte","cycad","ginkgophyta","none"],
             "jambu_tree":["lycophyte","cycad","ginkgophyta","none"],
             "meggaris_tree":["lycophyte","cycad","ginkgophyta","none"],
-            "pitcher _plant":["lycophyte","cycad","ginkgophyta","none"],
+            "pitcher_plant":["lycophyte","cycad","ginkgophyta","none"],
             "rafflesia":["lycophyte","cycad","ginkgophyta","none"],
             "tetrastigma":["lycophyte","cycad","ginkgophyta","none"],
             "titan_arum":["lycophyte","cycad","ginkgophyta","none"],
