@@ -91,7 +91,7 @@ describe Student do
       obs['location'] = 'two'
       @student.store_observation(obs)
       
-      @student.observed_locations_in_current_rotation.should == ['two']
+      @student.observed_locations_in_current_rotation.should == ['one', 'two']
       
       @student.metadata.current_rotation = 2
       
@@ -151,32 +151,32 @@ describe Student do
       members.should_not be_empty
       
       members.each do |m|
-        m.should be_a_kind_of(Student)
-        m.team_name.should == @student.team_name
+        m.respond_to?(:account).should be_true 
+        m.groups.first.name.should == @student.team_name
       end
     end
   end
   
-  describe '#team_is_assebled' do
+  describe '#team_is_assebled?' do
     it "should return true when all team members are at the same location and in the same state" do
       orig_team_members = @student.team_members
       @student.stub(:team_members) do
         orig_team_members.collect do |m|
           orig_metadata = m.metadata
           orig_metadata.stub(:current_location){'foo'}
-          orig_metadata.stub(:state){:BAR}
+          orig_metadata.stub(:state){:MEETUP}
           m.stub(:metadata) {orig_metadata}
           m
         end
       end
       
       @student.metadata.current_location = 'foo'
-      @student.metadata.state = :BAR
+      @student.metadata.state = :MEETUP
       
       @student.team_is_assembled?.should be_true
       
       @student.metadata.current_location = 'somewhere_else'
-      @student.metadata.state = :BAR
+      @student.metadata.state = :MEETUP
       
       @student.team_is_assembled?.should be_false
     end

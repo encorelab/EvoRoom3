@@ -31,6 +31,7 @@ module SpecHelpers
     
     Student.format = :json
     Rollcall::Group.format = :json
+    Rollcall::User.format = :json
   end
   
   def should_receive_event(event_type, data = nil, opts = nil)
