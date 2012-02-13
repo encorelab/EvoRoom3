@@ -562,9 +562,9 @@ var EvoRoom = {
                 // try to fill rotation from metadata
                 EvoRoom.rotation = parseInt(data.user.metadata.current_rotation, 10);
                 // fill the location variables
-                EvoRoom.currentLocation = Sail.app.user_metadata.currently_assigned_location;
-                EvoRoom.assignedLocation = Sail.app.user_metadata.current_location;
-
+                EvoRoom.assignedLocation = Sail.app.user_metadata.currently_assigned_location;
+                EvoRoom.currentLocation = Sail.app.user_metadata.current_location;
+                
                 console.log('metadata assigned');
                 EvoRoom.setupPageLayout();
                 EvoRoom.restoreState(); 
