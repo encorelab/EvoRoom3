@@ -81,7 +81,7 @@ EvoRoom.Teacher = {
                 }
             },
             
-            homework_assigned: function(sev) {
+            homework_assignment: function(sev) {
                 if (sev.payload.day === 1) {
                     $('.step-1-6 button.assign_homework_1')
                         .addClass('teacher-button-done')                    
