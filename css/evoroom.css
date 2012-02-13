@@ -206,13 +206,14 @@ header .hide {
     top: 400px;
     left: 50%;
     margin-left: -63px;
-    color: black;
 }
 
+/*
 #connecting,
 #loading-page {
     color: white;
 }
+*/
 
 #student-chosen-organisms {
     position: absolute;
