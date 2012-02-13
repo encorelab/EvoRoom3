@@ -103,7 +103,7 @@ class Student < Rollcall::User
     all_membernames = mems.collect{|m| m.account.login}
     ass_membernames = self.team_members.select do |m|
       begin
-        log "#{stu}.team_is_assembled?: #{m.account.login.inspect} is at #{m.metadata.current_location.inspect} and #{self.username.inspect} is at #{self.metadata.current_location.inspect}..."
+        log "#{self}.team_is_assembled?: #{m.account.login.inspect} is at #{m.metadata.current_location.inspect} and #{self.username.inspect} is at #{self.metadata.current_location.inspect}..."
         m.metadata.current_location == self.metadata.current_location &&
           m.metadata.state == self.metadata.state
       rescue NoMethodError
