@@ -188,7 +188,8 @@ header .hide {
 }
 
 .table-container {
-    height: 760px;
+    height: 720px;
+    margin-bottom: 155px;
     overflow-y: scroll;
 }
 
@@ -198,7 +199,7 @@ header .hide {
 
 .organism-image {
     width: 180px;
-    height:180px;
+    height: 180px;
 }
 
 #loading-page .loader-gif {
