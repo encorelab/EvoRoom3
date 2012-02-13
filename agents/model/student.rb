@@ -85,9 +85,14 @@ class Student < Rollcall::User
     g = Rollcall::Group.find(self.team_name)
     my_members = g.members.collect do |m|
       # when running under ActiveResource::HttpMock, `element_name` seems to be ignored, so we need to check both possibilities
-      u_id = (m.id? && m.id || m.user? && m.user.id)
-      Student.find(id)
+      m_username = (m.user? && m.user.account.login || m.account.login)
+      if m_username == self.username
+        nil
+      else
+        agent.lookup_student(m_username)
+      end
     end
+    my_members -= [nil]
     log "Got team members for #{self} (#{self.team_name}): #{my_members.collect{|m| m.username}.inspect}"
     my_members
   end
