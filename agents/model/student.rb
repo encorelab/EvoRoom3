@@ -89,7 +89,7 @@ class Student < Rollcall::User
       if u_id == self.id
         nil
       else
-        Rollcall::User.find(id)
+        Rollcall::User.find(u_id)
       end
     end
     my_members -= [nil]
@@ -125,12 +125,15 @@ class Student < Rollcall::User
     observation[:username] = self.username
     observation[:timestamp] = Time.now
     mongo.collection(:observations).save(observation)
+    
+    observation[:_id] = observation[:_id].to_s
     agent.event!(:stored_observation, observation)
   end
   
   def store_note(note)
     log "Storing  observation: #{note.inspect}"
     mongo.collection(:notes).save(note)
+    note[:_id] = note[:_id].to_s
     agent.event!(:stored_note, note)
   end
   

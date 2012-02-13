@@ -1214,6 +1214,8 @@ var EvoRoom = {
             } else {
                 console.warn("Restore state MEETUP and EvoRoom.rotation is: '"+EvoRoom.rotation+"' - should be 1 or 2");
             }
+        } else if (Sail.app.user_metadata.state === 'WAITING_FOR_GROUP_TO_FINISH_MEETUP') {
+            $('#loading-page').show();
         } else if (Sail.app.user_metadata.state === 'COMPLETED_DAY_1') {
             $('#day1-complete').show();
         } else if (Sail.app.user_metadata.state === 'OBSERVING_PRESENT') {
