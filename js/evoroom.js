@@ -785,6 +785,8 @@ var EvoRoom = {
             $('#ancestor-information-details .year').text(Sail.app.calculateYear());
             $('#choose-ancestor .year').text(Sail.app.calculateYear());
 
+            Sail.app.submitOrganismObservationsDone();
+            
             // set up organism table for next screen
             Sail.app.setupOrganismTable();
 
@@ -1047,7 +1049,7 @@ var EvoRoom = {
             if (sev.payload.to) {
                 console.log('Caught oneoff event stateChangeHandler with to = ' + sev.payload.to);
 
-                if (sev.payload.to === 'OBSERVING_IN_ROTATION') {
+                if (sev.payload.to === 'OBSERVING_PAST') {
                     Sail.app.hidePageElements();
                     $('#observe-organisms-instructions').show();
                 } else if (sev.payload.to === 'WAITING_FOR_MEETUP_TOPIC') {
@@ -1090,6 +1092,13 @@ var EvoRoom = {
         });
         Sail.app.groupchat.sendEvent(sev);
     },
+    
+    submitOrganismObservationsDone: function() {
+        var sev = new Sail.Event('organism_observations_done', {
+            // empty payload
+        });
+        Sail.app.groupchat.sendEvent(sev);
+    },
 
     submitNote: function() {
         var sev = new Sail.Event('note', {
@@ -1114,7 +1123,7 @@ var EvoRoom = {
 
     submitNotesCompletion: function() {
         var sev = new Sail.Event('notes_completion', {
-            // empty?
+            // empty payload
         });
         EvoRoom.groupchat.sendEvent(sev);
     },
@@ -1346,6 +1355,7 @@ var EvoRoom = {
     },
 
     formatOrganismString: function(organismString) {
+        // organisms
         if (organismString === "ant") {
             return "Ant";
         } else if (organismString === "blue_headed_pitta") {
@@ -1441,7 +1451,7 @@ var EvoRoom = {
             return "Crusafonta";
         } else if (organismString === "cupedidae") {
             return "Cupedidae";
-        } else if (organismString === "cycadeoidea_marylandica ") {
+        } else if (organismString === "cycadeoidea_marylandica") {
             return "Cycadeoidea marylandica ";
         } else if (organismString === "cycad") {
             return "Cycads";
@@ -1449,8 +1459,8 @@ var EvoRoom = {
             return "Dryopithecus";
         } else if (organismString === "early_sphecoid_wasp") {
             return "Early sphecoid wasps";
-        } else if (organismString === "empididae ") {
-            return "Empididae ";
+        } else if (organismString === "empididae") {
+            return "Empididae";
         } else if (organismString === "enantiornithe") {
             return "Enantiornithes";
         } else if (organismString === "eomaia") {
