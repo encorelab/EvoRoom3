@@ -1698,7 +1698,7 @@ var EvoRoom = {
                     Sail.app.hidePageElements();
 
                     $('#ancestor-information-details .chosen-organism').text(Sail.app.formatOrganismString(ancestorChosenString));
-                    $('#ancestor-information-details .ancestor-description').text(Sail.app.formatOrganismString(Sail.app.ancestorsText[ancestorChosenString]));
+                    $('#ancestor-information-details .ancestor-description').text(Sail.app.ancestorsText[ancestorChosenString]);
                     $('#ancestor-information-details').show();
                 });
             }
