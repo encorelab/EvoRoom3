@@ -164,7 +164,7 @@ EvoRoom.Teacher = {
         });
         
         $('.step-1-6 .assign_homework_1').click(function () {
-            var sev = new Sail.Event('homework_assigned', {day: 1});
+            var sev = new Sail.Event('homework_assignment', {day: 1});
             Sail.app.groupchat.sendEvent(sev);
         });
     },
