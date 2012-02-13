@@ -83,23 +83,32 @@ class Student < Rollcall::User
   
   def team_members
     g = Rollcall::Group.find(self.team_name)
-    g.members.collect do |m|
+    my_members = g.members.collect do |m|
       # when running under ActiveResource::HttpMock, `element_name` seems to be ignored, so we need to check both possibilities
       u_id = (m.id? && m.id || m.user? && m.user.id)
       Student.find(id)
     end
+    log "Got team members for #{self} (#{self.team_name}): #{my_members.collect{|m| m.username}.inspect}"
+    my_members
   end
   
   def team_is_assembled?
+    log "Checking if #{self}'s members are assembled..."
     self.team_members.all? do |m|
       begin
-        current_location = m.metadata.current_location
-        
-        current_location == self.metadata.current_location &&
+        m.metadata.current_location == self.metadata.current_location &&
           m.metadata.state == self.metadata.state
       rescue NoMethodError
         false
       end
+    end
+  end
+  
+  def current_meetup
+    if metadata.current_meetup?
+      metadata.current_meetup
+    else
+      1
     end
   end
   
@@ -155,18 +164,20 @@ class Student < Rollcall::User
   end
   
   def assign_meetup_location!
-    debugger
     # TODO: everyone in the group has to go to the same location
-    meetups = mongo.collection(:meetups).find({"team" => self.team_name}).to_a
+    meetups = mongo.collection(:meetups).find({"team" => self.team_name, "meetum_number" => self.current_meetup}).to_a
     if meetups.length > 1
       raise "Why are there multiple meetups for team #{self.team_name}? Something is *@&!@^%'ed!"
     elsif meetups.length == 0
       selected_loc = current_locations[rand(current_locations.length)]
       
+      log "#{self} is the first one in their team at meetup ##{self.current_meetup}... Sending to #{selected_loc}."
+      
       meetup = {
         "team" => self.team_name, 
         "started" => Time.now,
-        "location" => selected_loc
+        "location" => selected_loc,
+        "meetum_number" => self.current_meetup
       }
       
       mongo.collection(:meetups).save(meetup)
@@ -174,6 +185,8 @@ class Student < Rollcall::User
       meetup = meetups.first
       
       selected_loc = meetup["location"]
+      
+      log "#{self}'s team is assembling for meetup ##{self.current_meetup} at #{selected_loc}."
     end
     
     agent.event!(:location_assignment,

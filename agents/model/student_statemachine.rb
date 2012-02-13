@@ -103,13 +103,13 @@ StudentStatemachine = proc do
   
   state :WAITING_FOR_MEETUP_START do
     enter do |student|
+      student.increment_meetup!
       student.announce_meetup_start! if student.team_is_assembled?
     end
     on :meetup_start, :to => :MEETUP do
       guard do |student,meetup_start|
         meetup_start[:team_name] == student.team_name
       end
-      action :increment_meetup!
     end
   end
   
