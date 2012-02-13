@@ -33,12 +33,12 @@ class Choreographer < Sail::Agent
     
     begin
       orgs = JSON.parse(stu.metadata.assigned_organisms)
+      
+      if orgs.empty?
+        log "#{stu} does not have any animals assigned.", :FATAL
+      end
     rescue JSON::ParserError => e
       log "Couldn't parse #{stu}'s assigned organisms -- invalid JSON!  #{e}", :FATAL
-    end
-    
-    if orgs.empty?
-      log "#{stu} does not have any animals assigned.", :FATAL
     end
     
     if stu.groups.length < 1
