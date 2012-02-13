@@ -27,24 +27,24 @@ class Choreographer < Sail::Agent
     
     required_metadata.each do |key|
       if stu.metadata.send("#{key}?".to_sym).nil? || stu.metadata.send("#{key}".to_sym).blank?
-        raise "#{stu} is missing #{key.inspect}! Cannot continue :("
+        log "#{stu} is missing #{key.inspect}! Cannot continue :(", :FATAL
       end
     end
     
     begin
       orgs = JSON.parse(stu.metadata.assigned_organisms)
     rescue JSON::ParserError => e
-      raise "Couldn't parse #{stu}'s assigned organisms -- invalid JSON!  #{e}"
+      log "Couldn't parse #{stu}'s assigned organisms -- invalid JSON!  #{e}", :FATAL
     end
     
     if orgs.empty?
-      raise "#{stu} does not have any animals assigned."
+      log "#{stu} does not have any animals assigned.", :FATAL
     end
     
     if stu.groups.length < 1
-      raise "#{self} doesn't appear to be in a team! Cannot continue :("
+      log "#{self} doesn't appear to be in a team! Cannot continue :(", :FATAL
     elsif stu.groups.length > 1
-      raise "#{self} belongs to more than one group! Cannot continue :("
+      log "#{self} belongs to more than one group! Cannot continue :(", :FATAL
     end
   end
   
