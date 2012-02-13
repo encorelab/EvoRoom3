@@ -92,7 +92,7 @@ class Choreographer < Sail::Agent
       
       if stu
         unless validate_student(stu)
-          log "#{stu} will be ignored because they failed validation!", :ERROR
+          log "#{stu} failed validation!", :FATAL
         end
         
         stu.save if stu.dirty?
