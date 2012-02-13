@@ -804,7 +804,10 @@ var EvoRoom = {
         // on-click listeners for rainforest QR scanning error resolution
         $('#observe-organisms .small-button').click(function() {
             Sail.app.hidePageElements();
+            $('#student-chosen-organisms').hide();
+            
             Sail.app.submitOrganismObservationsDone();
+            EvoRoom.buttonRevealCounter = 0;
             $('#loading-page').show();
         });
 
@@ -1458,11 +1461,11 @@ var EvoRoom = {
         } else if (organismString === "dryopithecus") {
             return "Dryopithecus";
         } else if (organismString === "early_sphecoid_wasp") {
-            return "Early sphecoid wasps";
+            return "Early sphecoid wasp";
         } else if (organismString === "empididae") {
             return "Empididae";
         } else if (organismString === "enantiornithe") {
-            return "Enantiornithes";
+            return "Enantiornithe";
         } else if (organismString === "eomaia") {
             return "Eomaia";
         } else if (organismString === "eomanis") {
@@ -1480,7 +1483,7 @@ var EvoRoom = {
         } else if (organismString === "heptodon") {
             return "Heptodon";
         } else if (organismString === "lycophyte") {
-            return "Lycophytes";
+            return "Lycophyte";
         } else if (organismString === "mastotermitidae") {
             return "Mastotermitidae";
         } else if (organismString === "mesokristensenia") {
@@ -1496,7 +1499,7 @@ var EvoRoom = {
         } else if (organismString === "old_world_porcupine") {
             return "Old world porcupine";
         } else if (organismString === "oligocene_rodent") {
-            return "Oligocene rodents ";
+            return "Oligocene rodent";
         } else if (organismString === "oranutan") {
             return "Oranutan";
         } else if (organismString === "palaeolagus") {
@@ -1504,9 +1507,9 @@ var EvoRoom = {
         } else if (organismString === "panthera") {
             return "Panthera";
         } else if (organismString === "passeriform") {
-            return "Passeriformes";
+            return "Passeriform";
         } else if (organismString === "perissodactyl") {
-            return "Perissodactyls";
+            return "Perissodactyl";
         } else if (organismString === "phasianidae") {
             return "Phasianidae";
         } else if (organismString === "pinaceae") {
@@ -1516,7 +1519,7 @@ var EvoRoom = {
         } else if (organismString === "propliopithecus") {
             return "Propliopithecus";
         } else if (organismString === "pterosaur") {
-            return "Pterosaurs";
+            return "Pterosaur";
         } else if (organismString === "purgatorius") {
             return "Purgatorius";
         } else if (organismString === "rhinocerotoid") {
@@ -1526,7 +1529,7 @@ var EvoRoom = {
         } else if (organismString === "styporaphidia") {
             return "Styporaphidia";
         } else if (organismString === "thecodont") {
-            return "Thecodonts";
+            return "Thecodont";
         } else if (organismString === "theropod") {
             return "Theropod";
         } else if (organismString === "viverridae") {
