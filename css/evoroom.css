@@ -188,7 +188,7 @@ header .hide {
 }
 
 .table-container {
-    height: 700px;
+    height: 760px;
     overflow-y: scroll;
 }
 
@@ -207,13 +207,6 @@ header .hide {
     left: 50%;
     margin-left: -63px;
 }
-
-/*
-#connecting,
-#loading-page {
-    color: white;
-}
-*/
 
 #student-chosen-organisms {
     position: absolute;

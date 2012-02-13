@@ -526,6 +526,14 @@ var EvoRoom = {
                     // write topic 1 or 2 in HTML
                     //$('#meetup .topic').text(Sail.app.user_metadata['meetup_'+EvoRoom.rotation+'_topic']);
                     $('#meetup .topic').text(EvoRoom.meetupTopics[Sail.app.session.account.login][EvoRoom.rotation]);
+                    $('#meetup-instructions .rotation1').hide();
+                    $('#meetup-instructions .rotation2').hide();
+                    if (EvoRoom.rotation === 1) {
+                        $('#meetup-instructions .rotation1').show();
+                    }
+                    else {
+                        $('#meetup-instructions .rotation2').show();
+                    }
                     $('#meetup-instructions').show();
                 } else {
                     console.warn("Event meetup_start caught and EvoRoom.rotation is: '"+EvoRoom.rotation+"' - should be 1 or 2");
@@ -1190,6 +1198,14 @@ var EvoRoom = {
                 // write topic 1 or 2 in HTML
                 //$('#meetup .topic').text(Sail.app.user_metadata['meetup_'+EvoRoom.rotation+'_topic']);
                 $('#meetup .topic').text(EvoRoom.meetupTopics[Sail.app.session.account.login][EvoRoom.rotation]);
+                $('#meetup-instructions .rotation1').hide();
+                $('#meetup-instructions .rotation2').hide();
+                if (EvoRoom.rotation === 1) {
+                    $('#meetup-instructions .rotation1').show();
+                }
+                else {
+                    $('#meetup-instructions .rotation2').show();
+                }
                 $('#meetup-instructions').show();
             } else {
                 console.warn("Restore state MEETUP and EvoRoom.rotation is: '"+EvoRoom.rotation+"' - should be 1 or 2");
