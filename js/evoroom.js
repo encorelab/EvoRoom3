@@ -564,6 +564,7 @@ var EvoRoom = {
                 // fill the location variables
                 EvoRoom.assignedLocation = Sail.app.user_metadata.currently_assigned_location;
                 EvoRoom.currentLocation = Sail.app.user_metadata.current_location;
+                EvoRoom.buttonRevealCounter = 0;
                 
                 console.log('metadata assigned');
                 EvoRoom.setupPageLayout();
@@ -801,13 +802,13 @@ var EvoRoom = {
         $('#is-organism-present').show();
     });
          */        
-        // on-click listeners for rainforest QR scanning error resolution
+
         $('#observe-organisms .small-button').click(function() {
             Sail.app.hidePageElements();
             $('#student-chosen-organisms').hide();
             
             Sail.app.submitOrganismObservationsDone();
-            EvoRoom.buttonRevealCounter = 0;
+            Sail.app.buttonRevealCounter = 0;
             $('#loading-page').show();
         });
 
@@ -817,9 +818,9 @@ var EvoRoom = {
 
         $('#is-organism-present .small-button').click(function() {
             Sail.app.hidePageElements();
+            $('#student-chosen-organisms').hide();
 
             if ($('#org-choice-yes').is(':checked')) {
-                $('#student-chosen-organisms').hide();
 
                 // both params are the same in this case
                 Sail.app.submitOrganismObservation(Sail.app.selectedOrganism, Sail.app.selectedOrganism);
