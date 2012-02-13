@@ -205,12 +205,13 @@ header .hide {
     position: absolute;
     top: 400px;
     left: 50%;
-    margin-left: -30px;
+    margin-left: -63px;
+    color: black;
 }
 
 #connecting,
 #loading-page {
-  color: white;
+    color: white;
 }
 
 #student-chosen-organisms {
@@ -245,29 +246,6 @@ header .hide {
     font-size: 20px;
 }
 
-#concepts-discussion .evolution-concept-dropdown {
-    margin-top: 40px;
-    width: 510px;
-    height: 45px;
-    font-size: 22px;
-}
-
-#concepts-discussion .concepts-button {
-    margin-top: 20px;
-    width: 510px;
-    height: 45px;
-    font-size: 22px;
-    text-align: left;
-}
-
-#concepts-discussion .text-entry-header {
-    margin-top: 60px;
-    margin-bottom: -10px;
-}
-
-#concepts-discussion .text-entry {
-    margin-bottom: 155px;
-}
 /* ===================================== DAY 2========================================== */
 
 .lowest-content {
@@ -289,6 +267,33 @@ header .hide {
 }
 /* ============ present-day-organisms =================== */
 
+
+#concepts-discussion .evolution-concept-dropdown {
+    margin-top: 40px;
+    width: 480px;
+    height: 45px;
+    font-size: 22px;
+}
+
+#concepts-discussion .concepts-button {
+    margin-top: 20px;
+    width: 480px;
+    height: 45px;
+    font-size: 22px;
+    text-align: left;
+}
+
+#concepts-discussion .text-entry-header {
+    margin-top: 60px;
+    margin-bottom: -10px;
+}
+
+#concepts-discussion .text-entry {
+    height: 315px;
+    width: 480px;
+    margin-bottom: 155px;
+}
+
 .pop-up {
     position: absolute;
     top: 160px;
@@ -296,26 +301,43 @@ header .hide {
     margin-left: -320px;
     width: 640px;
     height: 500px;
+    padding-top: 50px;
     background-color: black;
-    opacity: 0.8;
+    opacity: 0.9;
     color: white;
     font-size: 30px;
 }
 
-.column1 {
+#organism-pop-up.pop-up {
+    top: 20px;
+    margin-left: -400px;
+    padding-top: 30px;
+    width: 800px;
+    height: 1040px;
+}
+
+#time-period-pop-up .column1 {
     position: absolute;
-    top: 50px;
     left: 40px;
 }
 
-.column2 {
+#time-period-pop-up .column2 {
     position: absolute;
-    top: 50px;
     right: 30px;
 }
 
+#organism-pop-up .column1 {
+    position: absolute;
+    left: 20px;
+}
+
+#organism-pop-up .column2 {
+    position: absolute;
+    right: 80px;
+}
+
 .pop-up.small-button {
-    margin-bottom: -30px;
+    bottom: 60px;
 }
 
 .pop-up-checkbox {
