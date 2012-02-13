@@ -180,12 +180,12 @@ var EvoRoom = {
             "sumatran_orangutan":["multituberculata","eomaia","pterosaur","none"],
             "white_fronted_langur":["multituberculata","eomaia","pterosaur","none"],
             //birds
-            "blue_headed_pitta":["enantiornithes","yanornis","pterosaur","none"],
-            "garnet_pitta":["enantiornithes","yanornis","pterosaur","none"],
-            "helmeted_hornbill":["enantiornithes","yanornis","pterosaur","none"],
-            "malabar_grey_hornbill":["enantiornithes","yanornis","pterosaur","none"],
-            "great_argus_pheasant":["enantiornithes","yanornis","pterosaur","none"],
-            "rhinoceros_hornbill":["enantiornithes","yanornis","pterosaur","none"],
+            "blue_headed_pitta":["enantiornithe","yanornis","pterosaur","none"],
+            "garnet_pitta":["enantiornithe","yanornis","pterosaur","none"],
+            "helmeted_hornbill":["enantiornithe","yanornis","pterosaur","none"],
+            "malabar_grey_hornbill":["enantiornithe","yanornis","pterosaur","none"],
+            "great_argus_pheasant":["enantiornithe","yanornis","pterosaur","none"],
+            "rhinoceros_hornbill":["enantiornithe","yanornis","pterosaur","none"],
             //other mammals 1
             "civet":["multituberculata","eomaia","pterosaur","none"],
             "sunda_clouded_leopard":["multituberculata","eomaia","pterosaur","none"],
