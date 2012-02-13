@@ -785,7 +785,6 @@ var EvoRoom = {
             $('#ancestor-information-details .year').text(Sail.app.calculateYear());
             $('#choose-ancestor .year').text(Sail.app.calculateYear());
 
-            Sail.app.submitOrganismObservationsDone();
             
             // set up organism table for next screen
             Sail.app.setupOrganismTable();
@@ -805,6 +804,7 @@ var EvoRoom = {
         // on-click listeners for rainforest QR scanning error resolution
         $('#observe-organisms .small-button').click(function() {
             Sail.app.hidePageElements();
+            Sail.app.submitOrganismObservationsDone();
             $('#loading-page').show();
         });
 
