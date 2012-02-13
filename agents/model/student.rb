@@ -155,6 +155,7 @@ class Student < Rollcall::User
   end
   
   def assign_meetup_location!
+    debugger
     # TODO: everyone in the group has to go to the same location
     meetups = mongo.collection(:meetups).find({"team" => self.team_name}).to_a
     if meetups.length > 1
@@ -167,10 +168,10 @@ class Student < Rollcall::User
         "started" => Time.now,
         "location" => selected_loc
       }
-    else
-      meetup = meetups.first
       
       mongo.collection(:meetups).save(meetup)
+    else
+      meetup = meetups.first
       
       selected_loc = meetup["location"]
     end
