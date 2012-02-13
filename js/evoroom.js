@@ -96,7 +96,7 @@ var EvoRoom = {
             //birds
             "blue_headed_pitta":["hadrocodium","theropod","thecodont","none"],
             "garnet_pitta":["hadrocodium","theropod","thecodont","none"],
-            "helmeted _hornbill":["hadrocodium","theropod","thecodont","none"],
+            "helmeted_hornbill":["hadrocodium","theropod","thecodont","none"],
             "malabar_grey_hornbill":["hadrocodium","theropod","thecodont","none"],
             "great_argus_pheasant":["hadrocodium","theropod","thecodont","none"],
             "rhinoceros_hornbill":["hadrocodium","theropod","thecodont","none"],
