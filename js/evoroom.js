@@ -856,7 +856,6 @@ var EvoRoom = {
             }
             else {
                 console.log('Radio buttons arent working like theyre supposed to');
-                alert('There was an error with the button selection. Please reselect the button');
             }
         });
 
@@ -881,7 +880,7 @@ var EvoRoom = {
 
         $('#meetup .small-button').click(function() {
             if ($('#meetup .meetup-text-entry').val() === '') {
-                alert('Please enter your answer in the text box below');
+                console.log('Please enter your answer in the text box below');
             }
             else {
                 Sail.app.hidePageElements();
@@ -1371,7 +1370,7 @@ var EvoRoom = {
             return "Station D";
         } else if (locationString === "room") {
             console.warn('Location ' + locationString + ' is wrong at this point. Inform user with alert!');
-            alert("An error has occured. Please talk to a teacher");
+            //alert("An error has occured. Please talk to a teacher");
         } else {
             console.warn('Location ' + locationString + ' is wrong at this point and we return <unknown rainforest>');
             return "unknown rainforest";
