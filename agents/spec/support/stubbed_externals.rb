@@ -17,10 +17,14 @@ shared_context :stubbed_externals do
     @student.stub(:mongo) do
       test_mongo
     end
-
+    
+    log = File.open(File.dirname(__FILE__)+'/../../logs/rspec.log', 'a')
+    
     # mock agent for delegates (like #log and #event!)
     agent = mock(:agent)
-    agent.stub(:log)
+    agent.stub(:log) do |msg|
+      log.puts msg
+    end
     agent.class_eval do
       include(SpecHelpers)
     end
