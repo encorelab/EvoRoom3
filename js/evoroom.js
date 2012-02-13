@@ -826,7 +826,6 @@ var EvoRoom = {
 
         $('#is-organism-present .small-button').click(function() {
             Sail.app.hidePageElements();
-            $('#student-chosen-organisms').hide();
 
             if ($('#org-choice-yes').is(':checked')) {
 
@@ -836,23 +835,28 @@ var EvoRoom = {
                 $('input:radio').prop('checked', false);
                 $('#is-organism-present .radio').button('refresh');
 
+                //Sail.app.buttonRevealCounter++;
+                $('#student-chosen-organisms').hide();
                 $('#observe-organisms').show();
             }
-            else {
+            else if ($('#org-choice-no').is(':checked')) {
                 // clear radio buttons
                 $('input:radio').prop('checked', false);
                 $('#is-organism-present .radio').button('refresh');
 
-                //$('#observe-organisms .organism1').attr('src', '/images/' + Sail.app.user_metadata.assigned_organism_1 + '_icon.png');
-                //$('#observe-organisms .text1').text(Sail.app.formatOrganismString(Sail.app.user_metadata.assigned_organism_1));
-                // TODO what is this stuff above... also make the below dynamic
                 Sail.app.setupAncestorTable(Sail.app.selectedOrganism, "partial");
+                //Sail.app.buttonRevealCounter++;
                 $('#ancestor-information').show();
+            }
+            else {
+                console.log('Radio buttons arent working like theyre supposed to');
+                alert('There was an error with the button selection. Please reselect the button');
             }
         });
 
         $('#ancestor-information .small-button').click(function() {
             Sail.app.hidePageElements();
+            $('#student-chosen-organisms').hide();
             Sail.app.setupAncestorTable(Sail.app.selectedOrganism, "full");
             $('#choose-ancestor').show();
         });
