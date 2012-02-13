@@ -824,38 +824,38 @@ var EvoRoom = {
             Sail.app.buttonRevealCounter = 0;
             $('#loading-page').show();
         });
-
-        $('#is-organism-present .radio').click(function() {
+        
+        $('#is-organism-present .presence-choice').click(function() {
+            // highlight the chosen button
+            $(this).addClass('ui-state-highlight');
+            
+            // take highlighting away from other button
+            $(this).siblings().removeClass('ui-state-highlight');
+            
+            // show done button
             $('#is-organism-present .small-button').show();
         });
 
         $('#is-organism-present .small-button').click(function() {
-            
+            // get if yes or no button
+            var choice = $('#is-organism-present .ui-state-highlight').data('choice');
+            Sail.app.hidePageElements();
+            // remove the highlight class
+            $('#is-organism-present .ui-state-highlight').removeClass('ui-state-highlight');
 
-            if ($('#org-choice-yes').is(':checked')) {
+            if (choice === "org-present") {
                 // both params are the same in this case
                 Sail.app.submitOrganismObservation(Sail.app.selectedOrganism, Sail.app.selectedOrganism);
-                // clear radio buttons
-                $('input:radio').prop('checked', false);
-                $('#is-organism-present .radio').button('refresh');
-
-                //Sail.app.buttonRevealCounter++;
-                Sail.app.hidePageElements();
+                
                 $('#student-chosen-organisms').hide();
                 $('#observe-organisms').show();
-            }
-            else if ($('#org-choice-no').is(':checked')) {
-                // clear radio buttons
-                $('input:radio').prop('checked', false);
-                $('#is-organism-present .radio').button('refresh');
-
+            } else if (choice === "org-not-present") {
                 Sail.app.setupAncestorTable(Sail.app.selectedOrganism, "partial");
-                Sail.app.hidePageElements();
-                //Sail.app.buttonRevealCounter++;
+                
                 $('#ancestor-information').show();
-            }
-            else {
-                console.log('Radio buttons arent working like theyre supposed to');
+            } else {
+                console.log('Yes/No buttons arent working like theyre supposed to. Tell tech team!');
+                alert('Yes/No buttons arent working like theyre supposed to. Tell tech team!');
             }
         });
 
