@@ -54,6 +54,7 @@ body {
   color: white;
   font-size: 12px;
   padding: 4px;
+  margin-right: 5px;
 }
 
 .team-Darwin    { background-color: blue; }
