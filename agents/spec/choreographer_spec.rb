@@ -43,8 +43,9 @@ describe Choreographer do
               expect_student{ self.state.should == :ORIENTATION }
               ev(:observations_start, {:rotation => 1}, {:origin => 'ateacher'})
               wait('WAITING_FOR_LOCATION_ASSIGNMENT')
-              expect_student{ self.current_locations.length == 4 }
+              expect_student{ self.current_locations.length.should == 4 }
               expect_student{ self.observed_locations_in_current_rotation.should == [] }
+              expect_student{ self.metadata.current_rotation.should == 1 }
               
               # ROTATION I
               4.times do
@@ -61,6 +62,8 @@ describe Choreographer do
                 wait('OBSERVING_PAST')
                 
                 ev(:organism_observations_done, {})
+                
+                expect_student{ self.metadata.current_rotation.should == 1 }
                 
                 wait('WAITING_FOR_LOCATION_ASSIGNMENT')
               end
@@ -96,7 +99,8 @@ describe Choreographer do
               wait("WAITING_FOR_GROUP_TO_FINISH_MEETUP")
               ev(:observations_start, {}, {:origin => 'ateacher'})
               wait('WAITING_FOR_LOCATION_ASSIGNMENT')
-              expect_student{ self.current_locations.length == 4 }
+              expect_student{ self.current_locations.length.should === 4 }
+              expect_student{ self.metadata.current_rotation.should == 2 }
               
               # ROTATION II
               4.times do
@@ -112,6 +116,8 @@ describe Choreographer do
                   lambda{{"location" => @assigned_location, "team_name" => "Darwin","assigned_organism" => "fig_tree","observed_organism" => "monkey","time" => "200 mya"}})
                 wait('OBSERVING_PAST')
                 ev(:organism_observations_done, {})
+                
+                expect_student{ self.metadata.current_rotation.should == 2 }
                 
                 wait('WAITING_FOR_LOCATION_ASSIGNMENT')
               end

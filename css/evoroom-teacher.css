@@ -39,9 +39,19 @@ body {
   line-height: 50px;
 }
 
-.teacher-dashboard div.step > div.info {
+.teacher-dashboard div.step > div.students {
+  margin-left: 10px;
 }
 
 .teacher-button-done {
-  opacity: 0.6;
+  background-color: #8c8;
+}
+
+.student {
+  display: inline-block;
+  background: purple;
+  border-radius: 4px;
+  color: white;
+  font-size: 12px;
+  padding: 4px;
 }
