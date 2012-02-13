@@ -40,7 +40,7 @@ body {
 }
 
 .teacher-dashboard div.step > div.students {
-  margin-left: 10px;
+  margin-left: 15px;
 }
 
 .teacher-button-done {
@@ -49,9 +49,19 @@ body {
 
 .student {
   display: inline-block;
-  background: purple;
+  background: gray;
   border-radius: 4px;
   color: white;
   font-size: 12px;
   padding: 4px;
 }
+
+.team-Darwin    { background-color: blue; }
+.team-Linneaus  { background-color: purple; }
+.team-Lamarck   { background-color: red; }
+.team-Wallace   { background-color: green; }
+
+.team-Mendel    { background-color: blue; }
+.team-Lyell     { background-color: purple; }
+.team-Huxley    { background-color: red; }
+.team-Mathus    { background-color: green; }
