@@ -104,6 +104,14 @@ class Student < Rollcall::User
     end
   end
   
+  def current_meetup
+    if metadata.current_meetup?
+      metadata.current_meetup
+    else
+      1
+    end
+  end
+  
   def store_observation(observation)
     observation.symbolize_keys!
     log "Storing  observation: #{observation.inspect}"
@@ -156,18 +164,20 @@ class Student < Rollcall::User
   end
   
   def assign_meetup_location!
-    debugger
     # TODO: everyone in the group has to go to the same location
-    meetups = mongo.collection(:meetups).find({"team" => self.team_name}).to_a
+    meetups = mongo.collection(:meetups).find({"team" => self.team_name, "meetum_number" => self.current_meetup}).to_a
     if meetups.length > 1
       raise "Why are there multiple meetups for team #{self.team_name}? Something is *@&!@^%'ed!"
     elsif meetups.length == 0
       selected_loc = current_locations[rand(current_locations.length)]
       
+      log "#{self} is the first one in their team at meetup ##{self.current_meetup}... Sending to #{selected_loc}."
+      
       meetup = {
         "team" => self.team_name, 
         "started" => Time.now,
-        "location" => selected_loc
+        "location" => selected_loc,
+        "meetum_number" => self.current_meetup
       }
       
       mongo.collection(:meetups).save(meetup)
@@ -175,6 +185,8 @@ class Student < Rollcall::User
       meetup = meetups.first
       
       selected_loc = meetup["location"]
+      
+      log "#{self}'s team is assembling for meetup ##{self.current_meetup} at #{selected_loc}."
     end
     
     agent.event!(:location_assignment,
