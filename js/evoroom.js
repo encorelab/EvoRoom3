@@ -880,7 +880,7 @@ var EvoRoom = {
 
         $('#meetup .small-button').click(function() {
             if ($('#meetup .meetup-text-entry').val() === '') {
-                console.log('Please enter your answer in the text box below');
+                alert('Please enter your answer in the text box below');
             }
             else {
                 Sail.app.hidePageElements();
