@@ -520,23 +520,28 @@ var EvoRoom = {
             },
 
             meetup_start: function(ev) {
-                Sail.app.hidePageElements();
-                // distinguish between meetups by looking at rotation
-                if (EvoRoom.rotation === 1 || EvoRoom.rotation === 2) {
-                    // write topic 1 or 2 in HTML
-                    //$('#meetup .topic').text(Sail.app.user_metadata['meetup_'+EvoRoom.rotation+'_topic']);
-                    $('#meetup .topic').text(EvoRoom.meetupTopics[Sail.app.session.account.login][EvoRoom.rotation]);
-                    $('#meetup-instructions .rotation1').hide();
-                    $('#meetup-instructions .rotation2').hide();
-                    if (EvoRoom.rotation === 1) {
-                        $('#meetup-instructions .rotation1').show();
+                if (ev.payload.team_name === EvoRoom.currentTeam) {
+                    Sail.app.hidePageElements();
+                    // distinguish between meetups by looking at rotation
+                    if (EvoRoom.rotation === 1 || EvoRoom.rotation === 2) {
+                        // write topic 1 or 2 in HTML
+                        //$('#meetup .topic').text(Sail.app.user_metadata['meetup_'+EvoRoom.rotation+'_topic']);
+                        $('#meetup .topic').text(EvoRoom.meetupTopics[Sail.app.session.account.login][EvoRoom.rotation]);
+                        $('#meetup-instructions .rotation1').hide();
+                        $('#meetup-instructions .rotation2').hide();
+                        if (EvoRoom.rotation === 1) {
+                            $('#meetup-instructions .rotation1').show();
+                        }
+                        else {
+                            $('#meetup-instructions .rotation2').show();
+                        }
+                        $('#meetup-instructions').show();
+                    } else {
+                        console.warn("Event meetup_start caught and EvoRoom.rotation is: '"+EvoRoom.rotation+"' - should be 1 or 2");
                     }
-                    else {
-                        $('#meetup-instructions .rotation2').show();
-                    }
-                    $('#meetup-instructions').show();
-                } else {
-                    console.warn("Event meetup_start caught and EvoRoom.rotation is: '"+EvoRoom.rotation+"' - should be 1 or 2");
+                }
+                else {
+                    console.log("meetup_start event received, but payload is incomplete or not for this user");
                 }
             },
 
@@ -823,40 +828,45 @@ var EvoRoom = {
             Sail.app.submitOrganismObservationsDone();
             Sail.app.buttonRevealCounter = 0;
             $('#loading-page').show();
+            // hiding the button itself to avoid it showing up too early in following observations
+            $('#observe-organisms .small-button').hide();
         });
-
-        $('#is-organism-present .radio').click(function() {
+        
+        $('#is-organism-present .presence-choice').click(function() {
+            // highlight the chosen button
+            $(this).addClass('ui-state-highlight');
+            
+            // take highlighting away from other button
+            $(this).siblings().removeClass('ui-state-highlight');
+            
+            // show done button
             $('#is-organism-present .small-button').show();
         });
 
         $('#is-organism-present .small-button').click(function() {
-            
-
-            if ($('#org-choice-yes').is(':checked')) {
-                // both params are the same in this case
-                Sail.app.submitOrganismObservation(Sail.app.selectedOrganism, Sail.app.selectedOrganism);
-                // clear radio buttons
-                $('input:radio').prop('checked', false);
-                $('#is-organism-present .radio').button('refresh');
-
-                //Sail.app.buttonRevealCounter++;
+            // get if yes or no button
+            var choice = $('#is-organism-present .ui-state-highlight').data('choice');
+            if (choice) {
                 Sail.app.hidePageElements();
-                $('#student-chosen-organisms').hide();
-                $('#observe-organisms').show();
-            }
-            else if ($('#org-choice-no').is(':checked')) {
-                // clear radio buttons
-                $('input:radio').prop('checked', false);
-                $('#is-organism-present .radio').button('refresh');
+                // remove the highlight class
+                $('#is-organism-present .ui-state-highlight').removeClass('ui-state-highlight');
 
-                Sail.app.setupAncestorTable(Sail.app.selectedOrganism, "partial");
-                Sail.app.hidePageElements();
-                //Sail.app.buttonRevealCounter++;
-                $('#ancestor-information').show();
-            }
-            else {
-                console.log('Radio buttons arent working like theyre supposed to');
-                alert('There was an error with the button selection. Please reselect the button');
+                if (choice === "org-present") {
+                    // both params are the same in this case
+                    Sail.app.submitOrganismObservation(Sail.app.selectedOrganism, Sail.app.selectedOrganism);
+    
+                    $('#student-chosen-organisms').hide();
+                    $('#observe-organisms').show();
+                } else if (choice === "org-not-present") {
+                    Sail.app.setupAncestorTable(Sail.app.selectedOrganism, "partial");
+    
+                    $('#ancestor-information').show();
+                } else {
+                    console.log('Yes/No buttons failure, choice variable was: '+choice);
+                    alert('Yes/No buttons arent working like theyre supposed to. Tell tech team!');
+                }
+            } else {
+                console.log('No yes/no button in is-organism-present with ui-state-highlight. choice: ' +choice);
             }
         });
 
@@ -881,7 +891,7 @@ var EvoRoom = {
 
         $('#meetup .small-button').click(function() {
             if ($('#meetup .meetup-text-entry').val() === '') {
-                alert('Please enter your answer in the text box below');
+                console.log('Please enter your answer in the text box below');
             }
             else {
                 Sail.app.hidePageElements();
@@ -1371,7 +1381,7 @@ var EvoRoom = {
             return "Station D";
         } else if (locationString === "room") {
             console.warn('Location ' + locationString + ' is wrong at this point. Inform user with alert!');
-            alert("An error has occured. Please talk to a teacher");
+            //alert("An error has occured. Please talk to a teacher");
         } else {
             console.warn('Location ' + locationString + ' is wrong at this point and we return <unknown rainforest>');
             return "unknown rainforest";
