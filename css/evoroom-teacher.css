@@ -72,6 +72,7 @@ body {
   padding: 4px;
   margin-right: 5px;
   cursor: pointer;
+  margin-bottom: 8px;
 }
 
 .team-Darwin    { background-color: blue; }
