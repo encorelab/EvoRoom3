@@ -40,6 +40,9 @@ body {
   padding-left:20px;
   text-align: left;
   padding-right: 20px;
+  white-space: nowrap;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .teacher-dashboard tr.step > td.buttons {
@@ -50,6 +53,7 @@ body {
 .teacher-dashboard tr.step > td.students {
   margin-left: 15px;
   white-space: normal;
+  min-width: 40%;
 }
 
 .teacher-button-done {
