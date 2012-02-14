@@ -238,6 +238,7 @@ EvoRoom.Teacher = {
         }
         
         $('#'+username).effect("highlight", {}, 800);
+        $('.student').after(" "); // FIXME: hack -- inserts too many spaces right now, but needed for white-space wrap
     },
     
     gotUpdatedUserState: function(username, state) {
@@ -257,7 +258,13 @@ EvoRoom.Teacher = {
     },
     
     checkAllUsersInRotation: function(rotation) {
-        var check = function(username,user) { return user.metadata.current_rotation == rotation; };
+        var check = function(username,user) { 
+            if (rotation == 1) {
+                return !user.metadata.current_rotation || user.metadata.current_rotation == rotation; 
+            } else {
+                return user.metadata.current_rotation == rotation; 
+            }
+        };
         return EvoRoom.Teacher.checkAllUsers(check);
     },
     
@@ -294,7 +301,7 @@ EvoRoom.Teacher = {
         var marker = $('#'+username);
         
         if (marker.length < 1) {
-            marker = $("<span class='student' id='"+username+"' title='"+state+"'>"+username+"</span>");
+            marker = $("<span class='student' id='"+username+"' title='"+state+"'>"+username+"</span>").after(" ");
         }
         
         if (user.groups && user.groups[0]) {

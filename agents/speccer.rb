@@ -44,12 +44,6 @@ class Speccer < Sail::Agent
     end
   end
   
-  # [ev, wait, expect_student, ev, wait, expect_student, on, wait, ev, wait]
-  
-  # [wait [wait [expect_student, on, ], expect_student, ev], ev]
-  
-  # 
-  
   
   def sequence
     @root = Step.new
