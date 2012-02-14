@@ -1225,6 +1225,8 @@ var EvoRoom = {
             //EvoRoom.indicateProgressStage(1);
             // show the wait for teacher thing
             $('#team-organism-assignment-day2').show();
+        } else if (Sail.app.user_metadata.state === 'OBSERVING_PAST_FEATURES' && Sail.app.user_metadata.day === "2") {
+            $('#2mya-instructions').show();
         } else if (Sail.app.user_metadata.state === 'WAITING_FOR_LOCATION_ASSIGNMENT') {
             //EvoRoom.indicateProgressStage(2);
             // show the wait for teacher thing
