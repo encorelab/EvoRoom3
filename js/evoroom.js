@@ -841,23 +841,27 @@ var EvoRoom = {
         $('#is-organism-present .small-button').click(function() {
             // get if yes or no button
             var choice = $('#is-organism-present .ui-state-highlight').data('choice');
-            Sail.app.hidePageElements();
-            // remove the highlight class
-            $('#is-organism-present .ui-state-highlight').removeClass('ui-state-highlight');
+            if (choice) {
+                Sail.app.hidePageElements();
+                // remove the highlight class
+                $('#is-organism-present .ui-state-highlight').removeClass('ui-state-highlight');
 
-            if (choice === "org-present") {
-                // both params are the same in this case
-                Sail.app.submitOrganismObservation(Sail.app.selectedOrganism, Sail.app.selectedOrganism);
-                
-                $('#student-chosen-organisms').hide();
-                $('#observe-organisms').show();
-            } else if (choice === "org-not-present") {
-                Sail.app.setupAncestorTable(Sail.app.selectedOrganism, "partial");
-                
-                $('#ancestor-information').show();
+                if (choice === "org-present") {
+                    // both params are the same in this case
+                    Sail.app.submitOrganismObservation(Sail.app.selectedOrganism, Sail.app.selectedOrganism);
+    
+                    $('#student-chosen-organisms').hide();
+                    $('#observe-organisms').show();
+                } else if (choice === "org-not-present") {
+                    Sail.app.setupAncestorTable(Sail.app.selectedOrganism, "partial");
+    
+                    $('#ancestor-information').show();
+                } else {
+                    console.log('Yes/No buttons failure, choice variable was: '+choice);
+                    alert('Yes/No buttons arent working like theyre supposed to. Tell tech team!');
+                }
             } else {
-                console.log('Yes/No buttons arent working like theyre supposed to. Tell tech team!');
-                alert('Yes/No buttons arent working like theyre supposed to. Tell tech team!');
+                console.log('No yes/no button in is-organism-present with ui-state-highlight. choice: ' +choice);
             }
         });
 
