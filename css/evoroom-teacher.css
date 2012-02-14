@@ -10,6 +10,10 @@ body {
 }
 
 
+.teacher-dashboard {
+  white-space: nowrap;
+}
+
 .teacher-dashboard div.step > * {
   display: inline-block;
   vertical-align: top;
@@ -44,7 +48,15 @@ body {
 }
 
 .teacher-button-done {
-  background-color: #8c8;
+  background-color: rgb(64, 179, 79)!important;
+}
+
+.teacher-button-primed {
+  background-color: #ff4;
+}
+
+.teacher-button-faded {
+  opacity: 0.5;
 }
 
 .student {
