@@ -14,6 +14,7 @@ th {
 }
 
 .teacher-dashboard {
+  border-collapse: collapse;
 }
 
 .teacher-dashboard tr.step > * {
