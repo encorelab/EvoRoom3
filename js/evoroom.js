@@ -920,10 +920,10 @@ var EvoRoom = {
             }
         });
 
-        $('#team-organism-assignment-day2 .small-button').click(function() {
+        /*$('#team-organism-assignment-day2 .small-button').click(function() {
             Sail.app.hidePageElements();
             $('#2mya-instructions').show();
-        });
+        });*/
 
         $('#2mya-instructions .small-button').click(function() {
             Sail.app.hidePageElements();
@@ -1094,7 +1094,24 @@ var EvoRoom = {
                 } else if (sev.payload.to === 'BRAINSTORMING') {
                     $('#concepts-instructions').show();
                 } else {
-                    console.warn('Caught state_change event with one-off handler, but nobody seems to care. From: ' +sev.payload.from+ 'To: ' + sev.payload.to);
+                    console.warn('Caught state_change event in stateChangeHandler with one-off handler, but nobody seems to care. From: ' +sev.payload.from+ 'To: ' + sev.payload.to);
+                }
+            } else {
+                console.warn('Caught oneoff event stateChangeHandler with EMPTY to field');
+            }
+        };
+        
+        // one off event handler which is set during the sending of check_in message
+        var stateChangeHandlerForDay2 = function (sev) {
+            if (sev.payload.to) {
+                console.log('Caught oneoff event in stateChangeHandlerForDay2 with to = ' + sev.payload.to);
+
+                if (sev.payload.to === 'OBSERVING_PAST_FEATURES') {
+                    // after login teacher sends feature_observation_start and agent reacts with state_change to OBSERVING_PAST_FEATURES
+                    Sail.app.hidePageElements();
+                    $('#2mya-instructions').show();
+                } else {
+                    console.warn('Caught state_change event in stateChangeHandlerForDay2 with one-off handler, but nobody seems to care. From: ' +sev.payload.from+ 'To: ' + sev.payload.to);
                 }
             } else {
                 console.warn('Caught oneoff event stateChangeHandler with EMPTY to field');
@@ -1103,9 +1120,13 @@ var EvoRoom = {
 
         // create state change handler if checkin is not in room
         // eventHandlerFunction, eventType, origin (user), payload,
-        if (EvoRoom.currentLocation === 'room') {
+        if (EvoRoom.currentLocation === 'room' && Sail.app.user_metadata.day !== "2") {
             //EvoRoom.indicateProgressStage(1);
-            console.log('sumbitCheckIn for room');
+            console.log('sumbitCheckIn for room on day 1');
+        } else if (EvoRoom.currentLocation === 'room' && Sail.app.user_metadata.day === "2") {
+            // we only set up an one-off event handler for check_in to room on day 2
+            Sail.app.groupchat.addOneoffEventHandler(stateChangeHandlerForDay2, 'state_change', Sail.app.session.account.login);
+            console.log('sumbitCheckIn for room on day 2, setting up one-off event handler for state_change message');
         } else {
             Sail.app.groupchat.addOneoffEventHandler(stateChangeHandler, 'state_change', Sail.app.session.account.login);
             console.log('Set up one-off event handler for state_change in check_in');
@@ -1189,13 +1210,21 @@ var EvoRoom = {
             if (Sail.app.user_metadata.day === "2") {
                 $('#log-in-success-day2').show();
             }
-            else { 
+            else {
                 $('#log-in-success').show();
             }
-        } else if (Sail.app.user_metadata.state === 'ORIENTATION') {
+        } else if (Sail.app.user_metadata.state === 'OUTSIDE' && Sail.app.user_metadata.day === "1") {
+            $('#log-in-success').show();
+        } else if (Sail.app.user_metadata.state === 'OUTSIDE' && Sail.app.user_metadata.day === "2") {
+            $('#log-in-success-day2').show();
+        } else if (Sail.app.user_metadata.state === 'ORIENTATION' && Sail.app.user_metadata.day === "1") {
             //EvoRoom.indicateProgressStage(1);
             // show the wait for teacher thing
             $('#team-assignment').show();
+        } else if (Sail.app.user_metadata.state === 'ORIENTATION' && Sail.app.user_metadata.day === "2") {
+            //EvoRoom.indicateProgressStage(1);
+            // show the wait for teacher thing
+            $('#team-organism-assignment-day2').show();
         } else if (Sail.app.user_metadata.state === 'WAITING_FOR_LOCATION_ASSIGNMENT') {
             //EvoRoom.indicateProgressStage(2);
             // show the wait for teacher thing
@@ -1232,18 +1261,18 @@ var EvoRoom = {
             }
         } else if (Sail.app.user_metadata.state === 'WAITING_FOR_GROUP_TO_FINISH_MEETUP') {
             $('#loading-page').show();
-        } else if (Sail.app.user_metadata.state === 'COMPLETED_DAY_1') {
-            $('#day1-complete').show();
         } else if (Sail.app.user_metadata.state === 'OBSERVING_PRESENT') {
             // this is Day 2 Step 3: Present day!
             $('#present-day-instructions').show(); 
         } else if (Sail.app.user_metadata.state === 'BRAINSTORMING') {
             // this is Day 2 Step 4: Concepts aka Brainstorming
             $('#concepts-instructions').show();
-        } else if (Sail.app.user_metadata.state === 'DONE') {
+        } else if (Sail.app.user_metadata.state === 'DONE' && Sail.app.user_metadata.day === "1") {
+            $('#day1-complete').show();
+        } else if (Sail.app.user_metadata.state === 'DONE' && Sail.app.user_metadata.day === "2") {
             $('#day2-complete').show();
         } else {
-            console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> which is not handled currently.');
+            console.warn('restoreState: read state <'+Sail.app.user_metadata.state+ '> on day <'+Sail.app.user_metadata.day+'> which is not handled currently.');
         }
     },
 
