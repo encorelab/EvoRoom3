@@ -1229,6 +1229,10 @@ var EvoRoom = {
             //EvoRoom.indicateProgressStage(2);
             // show the wait for teacher thing
             $('#loading-page').show();
+        } else if (Sail.app.user_metadata.state === 'WAITING_FOR_MEETUP_START') {
+            //EvoRoom.indicateProgressStage(2);
+            // show the wait page
+            $('#loading-page').show();
         } else if (Sail.app.user_metadata.state === 'GOING_TO_ASSIGNED_LOCATION') {
             $('#go-to-location .current-location').text(EvoRoom.formatLocationString(EvoRoom.assignedLocation));
             //EvoRoom.indicateProgressStage(2);
