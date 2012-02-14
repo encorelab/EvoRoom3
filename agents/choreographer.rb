@@ -195,8 +195,8 @@ class Choreographer < Sail::Agent
       end
       
       unless stu.kind == "Student"
-       log "#{username.inspect} is not a student; will be ignored."
-       return nil
+        log "#{username.inspect} is not a student; will be ignored."
+        return nil
       end
       
       log "#{username.inspect} loaded in state #{stu.state}"
