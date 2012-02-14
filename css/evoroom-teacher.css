@@ -17,7 +17,7 @@ th {
 }
 
 .teacher-dashboard tr.step > * {
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .teacher-dashboard tr.step {
@@ -38,10 +38,12 @@ th {
   width: 15ex;
   margin-left: 10px;
   margin-top: 12px;
+  font-size: 20px;
 }
 
 .teacher-dashboard tr.step > td.buttons {
   line-height: 50px;
+  white-space: nowrap;
 }
 
 .teacher-dashboard tr.step > td.students {
