@@ -575,12 +575,16 @@ var EvoRoom = {
                 EvoRoom.buttonRevealCounter = 0;
                 
                 console.log('metadata assigned');
+                
                 EvoRoom.setupPageLayout();
-                EvoRoom.restoreState(); 
+                EvoRoom.restoreState();
             });
         },
 
         unauthenticated: function(ev) {
+            // reload the page to clear setupPageLayout mess
+            window.location.reload(true);
+            /*
             Sail.app.user_metadata = null;
             EvoRoom.rotation = null;
             EvoRoom.currentTeam = null;
@@ -593,6 +597,7 @@ var EvoRoom = {
             EvoRoom.hidePageElements();
 
             Rollcall.Authenticator.requestRun();
+            */
         }
     },
 
