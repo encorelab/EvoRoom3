@@ -823,6 +823,8 @@ var EvoRoom = {
             Sail.app.submitOrganismObservationsDone();
             Sail.app.buttonRevealCounter = 0;
             $('#loading-page').show();
+            // hiding the button itself to avoid it showing up too early in following observations
+            $('#observe-organisms .small-button').hide();
         });
         
         $('#is-organism-present .presence-choice').click(function() {
