@@ -273,15 +273,15 @@ var EvoRoom = {
             "great_argus_pheasant":["passeriform","bucerotidae","phasianidae","none"],
             "rhinoceros_hornbill":["passeriform","bucerotidae","phasianidae","none"],
             //other mammals 1
-            "civet":["oligocene_rodents","felidae","asiavorator","none"],
-            "sunda_clouded_leopard":["oligocene_rodents","felidae","asiavorator","none"],
-            "leopard_cat":["oligocene_rodents","felidae","asiavorator","none"],
-            "sumatran_tiger":["oligocene_rodents","felidae","asiavorator","none"],
+            "civet":["oligocene_rodent","felidae","asiavorator","none"],
+            "sunda_clouded_leopard":["oligocene_rodent","felidae","asiavorator","none"],
+            "leopard_cat":["oligocene_rodent","felidae","asiavorator","none"],
+            "sumatran_tiger":["oligocene_rodent","felidae","asiavorator","none"],
             //other mammals 2
-            "borneo_porcupine":["common_pangolin","palaeolagus","oligocene_rodents","none"],
-            "common_porcupine":["common_pangolin","palaeolagus","oligocene_rodents","none"],
-            "sunda_pangolin":["common_pangolin","palaeolagus","oligocene_rodents","none"],
-            "sumatran_striped_rabbit":["common_pangolin","palaeolagus","oligocene_rodents","none"],
+            "borneo_porcupine":["common_pangolin","palaeolagus","oligocene_rodent","none"],
+            "common_porcupine":["common_pangolin","palaeolagus","oligocene_rodent","none"],
+            "sunda_pangolin":["common_pangolin","palaeolagus","oligocene_rodent","none"],
+            "sumatran_striped_rabbit":["common_pangolin","palaeolagus","oligocene_rodent","none"],
             //other mammals 3
             "malayan_tapir":["first_tapir","perissodactyls","common_pangolin","none"],
             "sumatran_rhinoceros":["first_tapir","perissodactyls","common_pangolin","none"]
