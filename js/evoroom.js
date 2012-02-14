@@ -555,8 +555,19 @@ var EvoRoom = {
                 } else {
                     console.log("homework_assignment event received, but payload is incomplete or not for this user");
                 }
+            },
+            
+/*            // we might end up using this. TBD
+            feature_observations_start: function(ev) {
+                if (ev.payload) {           // what other criteria should this have?
+                    Sail.app.hidePageElements();
+                    ('#go-to-location').show();
+                }
+                else {
+                    console.log("feature_observations_start event received, but payload is incomplete or not for this user");
+                }
             }
-        },
+*/        },
 
         initialized: function(ev) {
             // Sail.app.hidePageElements();
