@@ -157,15 +157,15 @@ StudentStatemachine = proc do
       transition :to => :WAITING_FOR_LOCATION_ASSIGNMENT do
         comment "Note the name change. Also, Michelle will have her\nown event in addition to this to re-trigger animation."
         action do |student|
+          student.metadata.current_rotation = 3
           student.metadata.current_task = 'observe_present_presence'
-          student.assign_next_observation_location!
         end
       end
     end
   end
   
   state :OBSERVING_PRESENT do
-    on :observation_tabulation, :to => :WAITING_FOR_LOCATION_ASSIGNMENT, :action => :store_tabulation
+    on :observation_tabulation, :to => :WAITING_FOR_LOCATION_ASSIGNMENT, :action => :store_observation
   end
   
   state :BRAINSTORMING do

@@ -16,8 +16,10 @@ class Student < Rollcall::User
       'station_d'
     ],
     :day_2 => [
-      'borneo',
-      'sumatra'
+      'station_a', # borneo
+      'station_b', # borneo
+      'station_c',
+      'station_d'
     ]
   }
   
@@ -135,6 +137,7 @@ class Student < Rollcall::User
   def store_observation(observation)
     observation.symbolize_keys!
     log "Storing  observation: #{observation.inspect}"
+    
     observation[:rotation] = self.metadata.current_rotation if self.metadata.current_rotation?
     observation[:location] ||= self.metadata.current_location if self.metadata.current_location?
     observation[:username] = self.username
@@ -213,6 +216,16 @@ class Student < Rollcall::User
     end
     
     agent.event!(:location_assignment,
+      :location => selected_loc,
+      :username => self.username
+    )
+  end
+  
+  def assign_brainstorm_location!
+    locs = ["station_c", "station_b"]
+    selected_loc = locs[rand(locs.length)]
+    
+    self.agent.event!(:location_assignment,
       :location => selected_loc,
       :username => self.username
     )
