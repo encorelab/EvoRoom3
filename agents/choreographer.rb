@@ -210,7 +210,13 @@ class Choreographer < Sail::Agent
       username = data['origin']
       obs = data['payload'].symbolize_keys
       obs[:type] = "presence_tabulation"
-      lookup_student(username).organism_tabulation!(obs)
+      lookup_student(username).observation_tabulation!(obs)
+    end
+    event :concept_discussion? do |stanza, data|
+      username = data['origin']
+      note = data['payload'].symbolize_keys
+      note['type'] = "concept_discussion"
+      lookup_student(username).concept_discussion!(note)
     end
   end
   
