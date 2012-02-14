@@ -227,13 +227,13 @@ EvoRoom.Teacher = {
     },
     
     checkAllUsers: function(check) {
-        return _.all(EvoRoom.Teacher.users, function(state, user) {
-            return check(user, state);
+        return _.all(EvoRoom.Teacher.users, function(user, username) {
+            return check(username, user);
         });
     },
     
     checkAllUsersInState: function(state) {
-        return EvoRoom.Teacher.checkAllUsers(function(u,s) { return s === state; });
+        return EvoRoom.Teacher.checkAllUsers(function(username,user) { return user.metadata.state === state; });
     },
     
     bindEventTriggers: function() {
