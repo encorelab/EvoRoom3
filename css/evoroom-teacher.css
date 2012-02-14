@@ -9,38 +9,31 @@ body {
   font-family: 'Droid Sans', sans-serif !important;
 }
 
+th {
+  font
+}
 
 .teacher-dashboard {
   white-space: nowrap;
 }
 
-.teacher-dashboard div.step > * {
+.teacher-dashboard tr.step > * {
   vertical-align: top;
-  
-  display: -moz-box;
-  display: -webkit-box;
-  display: box;
-  -moz-box-orient: horizontal;
-  -webkit-box-orient: horizontal;
-  box-orient: horizontal;
 }
 
-.teacher-dashboard div.step {
+.teacher-dashboard tr.step {
   padding-top: 10px;
   padding-bottom: 10px;
   background-color: rgba(0,0,0,0.3);
   padding-right: 50px;
   padding-left: 50px;
-  
-  display: -webkit-box;
-  -webkit-box-orient: horizontal;
 }
 
-.teacher-dashboard div.step:nth-child(even) {
+.teacher-dashboard tr.step:nth-child(even) {
   background-color: rgba(0,0,0,0.6);
 }
 
-.teacher-dashboard div.step > h2 {
+.teacher-dashboard tr.step > th {
   color: white;
   font-weight: bold;
   width: 15ex;
@@ -48,11 +41,11 @@ body {
   margin-top: 12px;
 }
 
-.teacher-dashboard div.step > div.buttons {
+.teacher-dashboard tr.step > td.buttons {
   line-height: 50px;
 }
 
-.teacher-dashboard div.step > div.students {
+.teacher-dashboard tr.step > td.students {
   margin-left: 15px;
   -moz-box-flex: 1;
   -webkit-box-flex: 1;
