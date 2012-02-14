@@ -238,6 +238,7 @@ EvoRoom.Teacher = {
         }
         
         $('#'+username).effect("highlight", {}, 800);
+        $('.student').after(" "); // FIXME: hack -- inserts too many spaces right now, but needed for white-space wrap
     },
     
     gotUpdatedUserState: function(username, state) {
