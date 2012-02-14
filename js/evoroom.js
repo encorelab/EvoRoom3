@@ -557,17 +557,15 @@ var EvoRoom = {
                 }
             },
             
-/*            // we might end up using this. TBD
             feature_observations_start: function(ev) {
-                if (ev.payload) {           // what other criteria should this have?
+                if (ev.payload) {
                     Sail.app.hidePageElements();
-                    ('#go-to-location').show();
-                }
-                else {
+                    $('#2mya-instructions').show();
+                } else {
                     console.log("feature_observations_start event received, but payload is incomplete or not for this user");
                 }
             }
-*/        },
+        },
 
         initialized: function(ev) {
             // Sail.app.hidePageElements();
@@ -1112,32 +1110,12 @@ var EvoRoom = {
             }
         };
         
-        // one off event handler which is set during the sending of check_in message
-        var stateChangeHandlerForDay2 = function (sev) {
-            if (sev.payload.to) {
-                console.log('Caught oneoff event in stateChangeHandlerForDay2 with to = ' + sev.payload.to);
-
-                if (sev.payload.to === 'OBSERVING_PAST_FEATURES') {
-                    // after login teacher sends feature_observation_start and agent reacts with state_change to OBSERVING_PAST_FEATURES
-                    Sail.app.hidePageElements();
-                    $('#2mya-instructions').show();
-                } else {
-                    console.warn('Caught state_change event in stateChangeHandlerForDay2 with one-off handler, but nobody seems to care. From: ' +sev.payload.from+ 'To: ' + sev.payload.to);
-                }
-            } else {
-                console.warn('Caught oneoff event stateChangeHandler with EMPTY to field');
-            }
-        };
 
         // create state change handler if checkin is not in room
         // eventHandlerFunction, eventType, origin (user), payload,
-        if (EvoRoom.currentLocation === 'room' && Sail.app.user_metadata.day !== "2") {
+        if (EvoRoom.currentLocation === 'room') {
             //EvoRoom.indicateProgressStage(1);
-            console.log('sumbitCheckIn for room on day 1');
-        } else if (EvoRoom.currentLocation === 'room' && Sail.app.user_metadata.day === "2") {
-            // we only set up an one-off event handler for check_in to room on day 2
-            Sail.app.groupchat.addOneoffEventHandler(stateChangeHandlerForDay2, 'state_change', Sail.app.session.account.login);
-            console.log('sumbitCheckIn for room on day 2, setting up one-off event handler for state_change message');
+            console.log('sumbitCheckIn for room');
         } else {
             Sail.app.groupchat.addOneoffEventHandler(stateChangeHandler, 'state_change', Sail.app.session.account.login);
             console.log('Set up one-off event handler for state_change in check_in');
