@@ -104,7 +104,7 @@ var EvoRoom = {
             "civet":["hadrocodium","theropod","thecodont","none"],
             "sunda_clouded_leopard":["hadrocodium","theropod","thecodont","none"],
             "leopard_cat":["hadrocodium","theropod","thecodont","none"],
-            "sumatran_tiger":["hadrocodium","theropod","thecodont","none","none"],
+            "sumatran_tiger":["hadrocodium","theropod","thecodont","none"],
             //other mammals 2
             "borneo_porcupine":["hadrocodium","theropod","thecodont","none"],
             "common_porcupine":["hadrocodium","theropod","thecodont","none"],
@@ -326,8 +326,8 @@ var EvoRoom = {
             "sunda_pangolin":["felidae","old_world_porcupine","common_pangolin","none"],
             "sumatran_striped_rabbit":["felidae","old_world_porcupine","common_pangolin","none"],
             //other mammals 3
-            "malayan_tapir":["first_tapir","rhinocerotoids","palaeolagus","none"],
-            "sumatran_rhinoceros":["first_tapir","rhinocerotoids","palaeolagus","none"]
+            "malayan_tapir":["first_tapir","rhinocerotoid","palaeolagus","none"],
+            "sumatran_rhinoceros":["first_tapir","rhinocerotoid","palaeolagus","none"]
         },
         "5_mya": {
             //plants
@@ -369,8 +369,8 @@ var EvoRoom = {
             "sunda_pangolin":["old_world_porcupine","asiavorator","common_pangolin","none"],
             "sumatran_striped_rabbit":["old_world_porcupine","asiavorator","common_pangolin","none"],
             //other mammals 3
-            "malayan_tapir":["first_tapir","rhinocerotoids","palaeolagus","none"],
-            "sumatran_rhinoceros":["first_tapir","rhinocerotoids","palaeolagus","none"]
+            "malayan_tapir":["first_tapir","rhinocerotoid","palaeolagus","none"],
+            "sumatran_rhinoceros":["first_tapir","rhinocerotoid","palaeolagus","none"]
         },
         "2_mya": {
             //plants
@@ -555,8 +555,19 @@ var EvoRoom = {
                 } else {
                     console.log("homework_assignment event received, but payload is incomplete or not for this user");
                 }
+            },
+            
+/*            // we might end up using this. TBD
+            feature_observations_start: function(ev) {
+                if (ev.payload) {           // what other criteria should this have?
+                    Sail.app.hidePageElements();
+                    ('#go-to-location').show();
+                }
+                else {
+                    console.log("feature_observations_start event received, but payload is incomplete or not for this user");
+                }
             }
-        },
+*/        },
 
         initialized: function(ev) {
             // Sail.app.hidePageElements();
@@ -891,7 +902,7 @@ var EvoRoom = {
 
         $('#meetup .small-button').click(function() {
             if ($('#meetup .meetup-text-entry').val() === '') {
-                console.log('Please enter your answer in the text box below');
+                alert('Please enter your answer in the text box below');
             }
             else {
                 Sail.app.hidePageElements();
@@ -1225,6 +1236,8 @@ var EvoRoom = {
             //EvoRoom.indicateProgressStage(1);
             // show the wait for teacher thing
             $('#team-organism-assignment-day2').show();
+        } else if (Sail.app.user_metadata.state === 'OBSERVING_PAST_FEATURES' && Sail.app.user_metadata.day === "2") {
+            $('#2mya-instructions').show();
         } else if (Sail.app.user_metadata.state === 'WAITING_FOR_LOCATION_ASSIGNMENT') {
             //EvoRoom.indicateProgressStage(2);
             // show the wait for teacher thing
@@ -1595,7 +1608,7 @@ var EvoRoom = {
         } else if (organismString === "purgatorius") {
             return "Purgatorius";
         } else if (organismString === "rhinocerotoid") {
-            return "Rhinocerotoids";
+            return "Rhinocerotoid";
         } else if (organismString === "ribbonwood_tree") {
             return "Ribbonwood tree";
         } else if (organismString === "styporaphidia") {
