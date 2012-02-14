@@ -1,15 +1,16 @@
-/*jslint devel: true, regexp: true, browser: true, unparam: true, debug: true, sloppy: true, sub: true, es5: true, vars: true, evil: true, fragment: true, plusplus: true, nomen: true, white: false, eqeq: false */
-/*globals Sail, Rollcall, $, window */
+/*jslint devel: true, regexp: true, browser: true, unparam: true, debug: true, sloppy: true, sub: true, es5: true, vars: true, evil: true, fragment: true, eqeq: false, plusplus: true, nomen: false, white: false */
+/*globals Sail, Rollcall, $, window, _ */
 
 var EvoRoom = window.EvoRoom || {};
 EvoRoom.Teacher = {
     rollcallURL: '/rollcall',
     
-    currentRotation: 0,
+    users: {},
     
     init: function() {
         Sail.app.rollcall = new Rollcall.Client(Sail.app.rollcallURL);
         
+        Sail.app.run = Sail.app.run || JSON.parse($.cookie('run'));
         if (Sail.app.run) {
             Sail.app.groupchatRoom = Sail.app.run.name + '@conference.' + Sail.app.xmppDomain;
         }
@@ -45,16 +46,42 @@ EvoRoom.Teacher = {
         },
     
         authenticated: function(ev) {
-            
+            Sail.app.rollcall.request(Sail.app.rollcall.url + "/runs/"+Sail.app.run.name+"/users.json", 
+                    "GET", {}, function(data) {
+                EvoRoom.Teacher.users = {};
+                _.each(data, function(u) {
+                    if (u.user.kind === 'Student') {
+                        EvoRoom.Teacher.gotUpdatedUserData(u.user);
+                    } else {
+                        console.log("Ignoring non-student "+u.user.account.login);
+                    }
+                });
+            });
         },
     
         connected: function(ev) {
             $("#teacher-dashboard-day-1").css('visibility', 'visible');
             EvoRoom.Teacher.bindEventTriggers();
+            
+            Sail.app.groupchat.addParticipantJoinedHandler(function(who, stanza) {
+                var match = who.match(/\/(\w*)/);
+                console.log(who + " joined...");
+                if (match && match[1]) {
+                    var username = match[1];
+                    Sail.app.rollcall.request(Sail.app.rollcall.url + "/users/"+username+".json", 
+                            "GET", {}, function(data) {
+                        if (data.user.kind === 'Student') {
+                            EvoRoom.Teacher.gotUpdatedUserData(data.user);
+                        } else {
+                            console.log("Ignoring non-student "+username);
+                        }
+                    });
+                }
+            });
         },
     
         unauthenticated: function(ev) {
-            Rollcall.Authenticator.requestRun();
+            Sail.app.authenticate();
         },
         
         sail: {
@@ -64,58 +91,38 @@ EvoRoom.Teacher = {
             
             observations_start: function(sev) {
                 if (sev.payload.rotation === 1) {
-                    EvoRoom.Teacher.currentRotation = 1;
                     $('.step-1-2 button.start_rotation_1')
-                        .addClass('teacher-button-done')                    
-                        .attr('disabled','disabled');
+                        .addClass('teacher-button-done')  
+                        .addClass('teacher-button-faded');
+                        //.attr('disabled','disabled');
                         
                     $('.indicator.step-1-2').addClass('done')
-                        .prevAll().addClass('done')
+                        .prevAll().addClass('done');
                 } else {
-                    EvoRoom.Teacher.currentRotation = 2;
                     $('.step-1-4 button.start_rotation_2')
-                        .addClass('teacher-button-done')                    
-                        .attr('disabled','disabled');
+                        .addClass('teacher-button-done')  
+                        .addClass('teacher-button-faded');
+                        //.attr('disabled','disabled');
                     $('.indicator.step-1-4').addClass('done')
-                        .prevAll().addClass('done')
+                        .prevAll().addClass('done');
                 }
             },
             
             homework_assignment: function(sev) {
                 if (sev.payload.day === 1) {
                     $('.step-1-6 button.assign_homework_1')
-                        .addClass('teacher-button-done')                    
-                        .attr('disabled','disabled');
+                        .addClass('teacher-button-done')
+                        .addClass('teacher-button-faded');
+                        //.attr('disabled','disabled');
                     $('.indicator.step-1-6').addClass('done')
-                        .prevAll().addClass('done')
+                        .prevAll().addClass('done');
                 } //else {
                      // TODO
                 //}
             },
             
             state_change: function(sev) {
-                marker = EvoRoom.Teacher.studentMarker(sev.origin)
-                switch (sev.payload.to) {
-                    case "ORIENTATION":
-                        $('.step-1-1 .students').append(marker)
-                        break;
-                    case "OBSERVING_PAST":
-                        if (EvoRoom.Teacher.currentRotation == 1)
-                            $('.step-1-2 .students').append(marker)
-                        else if (EvoRoom.Teacher.currentRotation == 2)
-                            $('.step-1-4 .students').append(marker)
-                        break;
-                    case "WAITING_FOR_MEETUP_START":
-                        if (EvoRoom.Teacher.currentRotation == 1)
-                            $('.step-1-3 .students').append(marker)
-                        else
-                            $('.step-1-5 .students').append(marker)
-                        break;
-                    case "OUTSIDE":
-                        if (EvoRoom.Teacher.currentRotation == 2)
-                            $('.step-1-6 .students').append(marker)
-                        break;
-                }
+                EvoRoom.Teacher.gotUpdatedUserState(sev.origin, sev.payload.to);
             }
         }
     },
@@ -141,6 +148,93 @@ EvoRoom.Teacher = {
         }
     },
     
+    gotUpdatedUserData: function(user) {
+        if (!EvoRoom.Teacher.users) {
+            EvoRoom.Teacher.users = {};
+        }
+        
+        var username = user.account.login;
+        var state = user.metadata.state;
+        EvoRoom.Teacher.users[username] = user;
+        
+        EvoRoom.Teacher.gotUpdatedUserState(username, state || "OUTSIDE");
+    },
+    
+    gotUpdatedUserState: function(username, state) {
+        if (!EvoRoom.Teacher.users) {
+            EvoRoom.Teacher.users = {};
+        }
+        
+        if (!EvoRoom.Teacher.users[username]) {
+            EvoRoom.Teacher.users[username] = {account: {login: username}, metadata: {state: state}};
+        } else {
+            EvoRoom.Teacher.users[username]['metadata']['state'] = state;
+        }
+        
+        var user = EvoRoom.Teacher.users[username];
+        
+        if (user.metadata.current_rotation != 2 && EvoRoom.Teacher.checkAllUsersInState('ORIENTATION')) {
+            $('.step-1-2 button.start_rotation_1').removeClass('teacher-button-faded');
+            $('.step-1-2 button.start_rotation_1').addClass('teacher-button-primed');
+        } else {
+            $('.step-1-2 button.start_rotation_1').removeClass('teacher-button-primed');
+        }
+        
+        if (user.metadata.current_rotation == 2 && EvoRoom.Teacher.checkAllUsersInState('WAITING_FOR_GROUP_TO_FINISH_MEETUP')) {
+            $('.step-1-4 button.start_rotation_2').removeClass('teacher-button-faded');
+            $('.step-1-4 button.start_rotation_2').addClass('teacher-button-primed');
+        } else {
+            $('.step-1-4 button.start_rotation_2').removeClass('teacher-button-primed');
+        }
+        
+        if (user.metadata.current_rotation == 2 && EvoRoom.Teacher.checkAllUsersInState('WAITING_FOR_GROUP_TO_FINISH_MEETUP')) {
+            $('.step-1-6 button.assign_homework_1').removeClass('teacher-button-faded');
+            $('.step-1-6 button.assign_homework_1').addClass('teacher-button-primed');
+        } else {
+            $('.step-1-6 button.assign_homework_1').removeClass('teacher-button-primed');
+        }
+        
+        var marker = EvoRoom.Teacher.studentMarker(username);
+        switch (state) {
+            case "OUTSIDE":
+                $('.step-1-0 .students').append(marker);
+                break;
+            case "ORIENTATION":
+                $('.step-1-1 .students').append(marker);
+                break;
+            case "OBSERVING_PAST":
+                if (user.metadata.current_rotation == 1) {
+                    $('.step-1-2 .students').append(marker);
+                } else if (user.metadata.current_rotation == 2) {
+                    $('.step-1-4 .students').append(marker);
+                }
+                break;
+            case "MEETUP":
+            case "WAITING_FOR_MEETUP_START":
+            case "WAITING_FOR_GROUP_TO_FINISH_MEETUP":
+                if (user.metadata.current_rotation == 1) {
+                    $('.step-1-3 .students').append(marker);
+                } else {
+                    $('.step-1-5 .students').append(marker);
+                }
+                break;
+            case "OUTSIDE":
+                if (user.metadata.current_rotation == 2) {
+                    $('.step-1-6 .students').append(marker);
+                }
+                break;
+        }
+    },
+    
+    checkAllUsers: function(check) {
+        return _.all(EvoRoom.Teacher.users, function(user, username) {
+            return check(username, user);
+        });
+    },
+    
+    checkAllUsersInState: function(state) {
+        return EvoRoom.Teacher.checkAllUsers(function(username,user) { return user.metadata.state === state; });
+    },
     
     bindEventTriggers: function() {
         $('.step-1-1 .buttons button').each(function() {
@@ -177,10 +271,9 @@ EvoRoom.Teacher = {
         }
         
         var userUpdate = function(data) {
-            marker.addClass('team-'+data.user.groups[0].name)
+            marker.addClass('team-'+data.user.groups[0].name);
         };
         Sail.app.rollcall.request(Sail.app.rollcall.url+'/users/'+username+'.json', 'GET', {}, userUpdate);
-        
         
         return marker;
     }
