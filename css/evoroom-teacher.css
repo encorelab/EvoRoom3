@@ -15,8 +15,14 @@ body {
 }
 
 .teacher-dashboard div.step > * {
-  display: inline-block;
   vertical-align: top;
+  
+  display: -moz-box;
+  display: -webkit-box;
+  display: box;
+  -moz-box-orient: horizontal;
+  -webkit-box-orient: horizontal;
+  box-orient: horizontal;
 }
 
 .teacher-dashboard div.step {
@@ -25,6 +31,9 @@ body {
   background-color: rgba(0,0,0,0.3);
   padding-right: 50px;
   padding-left: 50px;
+  
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
 }
 
 .teacher-dashboard div.step:nth-child(even) {
@@ -45,6 +54,9 @@ body {
 
 .teacher-dashboard div.step > div.students {
   margin-left: 15px;
+  -moz-box-flex: 1;
+  -webkit-box-flex: 1;
+  box-flex: 1;
 }
 
 .teacher-button-done {
@@ -67,6 +79,7 @@ body {
   font-size: 12px;
   padding: 4px;
   margin-right: 5px;
+  cursor: pointer;
 }
 
 .team-Darwin    { background-color: blue; }

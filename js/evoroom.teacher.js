@@ -68,14 +68,7 @@ EvoRoom.Teacher = {
                 console.log(who + " joined...");
                 if (match && match[1]) {
                     var username = match[1];
-                    Sail.app.rollcall.request(Sail.app.rollcall.url + "/users/"+username+".json", 
-                            "GET", {}, function(data) {
-                        if (data.user.kind === 'Student') {
-                            EvoRoom.Teacher.gotUpdatedUserData(data.user);
-                        } else {
-                            console.log("Ignoring non-student "+username);
-                        }
-                    });
+                    EvoRoom.Teacher.refreshDataForUser(username);
                 }
             });
         },
@@ -148,53 +141,54 @@ EvoRoom.Teacher = {
         }
     },
     
+    refreshDataForUser: function(username) {
+        console.log("requesting data refresh for: ", username);
+        Sail.app.rollcall.request(Sail.app.rollcall.url + "/users/"+username+".json", 
+                "GET", {}, function(data) {
+            if (data.user.kind === 'Student') {
+                EvoRoom.Teacher.gotUpdatedUserData(data.user);
+            } else {
+                console.log("Ignoring non-student "+username);
+            }
+        });
+    },
+    
     gotUpdatedUserData: function(user) {
         if (!EvoRoom.Teacher.users) {
             EvoRoom.Teacher.users = {};
         }
         
         var username = user.account.login;
-        var state = user.metadata.state;
+        var state = user.metadata.state || "OUTSIDE";
+        
+         console.log("got updated data for: ", username, user);
+        
         EvoRoom.Teacher.users[username] = user;
         
-        EvoRoom.Teacher.gotUpdatedUserState(username, state || "OUTSIDE");
-    },
-    
-    gotUpdatedUserState: function(username, state) {
-        if (!EvoRoom.Teacher.users) {
-            EvoRoom.Teacher.users = {};
-        }
-        
-        if (!EvoRoom.Teacher.users[username]) {
-            EvoRoom.Teacher.users[username] = {account: {login: username}, metadata: {state: state}};
-        } else {
-            EvoRoom.Teacher.users[username]['metadata']['state'] = state;
-        }
-        
-        var user = EvoRoom.Teacher.users[username];
-        
-        if (user.metadata.current_rotation != 2 && EvoRoom.Teacher.checkAllUsersInState('ORIENTATION')) {
+        if (EvoRoom.Teacher.checkAllUsersInRotation(1) && EvoRoom.Teacher.checkAllUsersInState('ORIENTATION')) {
             $('.step-1-2 button.start_rotation_1').removeClass('teacher-button-faded');
             $('.step-1-2 button.start_rotation_1').addClass('teacher-button-primed');
         } else {
             $('.step-1-2 button.start_rotation_1').removeClass('teacher-button-primed');
         }
         
-        if (user.metadata.current_rotation == 2 && EvoRoom.Teacher.checkAllUsersInState('WAITING_FOR_GROUP_TO_FINISH_MEETUP')) {
+        if (EvoRoom.Teacher.checkAllUsersInRotation(1) && EvoRoom.Teacher.checkAllUsersInState('WAITING_FOR_GROUP_TO_FINISH_MEETUP')) {
             $('.step-1-4 button.start_rotation_2').removeClass('teacher-button-faded');
             $('.step-1-4 button.start_rotation_2').addClass('teacher-button-primed');
         } else {
             $('.step-1-4 button.start_rotation_2').removeClass('teacher-button-primed');
         }
         
-        if (user.metadata.current_rotation == 2 && EvoRoom.Teacher.checkAllUsersInState('WAITING_FOR_GROUP_TO_FINISH_MEETUP')) {
+        if (EvoRoom.Teacher.checkAllUsersInRotation(2) && EvoRoom.Teacher.checkAllUsersInState('WAITING_FOR_GROUP_TO_FINISH_MEETUP')) {
             $('.step-1-6 button.assign_homework_1').removeClass('teacher-button-faded');
             $('.step-1-6 button.assign_homework_1').addClass('teacher-button-primed');
         } else {
             $('.step-1-6 button.assign_homework_1').removeClass('teacher-button-primed');
         }
         
-        var marker = EvoRoom.Teacher.studentMarker(username);
+        var marker = EvoRoom.Teacher.studentMarker(user);
+        marker.attr('title', state + " ("+user.metadata.current_rotation+")");
+        
         switch (state) {
             case "OUTSIDE":
                 $('.step-1-0 .students').append(marker);
@@ -223,7 +217,32 @@ EvoRoom.Teacher = {
                     $('.step-1-6 .students').append(marker);
                 }
                 break;
+            case 'WAITING_FOR_LOCATION_ASSIGNMENT':
+            case 'GOING_TO_ASSIGNED_LOCATION':
+                switch(user.metadata.current_task) {
+                    case 'meetup':
+                        if (user.metadata.current_rotation == 1) {
+                            $('.step-1-3 .students').append(marker);
+                        } else {
+                            $('.step-1-5 .students').append(marker);
+                        }
+                        break;
+                    case 'observe_past_presence':
+                        if (user.metadata.current_rotation == 1) {
+                            $('.step-1-2 .students').append(marker);
+                        } else {
+                            $('.step-1-4 .students').append(marker);
+                        }
+                }
+                break;
         }
+        
+        $('#'+username).effect("highlight", {}, 800);
+    },
+    
+    gotUpdatedUserState: function(username, state) {
+        console.log("got updated state for: ", username, state);
+        EvoRoom.Teacher.refreshDataForUser(username);
     },
     
     checkAllUsers: function(check) {
@@ -233,7 +252,13 @@ EvoRoom.Teacher = {
     },
     
     checkAllUsersInState: function(state) {
-        return EvoRoom.Teacher.checkAllUsers(function(username,user) { return user.metadata.state === state; });
+        var check = function(username,user) { return user.metadata.state === state; };
+        return EvoRoom.Teacher.checkAllUsers(check);
+    },
+    
+    checkAllUsersInRotation: function(rotation) {
+        var check = function(username,user) { return user.metadata.current_rotation == rotation; };
+        return EvoRoom.Teacher.checkAllUsers(check);
     },
     
     bindEventTriggers: function() {
@@ -263,17 +288,23 @@ EvoRoom.Teacher = {
         });
     },
     
-    studentMarker: function(username) {
+    studentMarker: function(user) {
+        var username = user.account.login;
+        var state = user.metadata.state;
         var marker = $('#'+username);
         
         if (marker.length < 1) {
-            marker = $("<span class='student' id='"+username+"'>"+username+"</span>");
+            marker = $("<span class='student' id='"+username+"' title='"+state+"'>"+username+"</span>");
         }
         
-        var userUpdate = function(data) {
-            marker.addClass('team-'+data.user.groups[0].name);
-        };
-        Sail.app.rollcall.request(Sail.app.rollcall.url+'/users/'+username+'.json', 'GET', {}, userUpdate);
+        if (user.groups && user.groups[0]) {
+            var teamName = user.groups[0].name;
+            if (teamName) {
+                marker.addClass('team-'+teamName);
+            }
+        } else {
+            EvoRoom.Teacher.refreshDataForUser(username);
+        }
         
         return marker;
     }
