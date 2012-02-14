@@ -14,7 +14,6 @@ th {
 }
 
 .teacher-dashboard {
-  white-space: nowrap;
 }
 
 .teacher-dashboard tr.step > * {
@@ -47,9 +46,7 @@ th {
 
 .teacher-dashboard tr.step > td.students {
   margin-left: 15px;
-  -moz-box-flex: 1;
-  -webkit-box-flex: 1;
-  box-flex: 1;
+  white-space: normal;
 }
 
 .teacher-button-done {
