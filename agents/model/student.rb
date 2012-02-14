@@ -135,8 +135,8 @@ class Student < Rollcall::User
   def store_observation(observation)
     observation.symbolize_keys!
     log "Storing  observation: #{observation.inspect}"
-    observation[:rotation] = self.metadata.current_rotation
-    observation[:location] ||= self.metadata.current_location
+    observation[:rotation] = self.metadata.current_rotation if self.metadata.current_rotation?
+    observation[:location] ||= self.metadata.current_location if self.metadata.current_location?
     observation[:username] = self.username
     observation[:timestamp] = Time.now
     mongo.collection(:observations).save(observation)

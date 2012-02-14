@@ -149,8 +149,9 @@ class Choreographer < Sail::Agent
     end
     event :organism_observation? do |stanza, data|
       username = data['origin']
-      location = data['payload']['location']
-      lookup_student(username).organism_observation!(data['payload'].symbolize_keys)
+      obs = data['payload'].symbolize_keys
+      obs[:type] = "presence"
+      lookup_student(username).organism_observation!(obs)
     end
     event :organism_observations_done? do |stanza, data|
       username = data['origin']
@@ -178,6 +179,38 @@ class Choreographer < Sail::Agent
           log "#{stu}: exception while handling 'homework_assignment' event: #{e}", :ERROR
         end
       end
+    end
+    
+    # day 2 events
+    event :feature_observations_start? do |stanza, data|
+      @students.each do |username, stu|
+        begin
+          stu.feature_observations_start!
+        rescue => e
+          log "#{stu}: exception while handling 'feature_observations_start' event: #{e}", :ERROR
+        end
+      end
+    end
+    event :transition_to_present? do |stanza, data|
+      @students.each do |username, stu|
+        begin
+          stu.transition_to_present!
+        rescue => e
+          log "#{stu}: exception while handling 'feature_observations_start' event: #{e}", :ERROR
+        end
+      end
+    end
+    event :organism_features? do |stanza, data|
+      username = data['origin']
+      obs = data['payload'].symbolize_keys
+      obs[:type] = "features"
+      lookup_student(username).organism_features!(obs)
+    end
+    event :observation_tabulation? do |stanza, data|
+      username = data['origin']
+      obs = data['payload'].symbolize_keys
+      obs[:type] = "presence_tabulation"
+      lookup_student(username).organism_tabulation!(obs)
     end
   end
   
