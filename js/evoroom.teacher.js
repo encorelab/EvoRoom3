@@ -294,7 +294,7 @@ EvoRoom.Teacher = {
         var marker = $('#'+username);
         
         if (marker.length < 1) {
-            marker = $("<span class='student' id='"+username+"' title='"+state+"'>"+username+"</span>");
+            marker = $("<span class='student' id='"+username+"' title='"+state+"'>"+username+"</span>").after(" ");
         }
         
         if (user.groups && user.groups[0]) {
