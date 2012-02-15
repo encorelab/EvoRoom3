@@ -16,11 +16,10 @@ class Student < Rollcall::User
       'station_d'
     ],
     :day_2 => [
-      'station_a', # borneo
-      'station_b', # borneo
-      'station_c',
-      'station_d'
-    ]
+      'borneo', # station_a, station_b
+      'sumatra', # station_c, station_d
+    ],
+    :brainstorm => ["station_c", "station_b"]
   }
   
   include Golem
@@ -32,7 +31,7 @@ class Student < Rollcall::User
   end
   
   def current_locations
-    Student::LOCATIONS[in_day_2? ? :day_2 : :day_1]
+    Student::LOCATIONS[self.metadata.current_task == 'observe_present' ? :day_2 : :day_1]
   end
   
   def username
@@ -222,7 +221,7 @@ class Student < Rollcall::User
   end
   
   def assign_brainstorm_location!
-    locs = ["station_c", "station_b"]
+    locs = LOCATIONS[:brainstorm]
     selected_loc = locs[rand(locs.length)]
     
     self.agent.event!(:location_assignment,
@@ -233,6 +232,19 @@ class Student < Rollcall::User
   
   def team_name
     groups.first.name
+  end
+  
+  def translate_day_2_location(qr_loc)
+    loc_map = {
+      "borneo" => ["location_a", "location_b"],
+      "sumatra" => ["location_c", "location_d"]
+    }
+    
+    loc_map.each do |day_2_loc, qr_locs|
+      return day_2_loc if qr_locs.include?(qr_loc)
+    end
+    
+    raise "#{qr_loc.inspect} is not a valid day 2 location!"
   end
   
   define_statemachine(&StudentStatemachine)
