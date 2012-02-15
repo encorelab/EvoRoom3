@@ -32,7 +32,7 @@ class FileToChat < Sail::Agent
       msg.type = :groupchat
 
       infile.each_line do |jsonMsg|
-        log i
+        log jsonMsg
         
         msg.body = jsonMsg
 
