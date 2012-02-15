@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'blather/client/dsl'
 require 'blather/client/dsl'
-require 'mongo'
 
 $: << 'sail.rb/lib'
 require 'sail/agent'
@@ -23,24 +22,22 @@ class FileToChat < Sail::Agent
     # we don't specify an event type, so this will catch ALL events
     event :replay? do |stanza, data|
       log "Storing event: #{data.inspect}"
-      #client.write "jdjdjdj"
-      
-      infile = File.new("replay_chat_a.txt", "r")
-      linearray = infile.readlines
-      infile.close
+      #client.write "jdjdjdj""michelle-feb-2012-#{alph}"
+      run = config[:run]
+      infile = File.open("replay_#{run}.txt", "r")
       
       msg = Blather::Stanza::Message.new
       msg.to = room_jid
       msg.type = :groupchat
 
-      linearray.each do |i|
+      infile.each_line do |jsonMsg|
         log i
         
-        msg.body = i
+        msg.body = jsonMsg
 
         client.write(msg)
       end
-      
+      infile.close
       #@mongo.collection(:events).save(data)
     end
     
