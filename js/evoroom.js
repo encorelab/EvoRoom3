@@ -1184,7 +1184,8 @@ var EvoRoom = {
 
         var sev = new Sail.Event('observation_tabulation', {
             team_name:Sail.app.currentTeam,
-            location:locationString,
+            island:locationString,
+            location:Sail.app.currentLocation,
             organism_presence:observations_table
         });
         EvoRoom.groupchat.sendEvent(sev);
