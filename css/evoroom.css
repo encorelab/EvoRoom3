@@ -253,6 +253,7 @@ header .hide {
 #present-day-organisms table {
     width: 100%;
     margin-top: 15px;
+    border-collapse: collapse;
 }
 
 #present-day-organisms td {
@@ -264,29 +265,29 @@ header .hide {
 
 
 #concepts-discussion .evolution-concept-dropdown {
-    margin-top: 40px;
-    width: 480px;
+    margin-top: 28px;
+    width: 450px;
     height: 45px;
     font-size: 22px;
 }
 
 #concepts-discussion .concepts-button {
     margin-top: 20px;
-    width: 480px;
+    width: 450px;
     height: 45px;
     font-size: 22px;
     text-align: left;
 }
 
 #concepts-discussion .text-entry-header {
-    margin-top: 60px;
+    margin-top: 40px;
     margin-bottom: -10px;
 }
 
 #concepts-discussion .text-entry {
-    height: 315px;
-    width: 480px;
-    margin-bottom: 155px;
+    height: 310px;
+    width: 450px;
+    margin-bottom: 135px;
 }
 
 .pop-up {
