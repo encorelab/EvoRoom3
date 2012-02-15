@@ -125,7 +125,7 @@ EvoRoom.Teacher = {
             
             transition_animation: function(sev) {
                 $('button.start_pre_transition').removeClass('teacher-button-primed');
-                
+                $('button.start_transition').removeClass('teacher-button-faded');
                 $('button.start_transition').addClass('teacher-button-primed');
             }
         }

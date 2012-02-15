@@ -60,7 +60,7 @@ class Student < Rollcall::User
   delegate :log, :to => :agent
   
   def observed_locations_in_current_rotation
-   observed = mongo.collection(:observations).find(
+    observed = mongo.collection(:observations).find(
       :rotation => self.metadata.current_rotation,
       :username => self.username
     ).to_a.collect{|obs| obs['location']}
