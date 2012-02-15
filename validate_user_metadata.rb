@@ -44,6 +44,13 @@ RUNS.each do |run|
         bad = true
       end 
     end
+    JSON.parse(u.metadata.assigned_organisms).each do |org|
+      unless File.exists?(File.dirname(__FILE__)+"/images/#{org}_icon.png")
+        puts "    !!!! missing image for organism #{org.inspect} !!!!"
+        bad = true
+      end
+    end
+    
     puts "     √ OK" unless bad
   end
   
