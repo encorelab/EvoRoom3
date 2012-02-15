@@ -23,7 +23,8 @@ class FileToChat < Sail::Agent
     event :replay? do |stanza, data|
       log "Storing event: #{data.inspect}"
       #client.write "jdjdjdj""michelle-feb-2012-#{alph}"
-      run = config[:run]
+      #raise config.inspect
+      run = config[:room]
       infile = File.open("replay_#{run}.txt", "r")
       
       msg = Blather::Stanza::Message.new
