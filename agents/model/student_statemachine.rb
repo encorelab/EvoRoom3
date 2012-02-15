@@ -86,21 +86,30 @@ StudentStatemachine = proc do
   state :GOING_TO_ASSIGNED_LOCATION do
     on :check_in do
       guard :failure_message => "the student is at the wrong location" do |student,check_in|
+        student.agent.log "#{student}'s current task is #{student.metadata.current_task.inspect}"
         loc = check_in[:location]
-        if student.metadata.current_task == 'observe_present'
-          loc = student.translate_day_2_location(loc)
-        end
         student.metadata.currently_assigned_location == loc
       end
-      action do |student,check_in|
-        if student.metadata.current_task == 'observe_present'
-          student.metadata.current_location = check_in[:location]
+      transition :to => :WAITING_FOR_MEETUP_START do
+        guard :failure_message => "student's current task is not 'meetup'" do |student|
+          student.metadata.current_task == 'observe_past_presence'
         end
       end
-      transition :to => :WAITING_FOR_MEETUP_START, :if => lambda{|student| student.metadata.current_task == 'meetup'}
-      transition :to => :OBSERVING_PAST, :if => lambda{|student| student.metadata.current_task == 'observe_past_presence'}
-      transition :to => :OBSERVING_PRESENT, :if => lambda{|student| student.metadata.current_task == 'observe_present_presence'}
-      transition :to => :BRAINSTORMING, :if => lambda{|student| student.metadata.current_task == 'brainstorm'}
+      transition :to => :OBSERVING_PAST do
+        guard :failure_message => "student's current task is not 'observe_past_presence'" do |student|
+          student.metadata.current_task == 'observe_past_presence'
+        end
+      end
+      transition :to => :OBSERVING_PRESENT do
+        guard :failure_message => "student's current task is not 'observe_present_presence'" do |student|
+          student.metadata.current_task == 'observe_present_presence'
+        end
+      end
+      transition :to => :BRAINSTORMING do
+        guard :failure_message => "student's current task is not 'brainstorm'" do |student|
+         student.metadata.current_task == 'brainstorm'
+        end
+      end
     end
     # on :check_in do
     #   transition :action => proc{|student| student.agent.event!(:at_wrong_location) }

@@ -15,10 +15,10 @@ class Student < Rollcall::User
       'station_c',
       'station_d'
     ],
-    :day_2 => [
-      'borneo', # station_a, station_b
-      'sumatra', # station_c, station_d
-    ],
+    :day_2 => {
+      'borneo' => ['station_a', 'station_b'],
+      'sumatra' => ['station_c', 'station_d']
+    },
     :brainstorm => ["station_c", "station_b"]
   }
   
@@ -31,7 +31,11 @@ class Student < Rollcall::User
   end
   
   def current_locations
-    Student::LOCATIONS[self.metadata.current_task == 'observe_present' ? :day_2 : :day_1]
+    if self.metadata.current_task == 'observe_present_presence'
+      Student::LOCATIONS[:day_2].keys
+    else
+      Student::LOCATIONS[:day_1]
+    end
   end
   
   def username
@@ -56,10 +60,26 @@ class Student < Rollcall::User
   delegate :log, :to => :agent
   
   def observed_locations_in_current_rotation
-    mongo.collection(:observations).find(
+   observed = mongo.collection(:observations).find(
       :rotation => self.metadata.current_rotation,
       :username => self.username
     ).to_a.collect{|obs| obs['location']}
+    
+    if self.metadata.current_task == 'observe_present_presence'
+      if observed.include?('station_a') || observed.include?('station_b')
+        observed << 'borneo'
+      end
+      if observed.include?('station_c') || observed.include?('station_d') 
+        observed << 'sumatra'
+      end
+      if observed.include?('borneo')
+        observed += Student::LOCATIONS[:day_2]['borneo']
+      elsif observed.include?('sumatra')
+        observed += Student::LOCATIONS[:day_2]['sumatra']
+      end
+    end
+    
+    observed
   end
   
   def observed_all_locations?
@@ -182,6 +202,15 @@ class Student < Rollcall::User
     locs_left = current_locations - observed
     selected_loc = locs_left[rand(locs_left.length)]
     
+    log "Assigning #{self} to #{selected_loc.inspect} for observations. (current task is #{self.metadata.current_task.inspect})"
+    
+    if self.metadata.current_task == "observe_present_presence"
+      foo = Student::LOCATIONS[:day_2][selected_loc]
+      selected_loc2 = foo[rand(foo.length)]
+      log "Translated #{selected_loc.inspect} to #{selected_loc2.inspect} for #{self}."
+      selected_loc = selected_loc2
+    end
+    
     self.agent.event!(:location_assignment,
       :location => selected_loc,
       :username => self.username
@@ -223,6 +252,8 @@ class Student < Rollcall::User
   def assign_brainstorm_location!
     locs = LOCATIONS[:brainstorm]
     selected_loc = locs[rand(locs.length)]
+    
+    log "Assigning #{self} to #{selected_loc.inspect} for meetup."
     
     self.agent.event!(:location_assignment,
       :location => selected_loc,
