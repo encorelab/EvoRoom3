@@ -92,7 +92,7 @@ StudentStatemachine = proc do
       end
       transition :to => :WAITING_FOR_MEETUP_START do
         guard :failure_message => "student's current task is not 'meetup'" do |student|
-          student.metadata.current_task == 'observe_past_presence' && student.observed_all_locations?
+          student.metadata.current_task == 'meetup' && student.observed_all_locations?
         end
       end
       transition :to => :OBSERVING_PAST do
