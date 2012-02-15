@@ -1171,9 +1171,20 @@ var EvoRoom = {
     },
 
     submitObservationTabulation: function(observations_table) {
+        var locationString = null;
+        if (Sail.app.currentLocation === "station_a" || Sail.app.currentLocation === "station_b") {
+            locationString = "Borneo";
+        }
+        else if (Sail.app.currentLocation === "station_c" || Sail.app.currentLocation === "station_d") {
+            locationString = "Sumatra";
+        }
+        else {
+            locationString = "unknown location";
+        }
+
         var sev = new Sail.Event('observation_tabulation', {
             team_name:Sail.app.currentTeam,
-            location:Sail.app.currentLocation,
+            location:locationString,
             organism_presence:observations_table
         });
         EvoRoom.groupchat.sendEvent(sev);
