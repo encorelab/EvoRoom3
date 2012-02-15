@@ -74,6 +74,18 @@ class Student < Rollcall::User
         observed << 'sumatra'
         observed.delete_if{|loc| loc == 'station_c' || loc == 'station_d'}
       end
+      
+      # if observed.include?('borneo')
+      #   observed << 'station_a'
+      #   observed << 'station_b'
+      #   observed.delete_if{|loc| loc == 'station_a' || loc == 'station_b'}
+      # end
+      # if observed.include?('sumatra') 
+      #   observed << 'station_c'
+      #   observed << 'station_d'
+      #   observed.delete_if{|loc| loc == 'station_c' || loc == 'station_d'}
+      # end
+      
       # if observed.include?('borneo')
       #   observed += Student::LOCATIONS[:day_2]['borneo']
       # end
