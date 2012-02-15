@@ -38,7 +38,7 @@ RUNS.each do |run|
     end
     json_metadata_keys.each do |key|
       begin
-        u.metadata.send("#{key}")
+        u.metadata.send("#{key}") if u.metadata.send("#{key}?")
       rescue JSON::ParserError => e
         puts "    !!!! bad JSON in key '#{key}': #{e} !!!!"
         bad = true
