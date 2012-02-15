@@ -65,7 +65,7 @@ class Student < Rollcall::User
       :username => self.username
     ).to_a.collect{|obs| obs['location']}
     
-    if self.metadata.current_task == 'observe_present_presence'
+    if self.metadata.current_task == 'observe_present_presence' || self.metadata.state == 'OBSERVING_PRESENT'
       if observed.include?('station_a') || observed.include?('station_b')
         observed << 'borneo'
       end
@@ -74,7 +74,8 @@ class Student < Rollcall::User
       end
       if observed.include?('borneo')
         observed += Student::LOCATIONS[:day_2]['borneo']
-      elsif observed.include?('sumatra')
+      end
+      if observed.include?('sumatra')
         observed += Student::LOCATIONS[:day_2]['sumatra']
       end
     end
