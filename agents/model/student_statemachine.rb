@@ -86,10 +86,16 @@ StudentStatemachine = proc do
   state :GOING_TO_ASSIGNED_LOCATION do
     on :check_in do
       guard :failure_message => "the student is at the wrong location" do |student,check_in|
-        student.metadata.currently_assigned_location == check_in[:location]
+        loc = check_in[:location]
+        if student.metadata.current_task == 'observe_present'
+          loc = student.translate_day_2_location(loc)
+        end
+        student.metadata.currently_assigned_location == loc
       end
-      action do |student,check_in| 
-        student.metadata.current_location = check_in[:location]
+      action do |student,check_in|
+        if student.metadata.current_task == 'observe_present'
+          student.metadata.current_location = check_in[:location]
+        end
       end
       transition :to => :WAITING_FOR_MEETUP_START, :if => lambda{|student| student.metadata.current_task == 'meetup'}
       transition :to => :OBSERVING_PAST, :if => lambda{|student| student.metadata.current_task == 'observe_past_presence'}
