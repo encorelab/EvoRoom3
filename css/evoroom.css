@@ -338,4 +338,5 @@ header .hide {
 
 .pop-up-checkbox {
     margin: 15px;
+    outline: 1px solid white;
 }
