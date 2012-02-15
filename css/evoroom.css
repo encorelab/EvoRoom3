@@ -265,7 +265,7 @@ header .hide {
 
 
 #concepts-discussion .evolution-concept-dropdown {
-    margin-top: 40px;
+    margin-top: 28px;
     width: 450px;
     height: 45px;
     font-size: 22px;
@@ -280,14 +280,14 @@ header .hide {
 }
 
 #concepts-discussion .text-entry-header {
-    margin-top: 45px;
+    margin-top: 40px;
     margin-bottom: -10px;
 }
 
 #concepts-discussion .text-entry {
     height: 310px;
     width: 450px;
-    margin-bottom: 130px;
+    margin-bottom: 135px;
 }
 
 .pop-up {
