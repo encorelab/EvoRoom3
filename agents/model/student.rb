@@ -212,9 +212,7 @@ class Student < Rollcall::User
   end
   
   def assign_next_observation_location!    
-    observed = mongo.collection(:observations).
-      find(:username => self.username, :rotation => self.metadata.current_rotation).to_a.
-      collect{|obs| obs['location']}
+    observed = observed_locations_in_current_rotation
     
     locs_left = current_locations - observed
     selected_loc = locs_left[rand(locs_left.length)]
