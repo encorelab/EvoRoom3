@@ -28,13 +28,14 @@ class FileToChat < Sail::Agent
       infile = File.new("replay_chat_a.txt", "r")
       linearray = infile.readlines
       infile.close
+      
+      msg = Blather::Stanza::Message.new
+      msg.to = room_jid
+      msg.type = :groupchat
 
       linearray.each do |i|
         log i
         
-        msg = Blather::Stanza::Message.new
-        msg.to = room_jid
-        msg.type = :groupchat
         msg.body = i
 
         client.write(msg)
