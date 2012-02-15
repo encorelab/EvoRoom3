@@ -132,6 +132,29 @@ StudentStatemachine = proc do
         meetup_start[:team_name] == student.team_name
       end
     end
+    on :observations_start, :to => :WAITING_FOR_LOCATION_ASSIGNMENT do
+      transition :to => :WAITING_FOR_LOCATION_ASSIGNMENT do
+        comment "Allows teacher to move on even if not all students are done."
+        guard do |student|
+          student.metadata.current_rotation != 2
+        end
+        action do |student|
+          student.metadata.current_task = "observe_past_presence"        
+          student.increment_rotation!
+        end
+      end
+    end
+    on :homework_assignment do
+      transition :to => :OUTSIDE do
+        comment "Allows the teacher to end the meetup\neven if not all students have met."
+        guard do |student|
+          student.metadata.current_rotation == 2
+        end
+        action do |student|
+          student.metadata.day = 2
+        end
+      end
+    end
   end
   
   state :MEETUP do
