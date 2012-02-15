@@ -337,6 +337,18 @@ header .hide {
 }
 
 .pop-up-checkbox {
-    margin: 15px;
-    outline: 1px solid white;
+    margin: 8px;
+/*    outline: 1px solid white;*/
 }
+
+label.pop-up-checkbox {
+  /*padding: 4pt;*/
+  display: block;
+  border-radius: 10pt;
+  /*margin-bottom: 5pt;*/
+}
+
+label.checked {
+  background-color: purple;
+}
+

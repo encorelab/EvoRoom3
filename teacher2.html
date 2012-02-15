@@ -1,0 +1,104 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <title>Teacher Dashboard - Day 2 - EvoRoom3</title>
+
+    <link href="js/sail.js/css/sail.css" rel="stylesheet" type="text/css" />
+    <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+
+    <link href="css/evoroom.css" rel="stylesheet" type="text/css" /> 
+    <link href="css/evoroom-teacher.css" rel="stylesheet" type="text/css" />
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+        
+    <script src="js/sail.js/sail.js"></script>
+    <script>
+        Sail.load()
+            .then('js/sail.js/rollcall.js')
+            .then('js/evoroom.teacher.js')
+            .thenRun(function() { 
+                return Sail.init(EvoRoom.Teacher);
+            });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="progressbar day2">
+            <div class="indicator step-2-1">1. Orientation</div>
+            <div class="indicator step-2-2">2. 2 mya</div>
+            <div class="indicator step-2-3">3. Transition</div>
+            <div class="indicator step-2-4">4. Present</div>
+            <div class="indicator step-2-5">5. Discussion</div>
+            <div class="indicator step-2-5">6. Complete</div>
+        </div>
+    </header>
+    
+    <table id="teacher-dashboard-day-2" class="teacher-dashboard" style="visibility: hidden">
+        <tr class="step step-2-0">
+            <th>0. Outside</th>
+            <td class="students" colspan="2">
+            </td>
+        </tr>
+        
+        <tr class="step step-2-1">
+            <th>1. Orientation</th>
+            <td class="students" colspan="2">
+            </td>
+        </tr>
+        
+        <tr class="step step-2-2">
+            <th>2. 2 mya</th>
+            <td class="buttons">
+                <button class="start_feature_observations teacher-button-faded">Start 2 mya</button>
+            </td>
+            <td class="students">
+            </td>
+        </tr>
+        
+        <tr class="step step-2-3">
+            <th>3. Transition</th>
+            <td class="buttons">
+                <button class="start_pre_transition teacher-button-faded">Transition</button>
+            </td>
+            <td class="students">
+            </td>
+        </tr>
+        
+        <tr class="step step-2-4">
+            <th>4. Present</th>
+            <td class="buttons">
+                <button class="start_transition teacher-button-faded">Start Present</button>
+            </td>
+            <td class="students">
+            </td>
+        </tr>
+        
+        <tr class="step step-2-5">
+            <th>5. Concept Discussion</th>
+            <td class="buttons">
+                <button value="200 mya" class="teacher-button-faded">200 mya</button>
+                <button value="150 mya" class="teacher-button-faded">150 mya</button>
+                <button value="100 mya" class="teacher-button-faded">100 mya</button>
+                <br />
+                <button value="50 mya" class="teacher-button-faded">50 mya</button>
+                <button value="25 mya" class="teacher-button-faded">25 mya</button>
+                <button value="10 mya" class="teacher-button-faded">10 mya</button>
+                <br />
+                <button value="5 mya" class="teacher-button-faded">5 mya</button>
+                <button value="2 mya" class="teacher-button-faded">2 mya</button>
+            </td>
+            <td class="students">
+            </td>
+        </tr>
+        
+        <tr class="step step-2-6">
+            <th>6. Complete</th>
+            <td class="buttons">
+                <button class="assign_homework_2 teacher-button-faded">Assign Homework</button>
+            </td>
+            <td class="students">
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

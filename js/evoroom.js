@@ -1,4 +1,4 @@
-/*jslint devel: true, regexp: true, browser: true, unparam: true, debug: true, sloppy: true, sub: true, es5: true, vars: true, evil: true, fragment: true, plusplus: true, nomen: true, white: true, eqeq: false */
+/*jslint devel: true, regexp: true, browser: true, unparam: true, debug: true, sloppy: true, sub: true, es5: true, vars: true, evil: true, fragment: true, plusplus: false, nomen: true, white: false, eqeq: false */
 /*globals Sail, Rollcall, $, Foo, _, window */
 
 var EvoRoom = {
@@ -1058,6 +1058,14 @@ var EvoRoom = {
         
         $('#organism-pop-up .small-button').click(function() {
             $('#organism-pop-up').hide();
+        });
+        
+        $('input.pop-up-checkbox').click(function() {
+           if ($(this).is(':checked')) {
+               $(this).parent('label').addClass('checked');
+           } else {
+               $(this).parent('label').removeClass('checked');
+           }
         });
 
         $('#concepts-discussion .small-button').click(function() {

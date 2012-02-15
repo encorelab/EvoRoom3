@@ -15,12 +15,11 @@ class Student < Rollcall::User
       'station_c',
       'station_d'
     ],
-    :day_2 => [
-      'station_a', # borneo
-      'station_b', # borneo
-      'station_c',
-      'station_d'
-    ]
+    :day_2 => {
+      'borneo' => ['station_a', 'station_b'],
+      'sumatra' => ['station_c', 'station_d']
+    },
+    :brainstorm => ["station_c", "station_b"]
   }
   
   include Golem
@@ -32,7 +31,11 @@ class Student < Rollcall::User
   end
   
   def current_locations
-    Student::LOCATIONS[in_day_2? ? :day_2 : :day_1]
+    if self.metadata.current_task == 'observe_present_presence'
+      Student::LOCATIONS[:day_2].keys
+    else
+      Student::LOCATIONS[:day_1]
+    end
   end
   
   def username
@@ -57,14 +60,47 @@ class Student < Rollcall::User
   delegate :log, :to => :agent
   
   def observed_locations_in_current_rotation
-    mongo.collection(:observations).find(
+    observed = mongo.collection(:observations).find(
       :rotation => self.metadata.current_rotation,
       :username => self.username
     ).to_a.collect{|obs| obs['location']}
+    
+    if self.metadata.current_task == 'observe_present_presence' || self.metadata.state == 'OBSERVING_PRESENT'
+      if observed.include?('station_a') || observed.include?('station_b')
+        observed << 'borneo'
+        observed.delete_if{|loc| loc == 'station_a' || loc == 'station_b'}
+      end
+      if observed.include?('station_c') || observed.include?('station_d') 
+        observed << 'sumatra'
+        observed.delete_if{|loc| loc == 'station_c' || loc == 'station_d'}
+      end
+      
+      # if observed.include?('borneo')
+      #   observed << 'station_a'
+      #   observed << 'station_b'
+      #   observed.delete_if{|loc| loc == 'station_a' || loc == 'station_b'}
+      # end
+      # if observed.include?('sumatra') 
+      #   observed << 'station_c'
+      #   observed << 'station_d'
+      #   observed.delete_if{|loc| loc == 'station_c' || loc == 'station_d'}
+      # end
+      
+      # if observed.include?('borneo')
+      #   observed += Student::LOCATIONS[:day_2]['borneo']
+      # end
+      # if observed.include?('sumatra')
+      #   observed += Student::LOCATIONS[:day_2]['sumatra']
+      # end
+    end
+    
+    observed
   end
   
   def observed_all_locations?
-    (current_locations - observed_locations_in_current_rotation).empty?
+    obsed = (current_locations - observed_locations_in_current_rotation)
+    log "#{self} must still do the following locations: #{obsed.inspect}"
+    obsed.empty?
   end
   
   def in_day_1?
@@ -176,12 +212,19 @@ class Student < Rollcall::User
   end
   
   def assign_next_observation_location!    
-    observed = mongo.collection(:observations).
-      find(:username => self.username, :rotation => self.metadata.current_rotation).to_a.
-      collect{|obs| obs['location']}
+    observed = observed_locations_in_current_rotation
     
     locs_left = current_locations - observed
     selected_loc = locs_left[rand(locs_left.length)]
+    
+    log "Assigning #{self} to #{selected_loc.inspect} for observations. (current task is #{self.metadata.current_task.inspect})"
+    
+    if self.metadata.current_task == "observe_present_presence" || self.metadata.state == 'OBSERVING_PRESENT'
+      foo = Student::LOCATIONS[:day_2][selected_loc]
+      selected_loc2 = foo[rand(foo.length)]
+      log "Translated #{selected_loc.inspect} to #{selected_loc2.inspect} for #{self}."
+      selected_loc = selected_loc2
+    end
     
     self.agent.event!(:location_assignment,
       :location => selected_loc,
@@ -222,8 +265,10 @@ class Student < Rollcall::User
   end
   
   def assign_brainstorm_location!
-    locs = ["station_c", "station_b"]
+    locs = LOCATIONS[:brainstorm]
     selected_loc = locs[rand(locs.length)]
+    
+    log "Assigning #{self} to #{selected_loc.inspect} for meetup."
     
     self.agent.event!(:location_assignment,
       :location => selected_loc,
@@ -233,6 +278,19 @@ class Student < Rollcall::User
   
   def team_name
     groups.first.name
+  end
+  
+  def translate_day_2_location(qr_loc)
+    loc_map = {
+      "borneo" => ["location_a", "location_b"],
+      "sumatra" => ["location_c", "location_d"]
+    }
+    
+    loc_map.each do |day_2_loc, qr_locs|
+      return day_2_loc if qr_locs.include?(qr_loc)
+    end
+    
+    raise "#{qr_loc.inspect} is not a valid day 2 location!"
   end
   
   define_statemachine(&StudentStatemachine)
