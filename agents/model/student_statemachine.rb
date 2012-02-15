@@ -21,7 +21,9 @@ StudentStatemachine = proc do
       student.metadata.day = 1 if not student.metadata.day?
     end
     on :check_in do
-      action lambda{|student,check_in| student.metadata.current_location = check_in[:location]}
+      action do |student,check_in| 
+        student.metadata.current_location = check_in[:location]
+      end
       transition :to => :ORIENTATION do
         guard(:failure_message => "the student must check in at the room entrance first") do |student,check_in|
           check_in[:location] == "room"
@@ -84,6 +86,10 @@ StudentStatemachine = proc do
   end
   
   state :GOING_TO_ASSIGNED_LOCATION do
+    exit do |student,check_in| 
+      student.metadata.current_location = check_in[:location]
+    end
+    
     on :check_in do
       guard :failure_message => "the student is at the wrong location" do |student,check_in|
         student.agent.log "#{student}'s current task is #{student.metadata.current_task.inspect}"
