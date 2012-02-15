@@ -68,16 +68,18 @@ class Student < Rollcall::User
     if self.metadata.current_task == 'observe_present_presence' || self.metadata.state == 'OBSERVING_PRESENT'
       if observed.include?('station_a') || observed.include?('station_b')
         observed << 'borneo'
+        observed.delete_if{|loc| loc == 'station_a' || loc == 'station_b'}
       end
       if observed.include?('station_c') || observed.include?('station_d') 
         observed << 'sumatra'
+        observed.delete_if{|loc| loc == 'station_c' || loc == 'station_d'}
       end
-      if observed.include?('borneo')
-        observed += Student::LOCATIONS[:day_2]['borneo']
-      end
-      if observed.include?('sumatra')
-        observed += Student::LOCATIONS[:day_2]['sumatra']
-      end
+      # if observed.include?('borneo')
+      #   observed += Student::LOCATIONS[:day_2]['borneo']
+      # end
+      # if observed.include?('sumatra')
+      #   observed += Student::LOCATIONS[:day_2]['sumatra']
+      # end
     end
     
     observed
@@ -207,7 +209,7 @@ class Student < Rollcall::User
     
     log "Assigning #{self} to #{selected_loc.inspect} for observations. (current task is #{self.metadata.current_task.inspect})"
     
-    if self.metadata.current_task == "observe_present_presence"
+    if self.metadata.current_task == "observe_present_presence" || self.metadata.state == 'OBSERVING_PRESENT'
       foo = Student::LOCATIONS[:day_2][selected_loc]
       selected_loc2 = foo[rand(foo.length)]
       log "Translated #{selected_loc.inspect} to #{selected_loc2.inspect} for #{self}."
