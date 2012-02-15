@@ -84,7 +84,9 @@ class Student < Rollcall::User
   end
   
   def observed_all_locations?
-    (current_locations - observed_locations_in_current_rotation).empty?
+    obsed = (current_locations - observed_locations_in_current_rotation).empty?
+    log "#{self} must still do the following locations: #{obsed.inspect}"
+    obsed
   end
   
   def in_day_1?
