@@ -1069,18 +1069,24 @@ var EvoRoom = {
         });
 
         $('#concepts-discussion .small-button').click(function() {
-            EvoRoom.submitConceptDiscussion();
-            alert('Your data has been submitted');
-
-            Sail.app.hidePageElements();
-            // clear fields, reload the page
-            $('#concepts-discussion .evolution-concept-dropdown').val('');
-            $('#concepts-discussion .concepts-discussion-text-entry').val('');
-            
-            $('#time-period-pop-up .time-period-form :checkbox:checked').prop('checked', false);
-            $('#organism-pop-up .organism-form').prop('checked', false);
-
-            $('#concepts-discussion').show();
+            if ($('#concepts-discussion .evolution-concept-dropdown').val() === "no value" ||
+                    $('#concepts-discussion .concepts-discussion-text-entry').val() === '') {
+                alert('Please choose an evolution concept from the dropdown and enter an explanation');
+            }
+            else {
+                EvoRoom.submitConceptDiscussion();
+                alert('Your data has been submitted');
+    
+                Sail.app.hidePageElements();
+                // clear fields, reload the page
+                $('#concepts-discussion .evolution-concept-dropdown').val('');
+                $('#concepts-discussion .concepts-discussion-text-entry').val('');
+                
+                $('#time-period-pop-up .time-period-form :checkbox:checked').prop('checked', false);
+                $('#organism-pop-up .organism-form').prop('checked', false);
+    
+                $('#concepts-discussion').show();
+            }
         });
 
     },
