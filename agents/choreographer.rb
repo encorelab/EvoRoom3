@@ -45,10 +45,10 @@ class Choreographer < Sail::Agent
     end
     
     if stu.groups.length < 1
-      log "#{self} doesn't appear to be in a team! Cannot continue :(", :FATAL
+      log "#{stu} doesn't appear to be in a team! Cannot continue :(", :FATAL
       return false
     elsif stu.groups.length > 1
-      log "#{self} belongs to more than one group! Cannot continue :(", :FATAL
+      log "#{stu} belongs to more than one group! Cannot continue :(", :FATAL
       return false
     end
     
