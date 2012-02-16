@@ -86,34 +86,43 @@ StudentStatemachine = proc do
   end
   
   state :GOING_TO_ASSIGNED_LOCATION do
-    exit do |student,check_in| 
-      student.metadata.current_location = check_in[:location]
-    end
-    
     on :check_in do
       guard :failure_message => "the student is at the wrong location" do |student,check_in|
         student.agent.log "#{student}'s current task is #{student.metadata.current_task.inspect}"
         loc = check_in[:location]
         student.metadata.currently_assigned_location == loc
       end
+    
       transition :to => :WAITING_FOR_MEETUP_START do
+        action do |student,check_in|
+          student.metadata.current_location = check_in[:location]
+        end
         guard :failure_message => "student's current task is not 'meetup'" do |student|
           student.metadata.current_task == 'meetup' && student.observed_all_locations?
         end
       end
       transition :to => :OBSERVING_PAST do
+        action do |student,check_in|
+          student.metadata.current_location = check_in[:location]
+        end
         guard :failure_message => "student's current task is not 'observe_past_presence'" do |student|
           student.metadata.current_task == 'observe_past_presence'
         end
       end
       transition :to => :OBSERVING_PRESENT do
+        action do |student,check_in|
+          student.metadata.current_location = check_in[:location]
+        end
         guard :failure_message => "student's current task is not 'observe_present_presence'" do |student|
           student.metadata.current_task == 'observe_present_presence'
         end
       end
       transition :to => :BRAINSTORMING do
+        action do |student,check_in|
+          student.metadata.current_location = check_in[:location]
+        end
         guard :failure_message => "student's current task is not 'brainstorm'" do |student|
-         student.metadata.current_task == 'brainstorm' && student.observed_all_locations?
+          student.metadata.current_task == 'brainstorm' && student.observed_all_locations?
         end
       end
     end
