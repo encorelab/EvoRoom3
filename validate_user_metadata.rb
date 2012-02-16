@@ -36,9 +36,10 @@ RUNS.each do |run|
         bad = true
       end
     end
+    
     json_metadata_keys.each do |key|
       begin
-        u.metadata.send("#{key}") if u.metadata.send("#{key}?")
+        JSON.parse(u.metadata.send("#{key}")) if u.metadata.send("#{key}?")
       rescue JSON::ParserError => e
         puts "    !!!! bad JSON in key '#{key}': #{e} !!!!"
         bad = true
@@ -55,6 +56,14 @@ RUNS.each do |run|
         end
       rescue JSON::ParserError
         # ignore
+      end
+    end
+    
+    
+    if u.metadata.day? && u.metadata.day == 2
+      unless u.metadata.state.blank? || u.metadata.state == 'OUTSIDE'
+        puts "    !!!! is in invalid state for day 2; must be OUTSIDE or blank !!!!"
+        bad = true
       end
     end
     
