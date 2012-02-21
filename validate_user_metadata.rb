@@ -24,6 +24,8 @@ bads = []
 
 RUNS.each do |run|
   puts ">> Checking users in #{run.inspect}..."
+  
+  mongo = Mongo::Connection.new.db(run)
 
   required_metadata_keys = ["assigned_organisms", "specialty"]
   json_metadata_keys = ["assigned_organisms"]
@@ -82,12 +84,16 @@ RUNS.each do |run|
       bad = true
     end
     
-    
     if u.metadata.day? && u.metadata.day == 2
       unless u.metadata.state.blank? || u.metadata.state == 'OUTSIDE'
         error "    !!!! is in invalid state for day 2; must be OUTSIDE or blank !!!!"
         bad = true
       end
+    end
+    
+    unless mongo.collection(:observations).find(:username => u.account.login, :type => :presence_tabulation).to_a.length == 0
+      error "    !!!! already has presence tabulations !!!!"
+      bad = true
     end
     
     if bad
