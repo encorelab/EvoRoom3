@@ -65,7 +65,9 @@ class Student < Rollcall::User
       :username => self.username
     ).to_a.collect{|obs| obs['location']}
     
-    if self.metadata.current_task == 'observe_present_presence' || self.metadata.state == 'OBSERVING_PRESENT'
+    if self.metadata.current_task == 'observe_present_presence' || 
+        self.metadata.current_task == 'brainstorm' || 
+        self.metadata.state == 'OBSERVING_PRESENT'
       if observed.include?('station_a') || observed.include?('station_b')
         observed << 'borneo'
         observed.delete_if{|loc| loc == 'station_a' || loc == 'station_b'}
