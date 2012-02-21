@@ -121,6 +121,7 @@ EvoRoom.Teacher = {
             
             notes_completion: function(sev) {
                 EvoRoom.Teacher.done_features[sev.origin] = true;
+                EvoRoom.Teacher.refreshDataForUser(sev.origin);
             },
             
             transition_animation: function(sev) {
