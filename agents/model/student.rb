@@ -31,7 +31,7 @@ class Student < Rollcall::User
   end
   
   def current_locations
-    if self.metadata.current_task == 'observe_present_presence'
+    if self.metadata.current_task == 'observe_present_presence' || self.metadata.current_task == 'brainstorm'
       Student::LOCATIONS[:day_2].keys
     else
       Student::LOCATIONS[:day_1]
